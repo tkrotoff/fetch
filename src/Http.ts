@@ -32,9 +32,7 @@ export function putJSON<T>(url: string, body: any) {
 
 export function getJSON<T>(url: string, headers?: Headers) {
   return fetch(url, {
-      headers: Object.assign(JSON_HEADERS, headers)
-      // FIXME error TS2698: Spread types may only be created from object types
-      //headers: { ...JSON_HEADERS, ...headers }
+      headers: { ...JSON_HEADERS, ...headers }
     })
     .then(debugThrottle)
     .then(checkStatus)
