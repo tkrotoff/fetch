@@ -3,6 +3,14 @@ import HttpStatus from './HttpStatus';
 
 type Headers = {[index: string]: string};
 
+interface DefaultOptions {
+  readonly credentials: RequestCredentials;
+}
+
+const defaultOptions: DefaultOptions = {
+  credentials: 'same-origin'
+};
+
 const JSON_HEADERS: Headers = {
   'Accept': 'application/json',
   'Content-Type': 'application/json'
@@ -10,6 +18,7 @@ const JSON_HEADERS: Headers = {
 
 export function postJSON<T>(url: string, body: any) {
   return fetch(url, {
+      ...defaultOptions,
       method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify(body)
@@ -21,6 +30,7 @@ export function postJSON<T>(url: string, body: any) {
 
 export function putJSON<T>(url: string, body: any) {
   return fetch(url, {
+      ...defaultOptions,
       method: 'PUT',
       headers: JSON_HEADERS,
       body: JSON.stringify(body)
@@ -32,6 +42,7 @@ export function putJSON<T>(url: string, body: any) {
 
 export function getJSON<T>(url: string, headers?: Headers) {
   return fetch(url, {
+      ...defaultOptions,
       headers: { ...JSON_HEADERS, ...headers }
     })
     .then(debugThrottle)
@@ -41,6 +52,7 @@ export function getJSON<T>(url: string, headers?: Headers) {
 
 export function deleteJSON<T>(url: string) {
   return fetch(url, {
+      ...defaultOptions,
       method: 'DELETE',
       headers: JSON_HEADERS
     })
