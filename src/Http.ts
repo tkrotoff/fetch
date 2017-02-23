@@ -3,6 +3,9 @@ import HttpStatus from './HttpStatus';
 
 type Headers = {[index: string]: string};
 
+// See Fetch type definition is lacking https://github.com/Microsoft/TSJS-lib-generator/issues/200
+type RequestCredentials = 'omit' | 'same-origin' | 'include';
+
 interface DefaultOptions {
   readonly credentials: RequestCredentials;
 }
@@ -103,7 +106,7 @@ function debugThrottle(response: Response) {
 function parseJSON<T>(response: Response) {
   // An empty string is not valid JSON so JSON.parse() fails
   if (response.status !== HttpStatus.NoContent_204) {
-    return response.json<T>();
+    return response.json() as Promise<T>;
   } else {
     return new Promise<T>((resolve, reject) => resolve());
   }
