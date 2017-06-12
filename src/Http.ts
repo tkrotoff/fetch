@@ -1,4 +1,6 @@
 ﻿import 'whatwg-fetch';
+
+import { HttpError } from './HttpHelpers';
 import HttpStatus from './HttpStatus';
 
 type Headers = {[index: string]: string};
@@ -64,20 +66,34 @@ export function deleteJSON<T>(url: string) {
     .then(response => parseJSON<T>(response));
 }
 
-class HttpError extends Error {
-  constructor(message?: string) {
-    super(message);
-
-    // See Extending built-ins like Error, Array, and Map may no longer work
-    // https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work
-    Object.setPrototypeOf(this, HttpError.prototype);
-  }
-
-  response: Response;
-}
-
 // See Handling HTTP error statuses https://github.com/github/fetch#handling-http-error-statuses
 function checkStatus(response: Response) {
+  // Response examples under Chrome 58:
+  //
+  // {
+  //   body: ReadableStream,
+  //   bodyUsed: false,
+  //   headers: Headers,
+  //   ok: false,
+  //   redirected: false,
+  //   status: 404,
+  //   statusText: 'Not Found',
+  //   type: 'basic',
+  //   url: 'https://...'
+  // }
+  //
+  // {
+  //   body: ReadableStream,
+  //   bodyUsed: false,
+  //   headers: Headers,
+  //   ok: false,
+  //   redirected: false,
+  //   status: 400,
+  //   statusText: 'Bad Request',
+  //   type: 'basic',
+  //   url: 'https://...'
+  // }
+
   if (response.status >= HttpStatus.OK_200 && response.status < HttpStatus.MultipleChoices_300) {
     return response;
   } else {
