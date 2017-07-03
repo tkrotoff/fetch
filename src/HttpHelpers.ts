@@ -1,4 +1,4 @@
-﻿import * as _ from 'lodash';
+﻿import { escape } from 'lodash';
 
 export class HttpError extends Error {
   constructor(message: string) {
@@ -14,7 +14,7 @@ export class HttpError extends Error {
 
 // Return something like "POST https://localhost:5001/GoogleCalendar/102888771917469198372/invalid@group.calendar.google.com/Event 404 (Not Found)"
 export function responseToString(method: string, response: Response) {
-  return `${_.escape(method)} ${_.escape(response.url)} ${_.escape(response.status.toString())} (${_.escape(response.statusText)})`;
+  return `${escape(method)} ${escape(response.url)} ${escape(response.status.toString())} (${escape(response.statusText)})`;
 }
 
 export function createFake404NotFoundResponse(url: string) {
