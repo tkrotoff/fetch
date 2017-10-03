@@ -18,6 +18,7 @@ export function responseToString(method: string, response: Response) {
 }
 
 export function createFake404NotFoundResponse(url: string) {
+  // tslint:disable-next-line:no-object-literal-type-assertion
   return {
     url,
     status: 404,
@@ -30,6 +31,7 @@ export function createFake404NotFoundResponse(url: string) {
 }
 
 export function createFake400BadRequestResponse(url: string) {
+  // tslint:disable-next-line:no-object-literal-type-assertion
   return {
     url,
     status: 400,

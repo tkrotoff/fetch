@@ -17,7 +17,7 @@ const defaultOptions: DefaultOptions = {
 };
 
 const JSON_HEADERS: Headers = {
-  'Accept': 'application/json',
+  Accept: 'application/json',
   'Content-Type': 'application/json'
 };
 
