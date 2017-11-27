@@ -3,8 +3,6 @@
 import { HttpError } from './HttpHelpers';
 import HttpStatus from './HttpStatus';
 
-type Headers = {[index: string]: string};
-
 // See Fetch type definition is lacking https://github.com/Microsoft/TSJS-lib-generator/issues/200
 type RequestCredentials = 'omit' | 'same-origin' | 'include';
 
@@ -16,7 +14,7 @@ const defaultOptions: DefaultOptions = {
   credentials: 'same-origin'
 };
 
-const JSON_HEADERS: Headers = {
+const JSON_HEADERS = {
   Accept: 'application/json',
   'Content-Type': 'application/json'
 };
@@ -25,7 +23,7 @@ export function postJSON<T>(url: string, body: any) {
   return fetch(url, {
       ...defaultOptions,
       method: 'POST',
-      headers: JSON_HEADERS,
+      headers: JSON_HEADERS as any, // FIXME
       body: JSON.stringify(body)
     })
     .then(debugThrottle)
@@ -37,7 +35,7 @@ export function putJSON<T>(url: string, body: any) {
   return fetch(url, {
       ...defaultOptions,
       method: 'PUT',
-      headers: JSON_HEADERS,
+      headers: JSON_HEADERS as any, // FIXME
       body: JSON.stringify(body)
     })
     .then(debugThrottle)
@@ -48,7 +46,8 @@ export function putJSON<T>(url: string, body: any) {
 export function getJSON<T>(url: string, headers?: Headers) {
   return fetch(url, {
       ...defaultOptions,
-      headers: { ...JSON_HEADERS, ...headers }
+                                 // FIXME
+      headers: { ...JSON_HEADERS as any, ...headers }
     })
     .then(debugThrottle)
     .then(checkStatus)
@@ -59,7 +58,7 @@ export function deleteJSON<T>(url: string) {
   return fetch(url, {
       ...defaultOptions,
       method: 'DELETE',
-      headers: JSON_HEADERS
+      headers: JSON_HEADERS as any // FIXME
     })
     .then(debugThrottle)
     .then(checkStatus)
