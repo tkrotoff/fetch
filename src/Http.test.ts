@@ -1,5 +1,5 @@
 import * as Http from './Http';
-import * as fetchMock from 'fetch-mock';
+import fetchMock from 'fetch-mock';
 
 // See [whatwg-fetch] add fetch.polyfill https://github.com/DefinitelyTyped/DefinitelyTyped/pull/14759
 type WhatwgFetch = typeof fetch & { polyfill: true };
