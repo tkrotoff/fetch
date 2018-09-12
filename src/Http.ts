@@ -96,9 +96,13 @@ function checkStatus(response: Response) {
   if (response.status >= HttpStatus.OK_200 && response.status < HttpStatus.MultipleChoices_300) {
     return response;
   } else {
+    return response;
+    /*
+    FIXME Make the response in Chrome DevTools/Network disappear, don't know why :/
     const error = new HttpError(response.statusText);
     error.response = response;
     throw error;
+    */
   }
 }
 
