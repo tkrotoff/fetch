@@ -3,15 +3,8 @@
 import { HttpError } from './HttpHelpers';
 import HttpStatus from './HttpStatus';
 
-// See Fetch type definition is lacking https://github.com/Microsoft/TSJS-lib-generator/issues/200
-type RequestCredentials = 'omit' | 'same-origin' | 'include';
-
-interface DefaultOptions {
-  readonly credentials: RequestCredentials;
-}
-
-const defaultOptions: DefaultOptions = {
-  credentials: 'same-origin'
+const defaultOptions = {
+  credentials: 'same-origin' as RequestCredentials
 };
 
 const JSON_HEADERS = {
@@ -19,50 +12,45 @@ const JSON_HEADERS = {
   'Content-Type': 'application/json'
 };
 
-export function postJSON<Request>(url: string, body: Request) {
-  return fetch(url, {
+export async function postJSON<Request>(url: string, body: Request) {
+  const response = await fetch(url, {
     ...defaultOptions,
     method: 'POST',
-    headers: JSON_HEADERS as any, // FIXME
+    headers: JSON_HEADERS,
     body: JSON.stringify(body)
-  })
-    .then(debugThrottle)
-    .then(checkStatus)
-    .then(response => parseJSON(response));
+  });
+  checkStatus(response);
+  return parseJSON(response);
 }
 
-export function putJSON<Request>(url: string, body: Request) {
-  return fetch(url, {
+export async function putJSON<Request>(url: string, body: Request) {
+  const response = await fetch(url, {
     ...defaultOptions,
     method: 'PUT',
-    headers: JSON_HEADERS as any, // FIXME
+    headers: JSON_HEADERS,
     body: JSON.stringify(body)
-  })
-    .then(debugThrottle)
-    .then(checkStatus)
-    .then(response => parseJSON(response));
+  });
+  checkStatus(response);
+  return parseJSON(response);
 }
 
-export function getJSON(url: string, headers?: Headers) {
-  return fetch(url, {
+export async function getJSON(url: string, headers?: Headers) {
+  const response = await fetch(url, {
     ...defaultOptions,
-    // FIXME
-    headers: { ...(JSON_HEADERS as any), ...headers }
-  })
-    .then(debugThrottle)
-    .then(checkStatus)
-    .then(response => parseJSON(response));
+    headers: { ...JSON_HEADERS, ...headers }
+  });
+  checkStatus(response);
+  return parseJSON(response);
 }
 
-export function deleteJSON(url: string) {
-  return fetch(url, {
+export async function deleteJSON(url: string) {
+  const response = await fetch(url, {
     ...defaultOptions,
     method: 'DELETE',
-    headers: JSON_HEADERS as any // FIXME
-  })
-    .then(debugThrottle)
-    .then(checkStatus)
-    .then(response => parseJSON(response));
+    headers: JSON_HEADERS
+  });
+  checkStatus(response);
+  return parseJSON(response);
 }
 
 // See Handling HTTP error statuses https://github.com/github/fetch#handling-http-error-statuses
@@ -94,33 +82,12 @@ function checkStatus(response: Response) {
   // }
 
   if (response.status >= HttpStatus.OK_200 && response.status < HttpStatus.MultipleChoices_300) {
-    return response;
   } else {
-    return response;
-    /*
-    FIXME Make the response in Chrome DevTools/Network disappear, don't know why :/
     const error = new HttpError(response.statusText);
     error.response = response;
     throw error;
-    */
   }
 }
-
-function debugThrottle(response: Response) {
-  return response;
-}
-
-/*
-function debugThrottle(response: Response) {
-  function random(min: number, max: number) {
-    return Math.floor(Math.random() * max) + min;
-  }
-
-  return new Promise(resolve =>
-    setTimeout(resolve, random(1000, 5000))
-  ).then(() => response);
-}
-*/
 
 function parseJSON(response: Response) {
   // An empty string is not valid JSON so JSON.parse() fails
