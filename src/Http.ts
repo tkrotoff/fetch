@@ -1,16 +1,28 @@
 ﻿import 'whatwg-fetch';
 
-import { HttpError } from './HttpHelpers';
+import { HttpError } from './HttpError';
 import { HttpStatus } from './HttpStatus';
 
 const defaultOptions = {
   credentials: 'same-origin' as RequestCredentials
 };
 
+const JSON_MIME_TYPE = 'application/json';
+
 const JSON_HEADERS = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json'
+  Accept: JSON_MIME_TYPE,
+  'Content-Type': JSON_MIME_TYPE
 };
+
+export async function getJson(url: string, headers?: Headers) {
+  const response = await fetch(url, {
+    ...defaultOptions,
+    headers: { ...JSON_HEADERS, ...headers }
+  });
+  const responseJson = await parseResponseJson(response);
+  checkStatus(response, responseJson);
+  return responseJson;
+}
 
 export async function postJson<Request>(url: string, body: Request) {
   const response = await fetch(url, {
@@ -36,10 +48,12 @@ export async function putJson<Request>(url: string, body: Request) {
   return responseJson;
 }
 
-export async function getJson(url: string, headers?: Headers) {
+export async function patchJson<Request>(url: string, body: Request) {
   const response = await fetch(url, {
     ...defaultOptions,
-    headers: { ...JSON_HEADERS, ...headers }
+    method: 'PATCH',
+    headers: JSON_HEADERS,
+    body: JSON.stringify(body)
   });
   const responseJson = await parseResponseJson(response);
   checkStatus(response, responseJson);
@@ -57,8 +71,42 @@ export async function deleteJson(url: string) {
   return responseJson;
 }
 
+// Exported for tests
+export async function parseResponseJson(response: Response) {
+  const contentType = response.headers.get('Content-Type');
+
+  // We don't expect a JSON response with the following cases:
+  // - 204 No Content: an empty string is not valid JSON so JSON.parse() fails
+  // - 500 Internal Server Error: HTML is not valid JSON so JSON.parse() fails,
+  //   this happens when an exception occurs with Apache Tomcat
+  if (response.status === HttpStatus._204_NoContent) {
+    const responseString = await response.text();
+    if (responseString.length > 0) {
+      throw new Error(`The response status is '204 No Content' and yet is not empty`);
+    } else {
+      // Empty JSON object
+      return new Promise((resolve, _reject) => resolve({}));
+    }
+  } else if (response.status === HttpStatus._500_InternalServerError) {
+    if (contentType === null || !contentType.includes(JSON_MIME_TYPE)) {
+      // Empty JSON object
+      return new Promise((resolve, _reject) => resolve({}));
+    }
+  }
+
+  if (contentType && contentType.includes(JSON_MIME_TYPE)) {
+    // FIXME Remove the cast when response.json() will return unknown
+    return response.json() as unknown;
+  } else {
+    throw new TypeError(
+      `The response content-type '${contentType}' should contain '${JSON_MIME_TYPE}'`
+    );
+  }
+}
+
 // See Handling HTTP error statuses https://github.com/github/fetch#handling-http-error-statuses
-function checkStatus(response: Response, responseJson: unknown) {
+// Exported for tests
+export function checkStatus(response: Response, responseJson: unknown) {
   // Response examples under Chrome 58:
   //
   // {
@@ -91,15 +139,5 @@ function checkStatus(response: Response, responseJson: unknown) {
     error.status = response.status;
     error.response = responseJson;
     throw error;
-  }
-}
-
-function parseResponseJson(response: Response) {
-  // An empty string is not valid JSON so JSON.parse() fails
-  if (response.status !== HttpStatus._204_NoContent) {
-    // FIXME Remove the cast when response.json() will return unknown
-    return response.json() as unknown;
-  } else {
-    return new Promise((resolve, _reject) => resolve());
   }
 }
