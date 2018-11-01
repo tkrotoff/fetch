@@ -71,10 +71,13 @@ export async function deleteJson(url: string) {
   return responseJson;
 }
 
+function isJsonMimeType(headers: Headers) {
+  const contentType = headers.get('Content-Type') || '';
+  return contentType.includes(JSON_MIME_TYPE);
+}
+
 // Exported for tests
 export async function parseResponseJson(response: Response) {
-  const contentType = response.headers.get('Content-Type');
-
   // We don't expect a JSON response with the following cases:
   // - 204 No Content: an empty string is not valid JSON so JSON.parse() fails
   // - 500 Internal Server Error: HTML is not valid JSON so JSON.parse() fails,
@@ -88,16 +91,17 @@ export async function parseResponseJson(response: Response) {
       return new Promise((resolve, _reject) => resolve({}));
     }
   } else if (response.status === HttpStatus._500_InternalServerError) {
-    if (contentType === null || !contentType.includes(JSON_MIME_TYPE)) {
+    if (!isJsonMimeType(response.headers)) {
       // Empty JSON object
       return new Promise((resolve, _reject) => resolve({}));
     }
   }
 
-  if (contentType && contentType.includes(JSON_MIME_TYPE)) {
+  if (isJsonMimeType(response.headers)) {
     // FIXME Remove the cast when response.json() will return unknown
     return response.json() as unknown;
   } else {
+    const contentType = response.headers.get('Content-Type');
     throw new TypeError(
       `The response content-type '${contentType}' should contain '${JSON_MIME_TYPE}'`
     );
