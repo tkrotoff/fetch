@@ -1,4 +1,4 @@
-﻿import 'whatwg-fetch';
+import 'whatwg-fetch';
 
 import { HttpError } from './HttpError';
 import { HttpStatus } from './HttpStatus';
@@ -14,10 +14,10 @@ const JSON_HEADERS = {
   'Content-Type': JSON_MIME_TYPE
 };
 
-export async function getJson(url: string, headers?: Headers) {
+export async function getJson(url: string) {
   const response = await fetch(url, {
     ...defaultOptions,
-    headers: { ...JSON_HEADERS, ...headers }
+    headers: JSON_HEADERS
   });
   const responseJson = await parseResponseJson(response);
   checkStatus(response, responseJson);
