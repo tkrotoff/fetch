@@ -1,4 +1,4 @@
-import 'whatwg-fetch';
+﻿import 'whatwg-fetch';
 
 import { HttpError } from './HttpError';
 import { HttpStatus } from './HttpStatus';
@@ -137,8 +137,7 @@ export function checkStatus(response: Response, responseJson: unknown) {
   //   url: 'https://...'
   // }
 
-  if (response.status >= HttpStatus._200_OK && response.status < HttpStatus._300_MultipleChoices) {
-  } else {
+  if (response.status < HttpStatus._200_OK || response.status >= HttpStatus._300_MultipleChoices) {
     const error = new HttpError(response.statusText);
     error.status = response.status;
     error.response = responseJson;
