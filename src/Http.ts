@@ -99,7 +99,7 @@ export async function parseResponseJson(response: Response) {
 
   if (isJsonMimeType(response.headers)) {
     // FIXME Remove the cast when response.json() will return unknown
-    return response.json() as unknown;
+    return (await response.json()) as unknown;
   } else {
     const contentType = response.headers.get('Content-Type');
     throw new TypeError(
