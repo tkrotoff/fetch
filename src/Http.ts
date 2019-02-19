@@ -14,63 +14,6 @@ const JSON_HEADERS = {
   'Content-Type': JSON_MIME_TYPE
 };
 
-export async function getJson(url: string) {
-  const response = await fetch(url, {
-    ...defaultOptions,
-    headers: JSON_HEADERS
-  });
-  const responseJson = await parseResponseJson(response);
-  checkStatus(response, responseJson);
-  return responseJson;
-}
-
-export async function postJson<Request>(url: string, body: Request) {
-  const response = await fetch(url, {
-    ...defaultOptions,
-    method: 'POST',
-    headers: JSON_HEADERS,
-    body: JSON.stringify(body)
-  });
-  const responseJson = await parseResponseJson(response);
-  checkStatus(response, responseJson);
-  return responseJson;
-}
-
-export async function putJson<Request>(url: string, body: Request) {
-  const response = await fetch(url, {
-    ...defaultOptions,
-    method: 'PUT',
-    headers: JSON_HEADERS,
-    body: JSON.stringify(body)
-  });
-  const responseJson = await parseResponseJson(response);
-  checkStatus(response, responseJson);
-  return responseJson;
-}
-
-export async function patchJson<Request>(url: string, body: Request) {
-  const response = await fetch(url, {
-    ...defaultOptions,
-    method: 'PATCH',
-    headers: JSON_HEADERS,
-    body: JSON.stringify(body)
-  });
-  const responseJson = await parseResponseJson(response);
-  checkStatus(response, responseJson);
-  return responseJson;
-}
-
-export async function deleteJson(url: string) {
-  const response = await fetch(url, {
-    ...defaultOptions,
-    method: 'DELETE',
-    headers: JSON_HEADERS
-  });
-  const responseJson = await parseResponseJson(response);
-  checkStatus(response, responseJson);
-  return responseJson;
-}
-
 function isJsonMimeType(headers: Headers) {
   const contentType = headers.get('Content-Type') || '';
   return contentType.includes(JSON_MIME_TYPE);
@@ -143,4 +86,61 @@ export function checkStatus(response: Response, responseJson: unknown) {
     error.response = responseJson;
     throw error;
   }
+}
+
+export async function getJson(url: string) {
+  const response = await fetch(url, {
+    ...defaultOptions,
+    headers: JSON_HEADERS
+  });
+  const responseJson = await parseResponseJson(response);
+  checkStatus(response, responseJson);
+  return responseJson;
+}
+
+export async function postJson<Request>(url: string, body: Request) {
+  const response = await fetch(url, {
+    ...defaultOptions,
+    method: 'POST',
+    headers: JSON_HEADERS,
+    body: JSON.stringify(body)
+  });
+  const responseJson = await parseResponseJson(response);
+  checkStatus(response, responseJson);
+  return responseJson;
+}
+
+export async function putJson<Request>(url: string, body: Request) {
+  const response = await fetch(url, {
+    ...defaultOptions,
+    method: 'PUT',
+    headers: JSON_HEADERS,
+    body: JSON.stringify(body)
+  });
+  const responseJson = await parseResponseJson(response);
+  checkStatus(response, responseJson);
+  return responseJson;
+}
+
+export async function patchJson<Request>(url: string, body: Request) {
+  const response = await fetch(url, {
+    ...defaultOptions,
+    method: 'PATCH',
+    headers: JSON_HEADERS,
+    body: JSON.stringify(body)
+  });
+  const responseJson = await parseResponseJson(response);
+  checkStatus(response, responseJson);
+  return responseJson;
+}
+
+export async function deleteJson(url: string) {
+  const response = await fetch(url, {
+    ...defaultOptions,
+    method: 'DELETE',
+    headers: JSON_HEADERS
+  });
+  const responseJson = await parseResponseJson(response);
+  checkStatus(response, responseJson);
+  return responseJson;
 }
