@@ -1,4 +1,4 @@
-﻿import { escape } from 'lodash';
+﻿import { escape } from 'lodash-es';
 
 export class HttpError extends Error {
   constructor(message: string) {
@@ -14,11 +14,12 @@ export class HttpError extends Error {
 
 // Return something like "POST https://localhost:5001/GoogleCalendar/102888771917469198372/invalid@group.calendar.google.com/Event 404 (Not Found)"
 export function responseToString(method: string, response: Response) {
-  return `${escape(method)} ${escape(response.url)} ${escape(response.status.toString())} (${escape(response.statusText)})`;
+  return `${escape(method)} ${escape(response.url)} ${escape(response.status.toString())} (${escape(
+    response.statusText
+  )})`;
 }
 
 export function createFake404NotFoundResponse(url: string) {
-  // tslint:disable-next-line:no-object-literal-type-assertion
   return {
     url,
     status: 404,
@@ -31,7 +32,6 @@ export function createFake404NotFoundResponse(url: string) {
 }
 
 export function createFake400BadRequestResponse(url: string) {
-  // tslint:disable-next-line:no-object-literal-type-assertion
   return {
     url,
     status: 400,

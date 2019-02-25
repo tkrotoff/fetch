@@ -10,10 +10,10 @@ test('makes sure fetch is the one from the polyfill', () => {
 });
 
 test('getJSON', async () => {
-  fetchMock.get('helloWord', {hello: 'world'});
+  fetchMock.get('helloWord', { hello: 'world' });
 
   const json = await Http.getJSON('helloWord');
-  expect(json).toEqual({hello: 'world'});
+  expect(json).toEqual({ hello: 'world' });
 
   fetchMock.restore();
 });

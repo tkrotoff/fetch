@@ -21,11 +21,11 @@ const JSON_HEADERS = {
 
 export function postJSON<T>(url: string, body: any) {
   return fetch(url, {
-      ...defaultOptions,
-      method: 'POST',
-      headers: JSON_HEADERS as any, // FIXME
-      body: JSON.stringify(body)
-    })
+    ...defaultOptions,
+    method: 'POST',
+    headers: JSON_HEADERS as any, // FIXME
+    body: JSON.stringify(body)
+  })
     .then(debugThrottle)
     .then(checkStatus)
     .then(response => parseJSON<T>(response));
@@ -33,11 +33,11 @@ export function postJSON<T>(url: string, body: any) {
 
 export function putJSON<T>(url: string, body: any) {
   return fetch(url, {
-      ...defaultOptions,
-      method: 'PUT',
-      headers: JSON_HEADERS as any, // FIXME
-      body: JSON.stringify(body)
-    })
+    ...defaultOptions,
+    method: 'PUT',
+    headers: JSON_HEADERS as any, // FIXME
+    body: JSON.stringify(body)
+  })
     .then(debugThrottle)
     .then(checkStatus)
     .then(response => parseJSON<T>(response));
@@ -45,10 +45,10 @@ export function putJSON<T>(url: string, body: any) {
 
 export function getJSON<T>(url: string, headers?: Headers) {
   return fetch(url, {
-      ...defaultOptions,
-                                 // FIXME
-      headers: { ...JSON_HEADERS as any, ...headers }
-    })
+    ...defaultOptions,
+    // FIXME
+    headers: { ...(JSON_HEADERS as any), ...headers }
+  })
     .then(debugThrottle)
     .then(checkStatus)
     .then(response => parseJSON<T>(response));
@@ -56,10 +56,10 @@ export function getJSON<T>(url: string, headers?: Headers) {
 
 export function deleteJSON<T>(url: string) {
   return fetch(url, {
-      ...defaultOptions,
-      method: 'DELETE',
-      headers: JSON_HEADERS as any // FIXME
-    })
+    ...defaultOptions,
+    method: 'DELETE',
+    headers: JSON_HEADERS as any // FIXME
+  })
     .then(debugThrottle)
     .then(checkStatus)
     .then(response => parseJSON<T>(response));
@@ -123,6 +123,6 @@ function parseJSON<T>(response: Response) {
   if (response.status !== HttpStatus.NoContent_204) {
     return response.json() as Promise<T>;
   } else {
-    return new Promise<T>((resolve, reject) => resolve());
+    return new Promise<T>((resolve, _reject) => resolve());
   }
 }
