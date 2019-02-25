@@ -85,7 +85,7 @@ function checkStatus(response: Response, responseJson: unknown) {
   //   url: 'https://...'
   // }
 
-  if (response.status >= HttpStatus.OK_200 && response.status < HttpStatus.MultipleChoices_300) {
+  if (response.status >= HttpStatus._200_OK && response.status < HttpStatus._300_MultipleChoices) {
   } else {
     const error = new HttpError(response.statusText);
     error.status = response.status;
@@ -96,7 +96,7 @@ function checkStatus(response: Response, responseJson: unknown) {
 
 function parseResponseJson(response: Response) {
   // An empty string is not valid JSON so JSON.parse() fails
-  if (response.status !== HttpStatus.NoContent_204) {
+  if (response.status !== HttpStatus._204_NoContent) {
     // FIXME Remove the cast when response.json() will return unknown
     return response.json() as unknown;
   } else {

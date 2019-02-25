@@ -9,41 +9,38 @@ export enum HttpStatus {
    * 1xx Informational
    */
 
-
   /*
    * 2xx Success
    */
 
-  OK_200 = 200,
-  Created_201 = 201,
-  NoContent_204 = 204,
-
+  _200_OK = 200,
+  _201_Created = 201,
+  _204_NoContent = 204,
 
   /*
    * 3xx Redirection
    */
 
-  MultipleChoices_300 = 300,
-  MovedPermanently_301 = 301,
-
+  _300_MultipleChoices = 300,
+  _301_MovedPermanently = 301,
 
   /*
    * 4xx Client Error
    */
 
-  BadRequest_400 = 400,
-  Unauthorized_401 = 401,
-  NotFound_404 = 404,
-  Conflict_409 = 409,
+  _400_BadRequest = 400,
+  _401_Unauthorized = 401,
+  _404_NotFound = 404,
+  _409_Conflict = 409,
 
   // A deprecated response used by the Spring Framework when a method has failed
-  MethodFailure_420 = 420,
+  _420_MethodFailure = 420,
 
-  UnprocessableEntity_422 = 422,
-
+  _422_UnprocessableEntity = 422,
 
   /*
    * 5xx Server Error
    */
-  InternalServerError_500 = 500
+
+  _500_InternalServerError = 500
 }
