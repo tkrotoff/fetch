@@ -19,7 +19,7 @@ const JSON_HEADERS = {
   'Content-Type': 'application/json'
 };
 
-export function postJSON<T>(url: string, body: any) {
+export function postJSON<Request>(url: string, body: Request) {
   return fetch(url, {
     ...defaultOptions,
     method: 'POST',
@@ -28,10 +28,10 @@ export function postJSON<T>(url: string, body: any) {
   })
     .then(debugThrottle)
     .then(checkStatus)
-    .then(response => parseJSON<T>(response));
+    .then(response => parseJSON(response));
 }
 
-export function putJSON<T>(url: string, body: any) {
+export function putJSON<Request>(url: string, body: Request) {
   return fetch(url, {
     ...defaultOptions,
     method: 'PUT',
@@ -40,10 +40,10 @@ export function putJSON<T>(url: string, body: any) {
   })
     .then(debugThrottle)
     .then(checkStatus)
-    .then(response => parseJSON<T>(response));
+    .then(response => parseJSON(response));
 }
 
-export function getJSON<T>(url: string, headers?: Headers) {
+export function getJSON(url: string, headers?: Headers) {
   return fetch(url, {
     ...defaultOptions,
     // FIXME
@@ -51,10 +51,10 @@ export function getJSON<T>(url: string, headers?: Headers) {
   })
     .then(debugThrottle)
     .then(checkStatus)
-    .then(response => parseJSON<T>(response));
+    .then(response => parseJSON(response));
 }
 
-export function deleteJSON<T>(url: string) {
+export function deleteJSON(url: string) {
   return fetch(url, {
     ...defaultOptions,
     method: 'DELETE',
@@ -62,7 +62,7 @@ export function deleteJSON<T>(url: string) {
   })
     .then(debugThrottle)
     .then(checkStatus)
-    .then(response => parseJSON<T>(response));
+    .then(response => parseJSON(response));
 }
 
 // See Handling HTTP error statuses https://github.com/github/fetch#handling-http-error-statuses
@@ -122,11 +122,11 @@ function debugThrottle(response: Response) {
 }
 */
 
-function parseJSON<T>(response: Response) {
+function parseJSON(response: Response) {
   // An empty string is not valid JSON so JSON.parse() fails
   if (response.status !== HttpStatus.NoContent_204) {
-    return response.json() as Promise<T>;
+    return response.json();
   } else {
-    return new Promise<T>((resolve, _reject) => resolve());
+    return new Promise((resolve, _reject) => resolve());
   }
 }
