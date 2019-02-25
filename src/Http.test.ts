@@ -9,10 +9,10 @@ test('makes sure fetch is the one from the polyfill', () => {
   expect((fetch as WhatwgFetch).polyfill).toBe(true);
 });
 
-test('getJSON', async () => {
+test('getJson', async () => {
   fetchMock.get('helloWord', { hello: 'world' });
 
-  const json = await Http.getJSON('helloWord');
+  const json = await Http.getJson('helloWord');
   expect(json).toEqual({ hello: 'world' });
 
   fetchMock.restore();

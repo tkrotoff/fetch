@@ -9,7 +9,8 @@ export class HttpError extends Error {
     Object.setPrototypeOf(this, HttpError.prototype);
   }
 
-  response: Response;
+  status!: number;
+  response: unknown;
 }
 
 // Return something like "POST https://localhost:5001/GoogleCalendar/102888771917469198372/invalid@group.calendar.google.com/Event 404 (Not Found)"
