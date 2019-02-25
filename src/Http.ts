@@ -1,7 +1,7 @@
 ﻿import 'whatwg-fetch';
 
 import { HttpError } from './HttpHelpers';
-import HttpStatus from './HttpStatus';
+import { HttpStatus } from './HttpStatus';
 
 const defaultOptions = {
   credentials: 'same-origin' as RequestCredentials

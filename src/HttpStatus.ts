@@ -4,7 +4,7 @@
  * See List of HTTP status codes http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
  * See Rails HTTP Status Code to Symbol Mapping http://www.codyfauser.com/2008/7/4/rails-http-status-code-to-symbol-mapping
  */
-enum HttpStatus {
+export enum HttpStatus {
   /*
    * 1xx Informational
    */
@@ -47,5 +47,3 @@ enum HttpStatus {
    */
   InternalServerError_500 = 500
 }
-
-export default HttpStatus;
