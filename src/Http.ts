@@ -104,7 +104,7 @@ export async function parseResponseJson(response: Response) {
   }
 }
 
-// See Handling HTTP error statuses https://github.com/github/fetch#handling-http-error-statuses
+// See [Handling HTTP error statuses](https://github.com/github/fetch/blob/v3.0.0/README.md#handling-http-error-statuses)
 // Exported for tests
 export function checkStatus(response: Response, responseJson: unknown) {
   // Response examples under Chrome 58:
