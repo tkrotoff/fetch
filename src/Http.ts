@@ -1,6 +1,4 @@
-﻿import 'whatwg-fetch';
-
-import { HttpError } from './HttpError';
+﻿import { HttpError } from './HttpError';
 import { HttpStatus } from './HttpStatus';
 
 const defaultOptions = {

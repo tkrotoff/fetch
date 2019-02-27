@@ -3,14 +3,6 @@ import fetchMock, { MockResponseObject } from 'fetch-mock';
 import { HttpStatus } from './HttpStatus';
 import { HttpError } from './HttpError';
 
-// See [[whatwg-fetch] add fetch.polyfill](https://github.com/DefinitelyTyped/DefinitelyTyped/pull/14759)
-type WhatwgFetch = typeof fetch & { polyfill: true };
-
-// See [Unit testing with Jest: Redux + async actions + fetch](https://medium.com/@ferrannp/unit-testing-with-jest-redux-async-actions-fetch-9054ca28cdcd)
-test('makes sure fetch is the one from the polyfill', () => {
-  expect((fetch as WhatwgFetch).polyfill).toBe(true);
-});
-
 describe('getJson()', () => {
   test('200 OK', async () => {
     fetchMock.get('http://addressbook.com/contacts/1', {
