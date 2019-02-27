@@ -7,6 +7,7 @@
     "fetch",
     "json"
   ],
+  "main": "dist/cjs/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -15,7 +16,9 @@
   "scripts": {
     "clean": "rm -rf dist coverage stats.json",
     "clean:all": "yarn clean && rm -rf node_modules yarn.lock yarn-error.log",
-    "build": "yarn clean && tsc --noEmit false --outDir dist --declaration true",
+    "build:esnext": "tsc --noEmit false --outDir dist --declaration true",
+    "build:cjs": "tsc --noEmit false --module commonjs --outDir dist/cjs",
+    "build": "yarn clean && yarn build:esnext && yarn build:cjs",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "prettier": "prettier --write \"**/*\"",
