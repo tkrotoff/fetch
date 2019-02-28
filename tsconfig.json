@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "noEmit": true,
-
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
@@ -11,6 +10,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true
   }
 }
