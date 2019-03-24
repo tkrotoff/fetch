@@ -1,3 +1,9 @@
+## v0.0.4 (2019/03/25)
+
+### Fix
+
+- No package.json side effects
+
 ## v0.0.3 (2019/03/18)
 
 ### Features
