@@ -19,8 +19,8 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "clean": "rm -rf dist coverage stats.json",
-    "clean:all": "yarn clean && rm -rf node_modules yarn.lock yarn-error.log",
+    "clean": "rm -rf dist coverage stats.json yarn-error.log",
+    "clean:all": "yarn clean && rm -rf node_modules yarn.lock",
     "build:esnext": "tsc --noEmit false --outDir dist --declaration true",
     "build:cjs": "tsc --noEmit false --outDir dist/cjs --module commonjs",
     "build": "yarn clean && yarn build:esnext && yarn build:cjs",
