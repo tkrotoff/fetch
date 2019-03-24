@@ -17,6 +17,7 @@
   "files": [
     "dist/"
   ],
+  "sideEffects": false,
   "scripts": {
     "clean": "rm -rf dist coverage stats.json",
     "clean:all": "yarn clean && rm -rf node_modules yarn.lock yarn-error.log",
