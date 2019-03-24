@@ -29,7 +29,7 @@
     "eslint": "eslint . '**/*.{js,ts}'",
     "precommit": "yarn prettier && tsc && yarn eslint",
     "prepush": "yarn precommit && yarn test",
-    "prepare": "yarn build"
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {},
   "devDependencies": {
