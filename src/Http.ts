@@ -80,7 +80,7 @@ export function checkStatus(response: Response, responseJson: unknown) {
   //   url: 'https://...'
   // }
 
-  if (response.status < HttpStatus._200_OK || response.status >= HttpStatus._300_MultipleChoices) {
+  if (!response.ok) {
     const error = new HttpError(response.statusText);
     error.status = response.status;
     error.response = responseJson;
