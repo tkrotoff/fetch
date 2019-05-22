@@ -8,11 +8,11 @@ before_script:
   - ./cc-test-reporter before-build
 
 script:
-  - yarn eslint
-  - yarn build
-  - yarn test:coverage
+  - npm run lint
+  - npm run build
+  - npm run test:coverage
 
 after_success:
-  - yarn global add codecov
+  - npm install --global codecov
   - codecov
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

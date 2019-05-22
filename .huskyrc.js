@@ -2,7 +2,7 @@
 
 module.exports = {
   hooks: {
-    'pre-commit': 'yarn precommit',
-    'pre-push': 'yarn prepush'
+    'pre-commit': 'npm run precommit',
+    'pre-push': 'npm run prepush'
   }
 };

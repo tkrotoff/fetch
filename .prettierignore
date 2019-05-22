@@ -3,7 +3,7 @@
 .prettierignore
 .eslintignore
 .editorconfig
+LICENSE
+
 coverage/
 dist/
-yarn.lock
-LICENSE
