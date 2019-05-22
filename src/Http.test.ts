@@ -23,6 +23,37 @@ describe('getJson()', () => {
     fetchMock.reset();
   });
 
+  test('200 OK + options', async () => {
+    fetchMock.get('http://addressbook.com/contacts/1', {
+      id: 1,
+      firstName: 'John',
+      lastName: 'Lennon',
+      email: 'john@beatles.com'
+    });
+    const spy = jest.spyOn(window, 'fetch');
+
+    const response = await Http.getJson('http://addressbook.com/contacts/1', {
+      headers: { Accept: 'test', 'Content-Type': 'test' },
+      mode: 'cors'
+    });
+    expect(response).toEqual({
+      id: 1,
+      firstName: 'John',
+      lastName: 'Lennon',
+      email: 'john@beatles.com'
+    });
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
+      credentials: 'same-origin',
+      headers: { Accept: 'test', 'Content-Type': 'test' },
+      mode: 'cors'
+    });
+
+    spy.mockRestore();
+    fetchMock.reset();
+  });
+
   test('500 Internal Server Error', async () => {
     fetchMock.get('http://addressbook.com/contacts/1', {
       status: HttpStatus._500_InternalServerError,
