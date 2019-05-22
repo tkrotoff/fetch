@@ -1,7 +1,9 @@
-﻿import { HttpError } from './HttpError';
+import { HttpError } from './HttpError';
 import { HttpStatus } from './HttpStatus';
 
 const defaultOptions = {
+  // See https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
+  // TODO Remove when old browsers are not supported anymore
   credentials: 'same-origin' as RequestCredentials
 };
 
