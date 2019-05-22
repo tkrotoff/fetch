@@ -1,5 +1,4 @@
-import { HttpError } from './HttpError';
-import { HttpStatus } from './HttpStatus';
+﻿import { HttpError } from './HttpError';
 
 const defaultOptions = {
   // See https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
@@ -19,41 +18,19 @@ function isJsonMimeType(headers: Headers) {
   return contentType.includes(JSON_MIME_TYPE);
 }
 
-// Exported for tests
-export async function parseResponseJson(response: Response) {
-  // We don't expect a JSON response with the following cases:
-  // - 204 No Content: an empty string is not valid JSON so JSON.parse() fails
-  // - 500 Internal Server Error: HTML is not valid JSON so JSON.parse() fails,
-  //   this happens when an exception occurs with Apache Tomcat
-  if (response.status === HttpStatus._204_NoContent) {
-    const responseString = await response.text();
-    if (responseString.length > 0) {
-      throw new Error(`The response status is '204 No Content' and yet is not empty`);
-    } else {
-      // Empty JSON object
-      return new Promise((resolve, _reject) => resolve({}));
-    }
-  } else if (response.status === HttpStatus._500_InternalServerError) {
-    if (!isJsonMimeType(response.headers)) {
-      // Empty JSON object
-      return new Promise((resolve, _reject) => resolve({}));
-    }
-  }
-
+// Exported for testing purpose only
+export async function parseResponse(response: Response) {
   if (isJsonMimeType(response.headers)) {
     // FIXME Remove the cast when response.json() will return unknown
-    return (await response.json()) as unknown;
+    return response.json() as Promise<unknown>;
   } else {
-    const contentType = response.headers.get('Content-Type');
-    throw new TypeError(
-      `The response content-type '${contentType}' should contain '${JSON_MIME_TYPE}'`
-    );
+    return response.text();
   }
 }
 
 // See [Handling HTTP error statuses](https://github.com/github/fetch/blob/v3.0.0/README.md#handling-http-error-statuses)
-// Exported for tests
-export function checkStatus(response: Response, responseJson: unknown) {
+// Exported for testing purpose only
+export function checkStatus(response: Response, parsedResponse: unknown) {
   // Response examples under Chrome 58:
   //
   // {
@@ -83,7 +60,7 @@ export function checkStatus(response: Response, responseJson: unknown) {
   if (!response.ok) {
     const error = new HttpError(response.statusText);
     error.status = response.status;
-    error.response = responseJson;
+    error.response = parsedResponse;
     throw error;
   }
 }
@@ -93,9 +70,9 @@ export async function getJson(url: string) {
     ...defaultOptions,
     headers: JSON_HEADERS
   });
-  const responseJson = await parseResponseJson(response);
-  checkStatus(response, responseJson);
-  return responseJson;
+  const parsedResponse = await parseResponse(response);
+  checkStatus(response, parsedResponse);
+  return parsedResponse;
 }
 
 export async function postJson<Request>(url: string, body: Request) {
@@ -105,9 +82,9 @@ export async function postJson<Request>(url: string, body: Request) {
     headers: JSON_HEADERS,
     body: JSON.stringify(body)
   });
-  const responseJson = await parseResponseJson(response);
-  checkStatus(response, responseJson);
-  return responseJson;
+  const parsedResponse = await parseResponse(response);
+  checkStatus(response, parsedResponse);
+  return parsedResponse;
 }
 
 export async function putJson<Request>(url: string, body: Request) {
@@ -117,9 +94,9 @@ export async function putJson<Request>(url: string, body: Request) {
     headers: JSON_HEADERS,
     body: JSON.stringify(body)
   });
-  const responseJson = await parseResponseJson(response);
-  checkStatus(response, responseJson);
-  return responseJson;
+  const parsedResponse = await parseResponse(response);
+  checkStatus(response, parsedResponse);
+  return parsedResponse;
 }
 
 export async function patchJson<Request>(url: string, body: Request) {
@@ -129,9 +106,9 @@ export async function patchJson<Request>(url: string, body: Request) {
     headers: JSON_HEADERS,
     body: JSON.stringify(body)
   });
-  const responseJson = await parseResponseJson(response);
-  checkStatus(response, responseJson);
-  return responseJson;
+  const parsedResponse = await parseResponse(response);
+  checkStatus(response, parsedResponse);
+  return parsedResponse;
 }
 
 export async function deleteJson(url: string) {
@@ -140,7 +117,7 @@ export async function deleteJson(url: string) {
     method: 'DELETE',
     headers: JSON_HEADERS
   });
-  const responseJson = await parseResponseJson(response);
-  checkStatus(response, responseJson);
-  return responseJson;
+  const parsedResponse = await parseResponse(response);
+  checkStatus(response, parsedResponse);
+  return parsedResponse;
 }
