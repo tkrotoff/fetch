@@ -7,7 +7,7 @@ A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper fo
 
 ## Usage
 
-`yarn add @tkrotoff/fetch` or `npm install @tkrotoff/fetch`
+`npm install @tkrotoff/fetch`
 
 ```JS
 import * as Http from '@tkrotoff/fetch';
