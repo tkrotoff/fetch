@@ -2,11 +2,16 @@
 
 module.exports = {
   parser: '@typescript-eslint/parser',
-  parserOptions: {},
+  parserOptions: {
+    project: './tsconfig.json'
+  },
   extends: [
-    'eslint:recommended',
+    // /!\ Order seems to matter
+
+    'airbnb-base',
+    'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
-    'plugin:@typescript-eslint/recommended'
+    'prettier/@typescript-eslint'
   ],
   plugins: ['prettier', '@typescript-eslint'],
   env: {
@@ -17,7 +22,11 @@ module.exports = {
   },
 
   rules: {
-    'prettier/prettier': 'error',
+    'no-underscore-dangle': 'off',
+
+    'import/no-extraneous-dependencies': 'off',
+    'import/no-unresolved': 'off',
+    'import/prefer-default-export': 'off',
 
     '@typescript-eslint/indent': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',

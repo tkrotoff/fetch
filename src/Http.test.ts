@@ -1,5 +1,6 @@
-import * as Http from './Http';
 import fetchMock, { MockResponseObject } from 'fetch-mock';
+
+import * as Http from './Http';
 import { HttpStatus } from './HttpStatus';
 import { HttpError } from './HttpError';
 

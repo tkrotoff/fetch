@@ -7,5 +7,6 @@
   }
 
   status!: number;
+
   response: unknown;
 }

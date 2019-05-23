@@ -23,9 +23,8 @@ export async function parseResponse(response: Response) {
   if (isJsonMimeType(response.headers)) {
     // FIXME Remove the cast when response.json() will return unknown
     return response.json() as Promise<unknown>;
-  } else {
-    return response.text();
   }
+  return response.text();
 }
 
 // See [Handling HTTP error statuses](https://github.com/github/fetch/blob/v3.0.0/README.md#handling-http-error-statuses)
