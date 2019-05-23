@@ -75,7 +75,11 @@ export async function getJson(url: string, options?: RequestInit) {
   return parsedResponseBody;
 }
 
-export async function postJson<Request>(url: string, body: Request, options?: RequestInit) {
+export async function postJson<Request>(
+  url: string,
+  body: Request,
+  options?: Omit<RequestInit, 'body'>
+) {
   const response = await fetch(url, {
     ...defaultOptions,
     method: 'POST',
@@ -88,7 +92,11 @@ export async function postJson<Request>(url: string, body: Request, options?: Re
   return parsedResponseBody;
 }
 
-export async function putJson<Request>(url: string, body: Request, options?: RequestInit) {
+export async function putJson<Request>(
+  url: string,
+  body: Request,
+  options?: Omit<RequestInit, 'body'>
+) {
   const response = await fetch(url, {
     ...defaultOptions,
     method: 'PUT',
@@ -101,7 +109,11 @@ export async function putJson<Request>(url: string, body: Request, options?: Req
   return parsedResponseBody;
 }
 
-export async function patchJson<Request>(url: string, body: Request, options?: RequestInit) {
+export async function patchJson<Request>(
+  url: string,
+  body: Request,
+  options?: Omit<RequestInit, 'body'>
+) {
   const response = await fetch(url, {
     ...defaultOptions,
     method: 'PATCH',

@@ -128,6 +128,25 @@ describe('postJson()', () => {
 
     spy.mockRestore();
   });
+
+  test('201 Created + options with body', async () => {
+    const spy = jest.spyOn(window, 'fetch');
+
+    const response = await Http.postJson('http://addressbook.com/contacts', requestBody, {
+      body: 'will be ignored'
+    } as any);
+    expect(response).toEqual(responseBody);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts', {
+      credentials: 'same-origin',
+      method: 'POST',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody)
+    });
+
+    spy.mockRestore();
+  });
 });
 
 describe('putJson()', () => {
@@ -173,6 +192,25 @@ describe('putJson()', () => {
 
     spy.mockRestore();
   });
+
+  test('200 OK + options with body', async () => {
+    const spy = jest.spyOn(window, 'fetch');
+
+    const response = await Http.putJson('http://addressbook.com/contacts/1', requestBody, {
+      body: 'will be ignored'
+    } as any);
+    expect(response).toEqual(responseBody);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
+      credentials: 'same-origin',
+      method: 'PUT',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody)
+    });
+
+    spy.mockRestore();
+  });
 });
 
 describe('patchJson()', () => {
@@ -213,6 +251,25 @@ describe('patchJson()', () => {
       method: 'PATCH',
       headers: { Accept: 'test', 'Content-Type': 'test' },
       mode: 'cors',
+      body: JSON.stringify(requestBody)
+    });
+
+    spy.mockRestore();
+  });
+
+  test('200 OK + options with body', async () => {
+    const spy = jest.spyOn(window, 'fetch');
+
+    const response = await Http.patchJson('http://addressbook.com/contacts/1', requestBody, {
+      body: 'will be ignored'
+    } as any);
+    expect(response).toEqual(responseBody);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
+      credentials: 'same-origin',
+      method: 'PATCH',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
       body: JSON.stringify(requestBody)
     });
 
