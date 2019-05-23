@@ -1,17 +1,6 @@
 import { HttpError } from './HttpError';
 
-const defaultOptions = {
-  // See https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
-  // TODO Remove when old browsers are not supported anymore
-  credentials: 'same-origin' as RequestCredentials
-};
-
 const JSON_MIME_TYPE = 'application/json';
-
-const JSON_HEADERS = {
-  Accept: JSON_MIME_TYPE,
-  'Content-Type': JSON_MIME_TYPE
-};
 
 function isJsonMimeType(headers: Headers) {
   const contentType = headers.get('Content-Type') || '';
@@ -68,12 +57,16 @@ type Options = Omit<RequestInit, 'method' | 'body'>;
 
 async function fetchJson<T>(url: string, options: Options | undefined, method: string, body?: T) {
   const response = await fetch(url, {
-    ...defaultOptions,
-    headers: JSON_HEADERS,
+    // See https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
+    // TODO Remove when old browsers are not supported anymore
+    credentials: 'same-origin' as RequestCredentials,
+
+    headers: { Accept: JSON_MIME_TYPE, 'Content-Type': JSON_MIME_TYPE },
     ...options,
     method,
     body: body !== undefined ? JSON.stringify(body) : undefined
   });
+
   const parsedResponseBody = await parseResponseBody(response);
   checkStatus(response, parsedResponseBody);
   return parsedResponseBody;
