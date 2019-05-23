@@ -64,77 +64,42 @@ export function checkStatus(response: Response, parsedResponseBody: unknown) {
   }
 }
 
-export async function getJson(url: string, options?: Omit<RequestInit, 'method'>) {
-  const response = await fetch(url, {
-    ...defaultOptions,
-    headers: JSON_HEADERS,
-    ...options,
-    method: 'GET'
-  });
-  const parsedResponseBody = await parseResponseBody(response);
-  checkStatus(response, parsedResponseBody);
-  return parsedResponseBody;
-}
+type Options = Omit<RequestInit, 'method' | 'body'>;
 
-export async function postJson<Request>(
+async function fetchJson<Request>(
   url: string,
-  body: Request,
-  options?: Omit<RequestInit, 'body' | 'method'>
+  options: Options | undefined,
+  method: string,
+  body?: Request
 ) {
   const response = await fetch(url, {
     ...defaultOptions,
     headers: JSON_HEADERS,
     ...options,
-    method: 'POST',
-    body: JSON.stringify(body)
+    method,
+    body: body !== undefined ? JSON.stringify(body) : undefined
   });
   const parsedResponseBody = await parseResponseBody(response);
   checkStatus(response, parsedResponseBody);
   return parsedResponseBody;
 }
 
-export async function putJson<Request>(
-  url: string,
-  body: Request,
-  options?: Omit<RequestInit, 'body' | 'method'>
-) {
-  const response = await fetch(url, {
-    ...defaultOptions,
-    headers: JSON_HEADERS,
-    ...options,
-    method: 'PUT',
-    body: JSON.stringify(body)
-  });
-  const parsedResponseBody = await parseResponseBody(response);
-  checkStatus(response, parsedResponseBody);
-  return parsedResponseBody;
+export function getJson(url: string, options?: Options) {
+  return fetchJson(url, options, 'GET');
 }
 
-export async function patchJson<Request>(
-  url: string,
-  body: Request,
-  options?: Omit<RequestInit, 'body' | 'method'>
-) {
-  const response = await fetch(url, {
-    ...defaultOptions,
-    headers: JSON_HEADERS,
-    ...options,
-    method: 'PATCH',
-    body: JSON.stringify(body)
-  });
-  const parsedResponseBody = await parseResponseBody(response);
-  checkStatus(response, parsedResponseBody);
-  return parsedResponseBody;
+export function postJson<Request>(url: string, body: Request, options?: Options) {
+  return fetchJson(url, options, 'POST', body);
 }
 
-export async function deleteJson(url: string, options?: Omit<RequestInit, 'method'>) {
-  const response = await fetch(url, {
-    ...defaultOptions,
-    headers: JSON_HEADERS,
-    ...options,
-    method: 'DELETE'
-  });
-  const parsedResponseBody = await parseResponseBody(response);
-  checkStatus(response, parsedResponseBody);
-  return parsedResponseBody;
+export function putJson<Request>(url: string, body: Request, options?: Options) {
+  return fetchJson(url, options, 'PUT', body);
+}
+
+export function patchJson<Request>(url: string, body: Request, options?: Options) {
+  return fetchJson(url, options, 'PATCH', body);
+}
+
+export function deleteJson(url: string, options?: Options) {
+  return fetchJson(url, options, 'DELETE');
 }
