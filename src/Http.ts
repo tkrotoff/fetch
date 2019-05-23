@@ -64,11 +64,12 @@ export function checkStatus(response: Response, parsedResponseBody: unknown) {
   }
 }
 
-export async function getJson(url: string, options?: RequestInit) {
+export async function getJson(url: string, options?: Omit<RequestInit, 'method'>) {
   const response = await fetch(url, {
     ...defaultOptions,
     headers: JSON_HEADERS,
-    ...options
+    ...options,
+    method: 'GET'
   });
   const parsedResponseBody = await parseResponseBody(response);
   checkStatus(response, parsedResponseBody);
@@ -78,13 +79,13 @@ export async function getJson(url: string, options?: RequestInit) {
 export async function postJson<Request>(
   url: string,
   body: Request,
-  options?: Omit<RequestInit, 'body'>
+  options?: Omit<RequestInit, 'body' | 'method'>
 ) {
   const response = await fetch(url, {
     ...defaultOptions,
-    method: 'POST',
     headers: JSON_HEADERS,
     ...options,
+    method: 'POST',
     body: JSON.stringify(body)
   });
   const parsedResponseBody = await parseResponseBody(response);
@@ -95,13 +96,13 @@ export async function postJson<Request>(
 export async function putJson<Request>(
   url: string,
   body: Request,
-  options?: Omit<RequestInit, 'body'>
+  options?: Omit<RequestInit, 'body' | 'method'>
 ) {
   const response = await fetch(url, {
     ...defaultOptions,
-    method: 'PUT',
     headers: JSON_HEADERS,
     ...options,
+    method: 'PUT',
     body: JSON.stringify(body)
   });
   const parsedResponseBody = await parseResponseBody(response);
@@ -112,13 +113,13 @@ export async function putJson<Request>(
 export async function patchJson<Request>(
   url: string,
   body: Request,
-  options?: Omit<RequestInit, 'body'>
+  options?: Omit<RequestInit, 'body' | 'method'>
 ) {
   const response = await fetch(url, {
     ...defaultOptions,
-    method: 'PATCH',
     headers: JSON_HEADERS,
     ...options,
+    method: 'PATCH',
     body: JSON.stringify(body)
   });
   const parsedResponseBody = await parseResponseBody(response);
@@ -126,12 +127,12 @@ export async function patchJson<Request>(
   return parsedResponseBody;
 }
 
-export async function deleteJson(url: string, options?: RequestInit) {
+export async function deleteJson(url: string, options?: Omit<RequestInit, 'method'>) {
   const response = await fetch(url, {
     ...defaultOptions,
-    method: 'DELETE',
     headers: JSON_HEADERS,
-    ...options
+    ...options,
+    method: 'DELETE'
   });
   const parsedResponseBody = await parseResponseBody(response);
   checkStatus(response, parsedResponseBody);

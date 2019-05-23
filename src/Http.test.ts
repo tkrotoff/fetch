@@ -7,51 +7,64 @@ import { HttpError } from './HttpError';
 describe('getJson()', () => {
   afterEach(fetchMock.reset);
 
-  test('200 OK', async () => {
-    fetchMock.get('http://addressbook.com/contacts/1', {
-      id: 1,
+  describe('200 OK', () => {
+    const requestBody = {
       firstName: 'John',
       lastName: 'Lennon',
       email: 'john@beatles.com'
-    });
+    };
 
-    const response = await Http.getJson('http://addressbook.com/contacts/1');
-    expect(response).toEqual({
+    const responseBody = {
       id: 1,
-      firstName: 'John',
-      lastName: 'Lennon',
-      email: 'john@beatles.com'
-    });
-  });
+      ...requestBody
+    };
 
-  test('200 OK + options', async () => {
-    fetchMock.get('http://addressbook.com/contacts/1', {
-      id: 1,
-      firstName: 'John',
-      lastName: 'Lennon',
-      email: 'john@beatles.com'
-    });
-    const spy = jest.spyOn(window, 'fetch');
-
-    const response = await Http.getJson('http://addressbook.com/contacts/1', {
-      headers: { Accept: 'test', 'Content-Type': 'test' },
-      mode: 'cors'
-    });
-    expect(response).toEqual({
-      id: 1,
-      firstName: 'John',
-      lastName: 'Lennon',
-      email: 'john@beatles.com'
+    beforeEach(() => {
+      fetchMock.get('http://addressbook.com/contacts/1', responseBody);
     });
 
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
-      credentials: 'same-origin',
-      headers: { Accept: 'test', 'Content-Type': 'test' },
-      mode: 'cors'
+    test('200 OK', async () => {
+      const response = await Http.getJson('http://addressbook.com/contacts/1');
+      expect(response).toEqual(responseBody);
     });
 
-    spy.mockRestore();
+    test('200 OK + options', async () => {
+      const spy = jest.spyOn(window, 'fetch');
+
+      const response = await Http.getJson('http://addressbook.com/contacts/1', {
+        headers: { Accept: 'test', 'Content-Type': 'test' },
+        mode: 'cors'
+      });
+      expect(response).toEqual(responseBody);
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
+        credentials: 'same-origin',
+        headers: { Accept: 'test', 'Content-Type': 'test' },
+        mode: 'cors',
+        method: 'GET'
+      });
+
+      spy.mockRestore();
+    });
+
+    test('200 OK + options with method', async () => {
+      const spy = jest.spyOn(window, 'fetch');
+
+      const response = await Http.getJson('http://addressbook.com/contacts/1', {
+        method: 'will be ignored'
+      } as any);
+      expect(response).toEqual(responseBody);
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
+        credentials: 'same-origin',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        method: 'GET'
+      });
+
+      spy.mockRestore();
+    });
   });
 
   test('500 Internal Server Error', async () => {
@@ -120,19 +133,20 @@ describe('postJson()', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts', {
       credentials: 'same-origin',
-      method: 'POST',
       headers: { Accept: 'test', 'Content-Type': 'test' },
       mode: 'cors',
+      method: 'POST',
       body: JSON.stringify(requestBody)
     });
 
     spy.mockRestore();
   });
 
-  test('201 Created + options with body', async () => {
+  test('201 Created + options with method and body', async () => {
     const spy = jest.spyOn(window, 'fetch');
 
     const response = await Http.postJson('http://addressbook.com/contacts', requestBody, {
+      method: 'will be ignored',
       body: 'will be ignored'
     } as any);
     expect(response).toEqual(responseBody);
@@ -140,8 +154,8 @@ describe('postJson()', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts', {
       credentials: 'same-origin',
-      method: 'POST',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      method: 'POST',
       body: JSON.stringify(requestBody)
     });
 
@@ -184,19 +198,20 @@ describe('putJson()', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
       credentials: 'same-origin',
-      method: 'PUT',
       headers: { Accept: 'test', 'Content-Type': 'test' },
       mode: 'cors',
+      method: 'PUT',
       body: JSON.stringify(requestBody)
     });
 
     spy.mockRestore();
   });
 
-  test('200 OK + options with body', async () => {
+  test('200 OK + options with method and body', async () => {
     const spy = jest.spyOn(window, 'fetch');
 
     const response = await Http.putJson('http://addressbook.com/contacts/1', requestBody, {
+      method: 'will be ignored',
       body: 'will be ignored'
     } as any);
     expect(response).toEqual(responseBody);
@@ -204,8 +219,8 @@ describe('putJson()', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
       credentials: 'same-origin',
-      method: 'PUT',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      method: 'PUT',
       body: JSON.stringify(requestBody)
     });
 
@@ -248,19 +263,20 @@ describe('patchJson()', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
       credentials: 'same-origin',
-      method: 'PATCH',
       headers: { Accept: 'test', 'Content-Type': 'test' },
       mode: 'cors',
+      method: 'PATCH',
       body: JSON.stringify(requestBody)
     });
 
     spy.mockRestore();
   });
 
-  test('200 OK + options with body', async () => {
+  test('200 OK + options with method and body', async () => {
     const spy = jest.spyOn(window, 'fetch');
 
     const response = await Http.patchJson('http://addressbook.com/contacts/1', requestBody, {
+      method: 'will be ignored',
       body: 'will be ignored'
     } as any);
     expect(response).toEqual(responseBody);
@@ -268,8 +284,8 @@ describe('patchJson()', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
       credentials: 'same-origin',
-      method: 'PATCH',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      method: 'PATCH',
       body: JSON.stringify(requestBody)
     });
 
@@ -301,9 +317,27 @@ describe('deleteJson()', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
       credentials: 'same-origin',
-      method: 'DELETE',
       headers: { Accept: 'test', 'Content-Type': 'test' },
-      mode: 'cors'
+      mode: 'cors',
+      method: 'DELETE'
+    });
+
+    spy.mockRestore();
+  });
+
+  test('204 No Content + options with method', async () => {
+    const spy = jest.spyOn(window, 'fetch');
+
+    const response = await Http.deleteJson('http://addressbook.com/contacts/1', {
+      method: 'will be ignored'
+    } as any);
+    expect(response).toEqual('');
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
+      credentials: 'same-origin',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      method: 'DELETE'
     });
 
     spy.mockRestore();
@@ -325,7 +359,7 @@ function checkContentType(response: Response, contentTypeExpected: string) {
   expect(response.headers.get('Content-Type')).toEqual(contentTypeExpected);
 }
 
-describe('parseResponse()', () => {
+describe('parseResponseBody()', () => {
   test('application/json Content-Type', async () => {
     const response = await createResponse('http://hello.com', { hello: 'world' });
     checkContentType(response, 'application/json');
