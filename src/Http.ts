@@ -55,7 +55,14 @@ export function checkStatus(response: Response, parsedResponseBody: unknown) {
 
 type Options = Omit<RequestInit, 'method' | 'body'>;
 
-async function fetchJson<T>(url: string, options: Options | undefined, method: string, body?: T) {
+type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+
+async function fetchJson<T>(
+  url: string,
+  options: Options | undefined,
+  method: RequestMethod,
+  body?: T
+) {
   const response = await fetch(url, {
     // See https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
     // TODO Remove when old browsers are not supported anymore
