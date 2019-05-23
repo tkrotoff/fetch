@@ -66,12 +66,7 @@ export function checkStatus(response: Response, parsedResponseBody: unknown) {
 
 type Options = Omit<RequestInit, 'method' | 'body'>;
 
-async function fetchJson<Request>(
-  url: string,
-  options: Options | undefined,
-  method: string,
-  body?: Request
-) {
+async function fetchJson<T>(url: string, options: Options | undefined, method: string, body?: T) {
   const response = await fetch(url, {
     ...defaultOptions,
     headers: JSON_HEADERS,
@@ -88,15 +83,15 @@ export function getJson(url: string, options?: Options) {
   return fetchJson(url, options, 'GET');
 }
 
-export function postJson<Request>(url: string, body: Request, options?: Options) {
+export function postJson<T>(url: string, body: T, options?: Options) {
   return fetchJson(url, options, 'POST', body);
 }
 
-export function putJson<Request>(url: string, body: Request, options?: Options) {
+export function putJson<T>(url: string, body: T, options?: Options) {
   return fetchJson(url, options, 'PUT', body);
 }
 
-export function patchJson<Request>(url: string, body: Request, options?: Options) {
+export function patchJson<T>(url: string, body: T, options?: Options) {
   return fetchJson(url, options, 'PATCH', body);
 }
 
