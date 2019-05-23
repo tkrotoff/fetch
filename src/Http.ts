@@ -57,7 +57,7 @@ type Options = Omit<RequestInit, 'method' | 'body'>;
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
-async function fetchJson<T>(
+async function fetchJson<T extends object>(
   url: string,
   options: Options | undefined,
   method: RequestMethod,
@@ -83,15 +83,15 @@ export function getJson(url: string, options?: Options) {
   return fetchJson(url, options, 'GET');
 }
 
-export function postJson<T>(url: string, body: T, options?: Options) {
+export function postJson<T extends object>(url: string, body: T, options?: Options) {
   return fetchJson(url, options, 'POST', body);
 }
 
-export function putJson<T>(url: string, body: T, options?: Options) {
+export function putJson<T extends object>(url: string, body: T, options?: Options) {
   return fetchJson(url, options, 'PUT', body);
 }
 
-export function patchJson<T>(url: string, body: T, options?: Options) {
+export function patchJson<T extends object>(url: string, body: T, options?: Options) {
   return fetchJson(url, options, 'PATCH', body);
 }
 
