@@ -1,3 +1,14 @@
+## v0.1.0 (2019/05/23)
+
+### Features
+
+- Allow to pass options
+- Upgrade npm dependencies
+
+### Fix
+
+- Do not reinterpret the response, see 00b5ec
+
 ## v0.0.4 (2019/03/25)
 
 ### Fix
