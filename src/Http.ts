@@ -19,7 +19,7 @@ function isJsonMimeType(headers: Headers) {
 }
 
 // Exported for testing purpose only
-export async function parseResponse(response: Response) {
+export async function parseResponseBody(response: Response) {
   if (isJsonMimeType(response.headers)) {
     // FIXME Remove the cast when response.json() will return unknown
     return response.json() as Promise<unknown>;
@@ -29,7 +29,7 @@ export async function parseResponse(response: Response) {
 
 // See [Handling HTTP error statuses](https://github.com/github/fetch/blob/v3.0.0/README.md#handling-http-error-statuses)
 // Exported for testing purpose only
-export function checkStatus(response: Response, parsedResponse: unknown) {
+export function checkStatus(response: Response, parsedResponseBody: unknown) {
   // Response examples under Chrome 58:
   //
   // {
@@ -59,7 +59,7 @@ export function checkStatus(response: Response, parsedResponse: unknown) {
   if (!response.ok) {
     const error = new HttpError(response.statusText);
     error.status = response.status;
-    error.response = parsedResponse;
+    error.response = parsedResponseBody;
     throw error;
   }
 }
@@ -70,9 +70,9 @@ export async function getJson(url: string, options?: RequestInit) {
     headers: JSON_HEADERS,
     ...options
   });
-  const parsedResponse = await parseResponse(response);
-  checkStatus(response, parsedResponse);
-  return parsedResponse;
+  const parsedResponseBody = await parseResponseBody(response);
+  checkStatus(response, parsedResponseBody);
+  return parsedResponseBody;
 }
 
 export async function postJson<Request>(url: string, body: Request, options?: RequestInit) {
@@ -83,9 +83,9 @@ export async function postJson<Request>(url: string, body: Request, options?: Re
     ...options,
     body: JSON.stringify(body)
   });
-  const parsedResponse = await parseResponse(response);
-  checkStatus(response, parsedResponse);
-  return parsedResponse;
+  const parsedResponseBody = await parseResponseBody(response);
+  checkStatus(response, parsedResponseBody);
+  return parsedResponseBody;
 }
 
 export async function putJson<Request>(url: string, body: Request, options?: RequestInit) {
@@ -96,9 +96,9 @@ export async function putJson<Request>(url: string, body: Request, options?: Req
     ...options,
     body: JSON.stringify(body)
   });
-  const parsedResponse = await parseResponse(response);
-  checkStatus(response, parsedResponse);
-  return parsedResponse;
+  const parsedResponseBody = await parseResponseBody(response);
+  checkStatus(response, parsedResponseBody);
+  return parsedResponseBody;
 }
 
 export async function patchJson<Request>(url: string, body: Request, options?: RequestInit) {
@@ -109,9 +109,9 @@ export async function patchJson<Request>(url: string, body: Request, options?: R
     ...options,
     body: JSON.stringify(body)
   });
-  const parsedResponse = await parseResponse(response);
-  checkStatus(response, parsedResponse);
-  return parsedResponse;
+  const parsedResponseBody = await parseResponseBody(response);
+  checkStatus(response, parsedResponseBody);
+  return parsedResponseBody;
 }
 
 export async function deleteJson(url: string, options?: RequestInit) {
@@ -121,7 +121,7 @@ export async function deleteJson(url: string, options?: RequestInit) {
     headers: JSON_HEADERS,
     ...options
   });
-  const parsedResponse = await parseResponse(response);
-  checkStatus(response, parsedResponse);
-  return parsedResponse;
+  const parsedResponseBody = await parseResponseBody(response);
+  checkStatus(response, parsedResponseBody);
+  return parsedResponseBody;
 }

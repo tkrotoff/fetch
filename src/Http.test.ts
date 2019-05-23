@@ -5,6 +5,8 @@ import { HttpStatus } from './HttpStatus';
 import { HttpError } from './HttpError';
 
 describe('getJson()', () => {
+  afterEach(fetchMock.reset);
+
   test('200 OK', async () => {
     fetchMock.get('http://addressbook.com/contacts/1', {
       id: 1,
@@ -20,8 +22,6 @@ describe('getJson()', () => {
       lastName: 'Lennon',
       email: 'john@beatles.com'
     });
-
-    fetchMock.reset();
   });
 
   test('200 OK + options', async () => {
@@ -52,7 +52,6 @@ describe('getJson()', () => {
     });
 
     spy.mockRestore();
-    fetchMock.reset();
   });
 
   test('500 Internal Server Error', async () => {
@@ -73,8 +72,6 @@ describe('getJson()', () => {
         '<!DOCTYPE html><html><head><title>500 Internal Server Error</title></head></html>'
       );
     }
-
-    fetchMock.reset();
   });
 
   test('204 No Content', async () => {
@@ -82,83 +79,178 @@ describe('getJson()', () => {
 
     const response = await Http.getJson('http://addressbook.com/contacts/1');
     expect(response).toEqual('');
-
-    fetchMock.reset();
   });
 });
 
-test('postJson()', async () => {
-  fetchMock.post('http://addressbook.com/contacts', {
-    status: HttpStatus._201_Created,
-    body: { id: 1, firstName: 'John', lastName: 'Lennon', email: 'john@beatles.com' }
-  });
-
-  const response = await Http.postJson('http://addressbook.com/contacts', {
+describe('postJson()', () => {
+  const requestBody = {
     firstName: 'John',
     lastName: 'Lennon',
     email: 'john@beatles.com'
+  };
+
+  const responseBody = {
+    id: 1,
+    ...requestBody
+  };
+
+  beforeEach(() => {
+    fetchMock.post('http://addressbook.com/contacts', {
+      status: HttpStatus._201_Created,
+      body: responseBody
+    });
   });
-  expect(response).toEqual({
+
+  afterEach(fetchMock.reset);
+
+  test('201 Created', async () => {
+    const response = await Http.postJson('http://addressbook.com/contacts', requestBody);
+    expect(response).toEqual(responseBody);
+  });
+
+  test('201 Created + options', async () => {
+    const spy = jest.spyOn(window, 'fetch');
+
+    const response = await Http.postJson('http://addressbook.com/contacts', requestBody, {
+      headers: { Accept: 'test', 'Content-Type': 'test' },
+      mode: 'cors'
+    });
+    expect(response).toEqual(responseBody);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts', {
+      credentials: 'same-origin',
+      method: 'POST',
+      headers: { Accept: 'test', 'Content-Type': 'test' },
+      mode: 'cors',
+      body: JSON.stringify(requestBody)
+    });
+
+    spy.mockRestore();
+  });
+});
+
+describe('putJson()', () => {
+  const requestBody = {
+    firstName: 'John',
+    lastName: 'Lennon',
+    email: 'john@beatles.com'
+  };
+
+  const responseBody = {
+    id: 1,
+    ...requestBody
+  };
+
+  beforeEach(() => {
+    fetchMock.put('http://addressbook.com/contacts/1', responseBody);
+  });
+
+  afterEach(fetchMock.reset);
+
+  test('200 OK', async () => {
+    const response = await Http.putJson('http://addressbook.com/contacts/1', requestBody);
+    expect(response).toEqual(responseBody);
+  });
+
+  test('200 OK + options', async () => {
+    const spy = jest.spyOn(window, 'fetch');
+
+    const response = await Http.putJson('http://addressbook.com/contacts/1', requestBody, {
+      headers: { Accept: 'test', 'Content-Type': 'test' },
+      mode: 'cors'
+    });
+    expect(response).toEqual(responseBody);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
+      credentials: 'same-origin',
+      method: 'PUT',
+      headers: { Accept: 'test', 'Content-Type': 'test' },
+      mode: 'cors',
+      body: JSON.stringify(requestBody)
+    });
+
+    spy.mockRestore();
+  });
+});
+
+describe('patchJson()', () => {
+  const requestBody = {
+    email: 'john@beatles.com'
+  };
+
+  const responseBody = {
     id: 1,
     firstName: 'John',
     lastName: 'Lennon',
     email: 'john@beatles.com'
+  };
+
+  beforeEach(() => {
+    fetchMock.patch('http://addressbook.com/contacts/1', responseBody);
   });
 
-  fetchMock.reset();
+  afterEach(fetchMock.reset);
+
+  test('200 OK', async () => {
+    const response = await Http.patchJson('http://addressbook.com/contacts/1', requestBody);
+    expect(response).toEqual(responseBody);
+  });
+
+  test('200 OK + options', async () => {
+    const spy = jest.spyOn(window, 'fetch');
+
+    const response = await Http.patchJson('http://addressbook.com/contacts/1', requestBody, {
+      headers: { Accept: 'test', 'Content-Type': 'test' },
+      mode: 'cors'
+    });
+    expect(response).toEqual(responseBody);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
+      credentials: 'same-origin',
+      method: 'PATCH',
+      headers: { Accept: 'test', 'Content-Type': 'test' },
+      mode: 'cors',
+      body: JSON.stringify(requestBody)
+    });
+
+    spy.mockRestore();
+  });
 });
 
-test('putJson()', async () => {
-  fetchMock.put('http://addressbook.com/contacts/1', {
-    id: 1,
-    firstName: 'John',
-    lastName: 'Lennon',
-    email: 'john@lennon.com'
+describe('deleteJson()', () => {
+  beforeEach(() => {
+    fetchMock.delete('http://addressbook.com/contacts/1', { status: HttpStatus._204_NoContent });
   });
 
-  const response = await Http.putJson('http://addressbook.com/contacts/1', {
-    firstName: 'John',
-    lastName: 'Lennon',
-    email: 'john@lennon.com'
-  });
-  expect(response).toEqual({
-    id: 1,
-    firstName: 'John',
-    lastName: 'Lennon',
-    email: 'john@lennon.com'
+  afterEach(fetchMock.reset);
+
+  test('204 No Content', async () => {
+    const response = await Http.deleteJson('http://addressbook.com/contacts/1');
+    expect(response).toEqual('');
   });
 
-  fetchMock.reset();
-});
+  test('204 No Content + options', async () => {
+    const spy = jest.spyOn(window, 'fetch');
 
-test('patchJson()', async () => {
-  fetchMock.patch('http://addressbook.com/contacts/1', {
-    id: 1,
-    firstName: 'John',
-    lastName: 'Lennon',
-    email: 'john@lennon.com'
+    const response = await Http.deleteJson('http://addressbook.com/contacts/1', {
+      headers: { Accept: 'test', 'Content-Type': 'test' },
+      mode: 'cors'
+    });
+    expect(response).toEqual('');
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts/1', {
+      credentials: 'same-origin',
+      method: 'DELETE',
+      headers: { Accept: 'test', 'Content-Type': 'test' },
+      mode: 'cors'
+    });
+
+    spy.mockRestore();
   });
-
-  const response = await Http.patchJson('http://addressbook.com/contacts/1', {
-    email: 'john@lennon.com'
-  });
-  expect(response).toEqual({
-    id: 1,
-    firstName: 'John',
-    lastName: 'Lennon',
-    email: 'john@lennon.com'
-  });
-
-  fetchMock.reset();
-});
-
-test('deleteJson()', async () => {
-  fetchMock.delete('http://addressbook.com/contacts/1', { status: HttpStatus._204_NoContent });
-
-  const response = await Http.deleteJson('http://addressbook.com/contacts/1');
-  expect(response).toEqual('');
-
-  fetchMock.reset();
 });
 
 async function createResponse(
@@ -180,15 +272,15 @@ describe('parseResponse()', () => {
   test('application/json Content-Type', async () => {
     const response = await createResponse('http://hello.com', { hello: 'world' });
     checkContentType(response, 'application/json');
-    const parsedResponse = await Http.parseResponse(response);
-    expect(parsedResponse).toEqual({ hello: 'world' });
+    const parsedResponseBody = await Http.parseResponseBody(response);
+    expect(parsedResponseBody).toEqual({ hello: 'world' });
   });
 
   test('text/plain Content-Type', async () => {
     const response = await createResponse('http://hello.com', 'Hello, World!');
     checkContentType(response, 'text/plain;charset=UTF-8');
-    const parsedResponse = await Http.parseResponse(response);
-    expect(parsedResponse).toEqual('Hello, World!');
+    const parsedResponseBody = await Http.parseResponseBody(response);
+    expect(parsedResponseBody).toEqual('Hello, World!');
   });
 });
 
@@ -203,20 +295,22 @@ async function create400BadRequestResponse(url: string, body: object | string) {
 describe('checkStatus()', () => {
   test('200 OK', async () => {
     const response = await create200OKResponse('http://200.com', { hello: 'world' });
-    const parsedResponse = await Http.parseResponse(response);
-    expect(() => Http.checkStatus(response, parsedResponse)).not.toThrow();
+    const parsedResponseBody = await Http.parseResponseBody(response);
+    expect(() => Http.checkStatus(response, parsedResponseBody)).not.toThrow();
   });
 
   test('400 Bad Request', async () => {
     const response = await create400BadRequestResponse('http://400.com', { error: 400 });
-    const parsedResponse = await Http.parseResponse(response);
-    expect(() => Http.checkStatus(response, parsedResponse)).toThrow(new HttpError('Bad Request'));
+    const parsedResponseBody = await Http.parseResponseBody(response);
+    expect(() => Http.checkStatus(response, parsedResponseBody)).toThrow(
+      new HttpError('Bad Request')
+    );
     try {
-      Http.checkStatus(response, parsedResponse);
+      Http.checkStatus(response, parsedResponseBody);
     } catch (e) {
       expect(e).toEqual(new HttpError('Bad Request'));
       expect(e.status).toEqual(HttpStatus._400_BadRequest);
-      expect(e.response).toEqual(parsedResponse);
+      expect(e.response).toEqual(parsedResponseBody);
     }
   });
 });
