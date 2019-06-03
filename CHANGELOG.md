@@ -1,3 +1,11 @@
+## v0.2.0 (2019/06/03)
+
+### Features
+
+- Improve typings thx to TypeScript 3.5
+- Simplify code
+- Improve tests
+
 ## v0.1.0 (2019/05/23)
 
 ### Features
