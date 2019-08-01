@@ -1,3 +1,10 @@
+## v0.2.1 (2019/08/02)
+
+### Features
+
+- Export createHttpError()
+- Upgrade npm packages
+
 ## v0.2.0 (2019/06/03)
 
 ### Features
@@ -11,7 +18,7 @@
 ### Features
 
 - Allow to pass options
-- Upgrade npm dependencies
+- Upgrade npm packages
 
 ### Fix
 
@@ -28,7 +35,7 @@
 ### Features
 
 - Add Husky
-- Upgrade NPM packages
+- Upgrade npm packages
 - Set a repository URL for npmjs.com
 - Improve ESLint
 
