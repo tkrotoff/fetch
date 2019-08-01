@@ -405,3 +405,10 @@ describe('checkStatus()', () => {
     }
   });
 });
+
+test('createHttpError()', () => {
+  const error = Http.createHttpError('Bad Request', HttpStatus._400_BadRequest, { error: 400 });
+  expect(error).toEqual(new HttpError('Bad Request'));
+  expect(error.status).toEqual(HttpStatus._400_BadRequest);
+  expect(error.response).toEqual({ error: 400 });
+});

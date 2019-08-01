@@ -1,4 +1,5 @@
 import { HttpError } from './HttpError';
+import { HttpStatus } from './HttpStatus';
 
 const JSON_MIME_TYPE = 'application/json';
 
@@ -14,6 +15,17 @@ export async function parseResponseBody(response: Response) {
     return response.json() as Promise<unknown>;
   }
   return response.text();
+}
+
+export function createHttpError(
+  statusText: string,
+  status: HttpStatus,
+  parsedResponseBody: unknown
+) {
+  const error = new HttpError(statusText);
+  error.status = status;
+  error.response = parsedResponseBody;
+  return error;
 }
 
 // See [Handling HTTP error statuses](https://github.com/github/fetch/blob/v3.0.0/README.md#handling-http-error-statuses)
@@ -46,10 +58,7 @@ export function checkStatus(response: Response, parsedResponseBody: unknown) {
   // }
 
   if (!response.ok) {
-    const error = new HttpError(response.statusText);
-    error.status = response.status;
-    error.response = parsedResponseBody;
-    throw error;
+    throw createHttpError(response.statusText, response.status, parsedResponseBody);
   }
 }
 
