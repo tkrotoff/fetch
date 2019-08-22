@@ -12,7 +12,7 @@ A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper fo
 `npm install @tkrotoff/fetch`
 
 ```JS
-import * as Http from '@tkrotoff/fetch';
+import { Http } from '@tkrotoff/fetch';
 
 // ...
 

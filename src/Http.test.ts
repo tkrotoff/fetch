@@ -1,8 +1,80 @@
 import fetchMock, { MockResponseObject } from 'fetch-mock';
 
-import * as Http from './Http';
+import { Http, createHttpError, parseResponseBody, checkStatus } from './Http';
 import { HttpStatus } from './HttpStatus';
 import { HttpError } from './HttpError';
+
+describe('defaults', () => {
+  const originalDefaults = { ...Http.defaults };
+  Http.defaults = {
+    mode: 'cors',
+    credentials: 'include',
+    headers: { ...Http.defaults.headers, id: '123456' }
+  };
+
+  const requestBody = {
+    firstName: 'John',
+    lastName: 'Lennon',
+    email: 'john@beatles.com'
+  };
+
+  const responseBody = {
+    id: 1,
+    ...requestBody
+  };
+
+  beforeEach(() => {
+    fetchMock.post('http://addressbook.com/contacts', {
+      status: HttpStatus._201_Created,
+      body: responseBody
+    });
+  });
+
+  afterEach(fetchMock.reset);
+
+  afterAll(() => {
+    Http.defaults = originalDefaults;
+  });
+
+  test('201 Created + defaults', async () => {
+    const spy = jest.spyOn(window, 'fetch');
+
+    const response = await Http.postJson('http://addressbook.com/contacts', requestBody);
+    expect(response).toEqual(responseBody);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts', {
+      mode: 'cors',
+      credentials: 'include',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json', id: '123456' },
+      method: 'POST',
+      body: JSON.stringify(requestBody)
+    });
+
+    spy.mockRestore();
+  });
+
+  test('201 Created + options + defaults', async () => {
+    const spy = jest.spyOn(window, 'fetch');
+
+    const response = await Http.postJson('http://addressbook.com/contacts', requestBody, {
+      headers: { Accept: 'test', 'Content-Type': 'test' },
+      mode: 'cors'
+    });
+    expect(response).toEqual(responseBody);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('http://addressbook.com/contacts', {
+      credentials: 'include',
+      headers: { Accept: 'test', 'Content-Type': 'test' },
+      mode: 'cors',
+      method: 'POST',
+      body: JSON.stringify(requestBody)
+    });
+
+    spy.mockRestore();
+  });
+});
 
 describe('getJson()', () => {
   afterEach(fetchMock.reset);
@@ -363,14 +435,14 @@ describe('parseResponseBody()', () => {
   test('application/json Content-Type', async () => {
     const response = await createResponse('http://hello.com', { hello: 'world' });
     checkContentType(response, 'application/json');
-    const parsedResponseBody = await Http.parseResponseBody(response);
+    const parsedResponseBody = await parseResponseBody(response);
     expect(parsedResponseBody).toEqual({ hello: 'world' });
   });
 
   test('text/plain Content-Type', async () => {
     const response = await createResponse('http://hello.com', 'Hello, World!');
     checkContentType(response, 'text/plain;charset=UTF-8');
-    const parsedResponseBody = await Http.parseResponseBody(response);
+    const parsedResponseBody = await parseResponseBody(response);
     expect(parsedResponseBody).toEqual('Hello, World!');
   });
 });
@@ -386,18 +458,16 @@ async function create400BadRequestResponse(url: string, body: object | string) {
 describe('checkStatus()', () => {
   test('200 OK', async () => {
     const response = await create200OKResponse('http://200.com', { hello: 'world' });
-    const parsedResponseBody = await Http.parseResponseBody(response);
-    expect(() => Http.checkStatus(response, parsedResponseBody)).not.toThrow();
+    const parsedResponseBody = await parseResponseBody(response);
+    expect(() => checkStatus(response, parsedResponseBody)).not.toThrow();
   });
 
   test('400 Bad Request', async () => {
     const response = await create400BadRequestResponse('http://400.com', { error: 400 });
-    const parsedResponseBody = await Http.parseResponseBody(response);
-    expect(() => Http.checkStatus(response, parsedResponseBody)).toThrow(
-      new HttpError('Bad Request')
-    );
+    const parsedResponseBody = await parseResponseBody(response);
+    expect(() => checkStatus(response, parsedResponseBody)).toThrow(new HttpError('Bad Request'));
     try {
-      Http.checkStatus(response, parsedResponseBody);
+      checkStatus(response, parsedResponseBody);
     } catch (e) {
       expect(e).toEqual(new HttpError('Bad Request'));
       expect(e.status).toEqual(HttpStatus._400_BadRequest);
@@ -407,7 +477,7 @@ describe('checkStatus()', () => {
 });
 
 test('createHttpError()', () => {
-  const error = Http.createHttpError('Bad Request', HttpStatus._400_BadRequest, { error: 400 });
+  const error = createHttpError('Bad Request', HttpStatus._400_BadRequest, { error: 400 });
   expect(error).toEqual(new HttpError('Bad Request'));
   expect(error.status).toEqual(HttpStatus._400_BadRequest);
   expect(error.response).toEqual({ error: 400 });

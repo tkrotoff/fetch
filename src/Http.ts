@@ -64,6 +64,18 @@ export function checkStatus(response: Response, parsedResponseBody: unknown) {
 
 type Options = Omit<RequestInit, 'method' | 'body'>;
 
+const JSON_HEADERS = {
+  Accept: JSON_MIME_TYPE,
+  'Content-Type': JSON_MIME_TYPE
+};
+
+const defaults: Options = {
+  // See https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
+  // TODO Remove when old browsers are not supported anymore
+  credentials: 'same-origin' as RequestCredentials,
+  headers: JSON_HEADERS
+};
+
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 async function fetchJson<T extends object>(
@@ -73,11 +85,8 @@ async function fetchJson<T extends object>(
   body?: T
 ) {
   const response = await fetch(url, {
-    // See https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
-    // TODO Remove when old browsers are not supported anymore
-    credentials: 'same-origin' as RequestCredentials,
-
-    headers: { Accept: JSON_MIME_TYPE, 'Content-Type': JSON_MIME_TYPE },
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    ...Http.defaults,
     ...options,
     method,
     body: body !== undefined ? JSON.stringify(body) : undefined
@@ -88,22 +97,33 @@ async function fetchJson<T extends object>(
   return parsedResponseBody;
 }
 
-export function getJson(url: string, options?: Options) {
-  return fetchJson(url, options, 'GET');
-}
+const getJson = (url: string, options?: Options) => fetchJson(url, options, 'GET');
 
-export function postJson<T extends object>(url: string, body: T, options?: Options) {
-  return fetchJson(url, options, 'POST', body);
-}
+const postJson = <T extends object>(url: string, body: T, options?: Options) =>
+  fetchJson(url, options, 'POST', body);
 
-export function putJson<T extends object>(url: string, body: T, options?: Options) {
-  return fetchJson(url, options, 'PUT', body);
-}
+const putJson = <T extends object>(url: string, body: T, options?: Options) =>
+  fetchJson(url, options, 'PUT', body);
 
-export function patchJson<T extends object>(url: string, body: T, options?: Options) {
-  return fetchJson(url, options, 'PATCH', body);
-}
+const patchJson = <T extends object>(url: string, body: T, options?: Options) =>
+  fetchJson(url, options, 'PATCH', body);
 
-export function deleteJson(url: string, options?: Options) {
-  return fetchJson(url, options, 'DELETE');
-}
+const deleteJson = (url: string, options?: Options) => fetchJson(url, options, 'DELETE');
+
+// See this as a static class, hence the name "Http" instead of "http",
+// could be written:
+//
+// export abstract class Http {
+//   static defaults: Options = {};
+//   static getJson = () => {};
+//   ...
+//   private static async fetchJson() {}
+// }
+export const Http = {
+  defaults,
+  getJson,
+  postJson,
+  putJson,
+  patchJson,
+  deleteJson
+};
