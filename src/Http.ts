@@ -62,7 +62,7 @@ export function checkStatus(response: Response, parsedResponseBody: unknown) {
   }
 }
 
-type Options = Omit<RequestInit, 'method' | 'body'>;
+type Init = Omit<RequestInit, 'method' | 'body'>;
 
 const JSON_HEADERS = {
   Accept: JSON_MIME_TYPE,
@@ -70,11 +70,11 @@ const JSON_HEADERS = {
 };
 
 interface Config {
-  defaults: Options;
+  init: Init;
 }
 
-export const config: Config = {
-  defaults: {
+export const defaults: Config = {
+  init: {
     // See https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
     // TODO Remove when old browsers are not supported anymore
     credentials: 'same-origin' as RequestCredentials,
@@ -82,17 +82,17 @@ export const config: Config = {
   }
 };
 
-type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 async function fetchJson<T extends object>(
   url: string,
-  options: Options | undefined,
-  method: RequestMethod,
+  init: Init | undefined,
+  method: Method,
   body?: T
 ) {
   const response = await fetch(url, {
-    ...config.defaults,
-    ...options,
+    ...defaults.init,
+    ...init,
     method,
     body: body !== undefined ? JSON.stringify(body) : undefined
   });
@@ -102,15 +102,15 @@ async function fetchJson<T extends object>(
   return parsedResponseBody;
 }
 
-export const getJson = (url: string, options?: Options) => fetchJson(url, options, 'GET');
+export const getJson = (url: string, init?: Init) => fetchJson(url, init, 'GET');
 
-export const postJson = <T extends object>(url: string, body: T, options?: Options) =>
-  fetchJson(url, options, 'POST', body);
+export const postJson = <T extends object>(url: string, body: T, init?: Init) =>
+  fetchJson(url, init, 'POST', body);
 
-export const putJson = <T extends object>(url: string, body: T, options?: Options) =>
-  fetchJson(url, options, 'PUT', body);
+export const putJson = <T extends object>(url: string, body: T, init?: Init) =>
+  fetchJson(url, init, 'PUT', body);
 
-export const patchJson = <T extends object>(url: string, body: T, options?: Options) =>
-  fetchJson(url, options, 'PATCH', body);
+export const patchJson = <T extends object>(url: string, body: T, init?: Init) =>
+  fetchJson(url, init, 'PATCH', body);
 
-export const deleteJson = (url: string, options?: Options) => fetchJson(url, options, 'DELETE');
+export const deleteJson = (url: string, init?: Init) => fetchJson(url, init, 'DELETE');

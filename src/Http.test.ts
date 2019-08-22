@@ -1,7 +1,7 @@
 import fetchMock, { MockResponseObject } from 'fetch-mock';
 
 import {
-  config,
+  defaults,
   getJson,
   postJson,
   putJson,
@@ -14,12 +14,12 @@ import {
 import { HttpStatus } from './HttpStatus';
 import { HttpError } from './HttpError';
 
-describe('config.defaults', () => {
-  const originalDefaults = { ...config.defaults };
-  config.defaults = {
+describe('defaults.init', () => {
+  const originalInit = { ...defaults.init };
+  defaults.init = {
     mode: 'cors',
     credentials: 'include',
-    headers: { ...config.defaults.headers, id: '123456' }
+    headers: { ...defaults.init.headers, id: '123456' }
   };
 
   const requestBody = {
@@ -43,7 +43,7 @@ describe('config.defaults', () => {
   afterEach(fetchMock.reset);
 
   afterAll(() => {
-    config.defaults = originalDefaults;
+    defaults.init = originalInit;
   });
 
   test('201 Created + defaults', async () => {
