@@ -69,11 +69,17 @@ const JSON_HEADERS = {
   'Content-Type': JSON_MIME_TYPE
 };
 
-const defaults: Options = {
-  // See https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
-  // TODO Remove when old browsers are not supported anymore
-  credentials: 'same-origin' as RequestCredentials,
-  headers: JSON_HEADERS
+interface Config {
+  defaults: Options;
+}
+
+export const config: Config = {
+  defaults: {
+    // See https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
+    // TODO Remove when old browsers are not supported anymore
+    credentials: 'same-origin' as RequestCredentials,
+    headers: JSON_HEADERS
+  }
 };
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -85,8 +91,7 @@ async function fetchJson<T extends object>(
   body?: T
 ) {
   const response = await fetch(url, {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    ...Http.defaults,
+    ...config.defaults,
     ...options,
     method,
     body: body !== undefined ? JSON.stringify(body) : undefined
@@ -97,33 +102,15 @@ async function fetchJson<T extends object>(
   return parsedResponseBody;
 }
 
-const getJson = (url: string, options?: Options) => fetchJson(url, options, 'GET');
+export const getJson = (url: string, options?: Options) => fetchJson(url, options, 'GET');
 
-const postJson = <T extends object>(url: string, body: T, options?: Options) =>
+export const postJson = <T extends object>(url: string, body: T, options?: Options) =>
   fetchJson(url, options, 'POST', body);
 
-const putJson = <T extends object>(url: string, body: T, options?: Options) =>
+export const putJson = <T extends object>(url: string, body: T, options?: Options) =>
   fetchJson(url, options, 'PUT', body);
 
-const patchJson = <T extends object>(url: string, body: T, options?: Options) =>
+export const patchJson = <T extends object>(url: string, body: T, options?: Options) =>
   fetchJson(url, options, 'PATCH', body);
 
-const deleteJson = (url: string, options?: Options) => fetchJson(url, options, 'DELETE');
-
-// See this as a static class, hence the name "Http" instead of "http",
-// could be written:
-//
-// export abstract class Http {
-//   static defaults: Options = {};
-//   static getJson = () => {};
-//   ...
-//   private static async fetchJson() {}
-// }
-export const Http = {
-  defaults,
-  getJson,
-  postJson,
-  putJson,
-  patchJson,
-  deleteJson
-};
+export const deleteJson = (url: string, options?: Options) => fetchJson(url, options, 'DELETE');

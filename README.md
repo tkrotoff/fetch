@@ -12,11 +12,13 @@ A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper fo
 `npm install @tkrotoff/fetch`
 
 ```JS
-import { Http } from '@tkrotoff/fetch';
+import { config, postJson } from '@tkrotoff/fetch';
 
 // ...
 
-const response = await Http.postJson(
+config.defaults = { /* ... */ };
+
+const response = await postJson(
   'https://jsonplaceholder.typicode.com/posts',
   {
     title: 'foo',
