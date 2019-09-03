@@ -492,3 +492,14 @@ test('createHttpError()', () => {
   expect(error.status).toEqual(HttpStatus._400_BadRequest);
   expect(error.response).toEqual({ error: 400 });
 });
+
+test('throw TypeError', async () => {
+  // TypeError if request blocked (DevTools or CORS) or network timeout (net::ERR_TIMED_OUT):
+  //  - Firefox 68: "TypeError: "NetworkError when attempting to fetch resource.""
+  //  - Chrome 76: "TypeError: Failed to fetch"
+  const error = new TypeError('Failed to fetch');
+
+  fetchMock.get('http://siteDoesntExist.com', { throws: error });
+
+  await expect(getJson('http://siteDoesntExist.com')).rejects.toThrow(error);
+});

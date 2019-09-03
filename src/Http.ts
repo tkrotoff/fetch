@@ -31,30 +31,42 @@ export function createHttpError(
 // See [Handling HTTP error statuses](https://github.com/github/fetch/blob/v3.0.0/README.md#handling-http-error-statuses)
 // Exported for testing purpose only
 export function checkStatus(response: Response, parsedResponseBody: unknown) {
-  // Response examples under Chrome 58:
+  // Response examples under Chrome 76:
   //
   // {
   //   body: ReadableStream,
-  //   bodyUsed: false,
+  //   bodyUsed: true,
+  //   headers: Headers,
+  //   ok: true,
+  //   redirected: false,
+  //   status: 201,
+  //   statusText: 'Created',
+  //   type: 'cors',
+  //   url: 'https://jsonplaceholder.typicode.com/posts'
+  // }
+  //
+  // {
+  //   body: ReadableStream,
+  //   bodyUsed: true,
   //   headers: Headers,
   //   ok: false,
   //   redirected: false,
   //   status: 404,
   //   statusText: 'Not Found',
-  //   type: 'basic',
-  //   url: 'https://...'
+  //   type: 'cors',
+  //   url: 'https://jsonplaceholder.typicode.com/posts/101'
   // }
   //
   // {
   //   body: ReadableStream,
-  //   bodyUsed: false,
+  //   bodyUsed: true,
   //   headers: Headers,
   //   ok: false,
   //   redirected: false,
-  //   status: 400,
-  //   statusText: 'Bad Request',
-  //   type: 'basic',
-  //   url: 'https://...'
+  //   status: 500,
+  //   statusText: 'Internal Server Error',
+  //   type: 'cors',
+  //   url: 'https://httpstat.us/500'
   // }
 
   if (!response.ok) {
@@ -84,6 +96,11 @@ export const defaults: Config = {
 
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
+// Can throw:
+// - HttpError with e.response being the response body
+// - TypeError if request blocked (DevTools or CORS) or network timeout (net::ERR_TIMED_OUT):
+//   - Firefox 68: "TypeError: "NetworkError when attempting to fetch resource.""
+//   - Chrome 76: "TypeError: Failed to fetch"
 async function fetchJson<T extends object>(
   url: string,
   init: Init | undefined,
