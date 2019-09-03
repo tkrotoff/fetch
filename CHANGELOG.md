@@ -1,3 +1,11 @@
+## v0.3.0 (2019/09/03)
+
+### Features
+
+- Expose defaults.init
+- Document TypeError exception
+- Upgrade npm packages
+
 ## v0.2.1 (2019/08/02)
 
 ### Features
