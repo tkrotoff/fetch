@@ -1,3 +1,10 @@
+## v0.3.1 (2019/09/23)
+
+### Features
+
+- Better documentation
+- Add an example for browsers
+
 ## v0.3.0 (2019/09/03)
 
 ### Features
