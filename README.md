@@ -9,16 +9,63 @@
 
 A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper for JSON.
 
-Example: https://codesandbox.io/s/github/tkrotoff/fetch/tree/master/example
+- Simplifies the use of Fetch with JSON
+- Small: less than [100 lines of code](src/Http.ts), [> 1 kB min.gzip](https://bundlephobia.com/result?p=@tkrotoff/fetch) vs [4.3 kB for Axios](https://bundlephobia.com/result?p=axios@0.19.0)
+- Fully tested
+
+## Why?
+
+When using Fetch, you have to write [some](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Uploading_JSON_data) [boilerplate](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Checking_that_the_fetch_was_successful):
+
+```JavaScript
+const url = 'https://example.com/profile';
+const data = { username: 'example' };
+
+try {
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  if (!response.ok) {
+    throw new Error('Network response was not ok.');
+  }
+  const json = await response.json();
+  console.log('Success:', JSON.stringify(json));
+} catch (e) {
+  console.error('Error:', e);
+}
+```
+
+With @tkrotoff/fetch it becomes:
+
+```JavaScript
+try {
+  const response = await postJson(url, data);
+  console.log(response);
+} catch (e /* HttpError | TypeError */) {
+  console.error('Error:', e);
+}
+```
+
+You don't have to worry about:
+
+- HTTP headers: Accept and Content-Type are already set to application/json inside `defaults.init`
+- stringifying the input data
+- stringifying the [response body](https://fetch.spec.whatwg.org/#body)
+- `await response.json()`: only one `await` instead of 2
+- `response.ok()`: no need to manually throw an exception on HTTP error status (like 404 or 500)
 
 ## Usage
+
+Example: https://codesandbox.io/s/github/tkrotoff/fetch/tree/master/example
 
 `npm install @tkrotoff/fetch`
 
 ```JS
 import { defaults, postJson } from '@tkrotoff/fetch';
-
-// ...
 
 defaults.init = { /* ... */ };
 
@@ -30,8 +77,27 @@ const response = await postJson(
     userId: 1
   }
 );
-
 console.log(response);
+```
 
-// ...
+The Fetch API is not supported by IE and old browsers, use https://github.com/github/fetch polyfill
+(+ [core-js](https://github.com/zloirock/core-js) for other modern JS features like async/await).
+
+## API
+
+- `getJson(url: string, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`) => response`
+- `postJson(url: string, body: T, init?: RequestInit) => response`
+- `putJson(url: string, body: T, init?: RequestInit) => response`
+- `patchJson(url: string, body: T, init?: RequestInit) => response`
+- `deleteJson(url: string, init?: RequestInit) => response`
+
+### Configuration
+
+@tkrotoff/fetch exposes `defaults.init` that will be applied to every request.
+
+```JavaScript
+import { defaults } from '@tkrotoff/fetch';
+
+defaults.init.mode = 'cors';
+defaults.init.credentials = 'include';
 ```
