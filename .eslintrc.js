@@ -2,9 +2,7 @@
 
 module.exports = {
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.json'
-  },
+  parserOptions: {},
   extends: [
     // /!\ Order seems to matter
 
@@ -35,5 +33,15 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/explicit-member-accessibility': 'off',
     '@typescript-eslint/no-explicit-any': 'off'
-  }
+  },
+
+  overrides: [
+    {
+      files: ['example/*.ts'],
+      rules: {
+        'no-console': 'off',
+        '@typescript-eslint/no-non-null-assertion': 'off'
+      }
+    }
+  ]
 };

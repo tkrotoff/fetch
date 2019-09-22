@@ -1,3 +1,5 @@
 node_modules/
 coverage/
 dist/
+example/build/
+example/package-lock.json

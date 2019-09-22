@@ -9,6 +9,8 @@
 
 A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper for JSON.
 
+Example: https://codesandbox.io/s/github/tkrotoff/fetch/tree/master/example
+
 ## Usage
 
 `npm install @tkrotoff/fetch`

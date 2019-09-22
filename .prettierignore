@@ -3,6 +3,7 @@
 .prettierignore
 .eslintignore
 .editorconfig
+.browserslistrc
 LICENSE
 
 coverage/

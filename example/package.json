@@ -1,0 +1,32 @@
+{
+  "name": "@tkrotoff/fetch-example",
+  "version": "1.0.0",
+  "private": true,
+  "description": "@tkrotoff/fetch example",
+  "scripts": {
+    "clean": "rm -rf build",
+    "clean:all": "npm run clean && rm -rf node_modules package-lock.json",
+    "start": "webpack-dev-server -d --host 0.0.0.0",
+    "build": "webpack -d",
+    "tsc": "tsc"
+  },
+  "dependencies": {
+    "@tkrotoff/fetch": "^0.3.0",
+    "core-js": "^3.2.1",
+    "expect": "^24.9.0",
+    "ua-parser-js": "^0.7.20",
+    "whatwg-fetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "@babel/preset-typescript": "^7.6.0",
+    "@types/ua-parser-js": "^0.7.33",
+    "babel-loader": "^8.0.6",
+    "file-loader": "^4.2.0",
+    "typescript": "^3.6.3",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.1"
+  }
+}
