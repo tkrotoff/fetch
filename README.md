@@ -10,7 +10,7 @@
 A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper for JSON.
 
 - Simplifies the use of Fetch with JSON
-- Small: less than [100 lines of code](src/Http.ts), [> 1 kB min.gzip](https://bundlephobia.com/result?p=@tkrotoff/fetch) vs [4.3 kB for Axios](https://bundlephobia.com/result?p=axios@0.19.0)
+- Small: less than [100 lines of code](src/Http.ts), [less than 1 kB min.gz](https://bundlephobia.com/result?p=@tkrotoff/fetch) vs [4.3 kB for Axios](https://bundlephobia.com/result?p=axios@0.19.0)
 - Fully tested
 
 ## Why?
@@ -55,7 +55,7 @@ You don't have to worry about:
 - HTTP headers: Accept and Content-Type are already set to application/json inside `defaults.init`
 - stringifying the input data
 - stringifying the [response body](https://fetch.spec.whatwg.org/#body)
-- `await response.json()`: only one `await` instead of 2
+- `await response.json()`: one `await` instead of two
 - `response.ok()`: no need to manually throw an exception on HTTP error status (like 404 or 500)
 
 ## Usage
