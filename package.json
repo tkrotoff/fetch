@@ -21,8 +21,8 @@
   "scripts": {
     "clean": "rm -rf dist coverage",
     "clean:all": "npm run clean && rm -rf node_modules package-lock.json",
-    "build:esnext": "tsc --noEmit false --outDir dist --declaration true",
-    "build:cjs": "tsc --noEmit false --outDir dist/cjs --module commonjs",
+    "build:esnext": "tsc --project tsconfig.dist.json --outDir dist --declaration true",
+    "build:cjs": "tsc --project tsconfig.dist.json --outDir dist/cjs --module commonjs",
     "build": "npm run clean && npm run build:esnext && npm run build:cjs",
     "test": "jest",
     "test:coverage": "jest --coverage",
