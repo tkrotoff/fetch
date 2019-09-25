@@ -1,3 +1,9 @@
+## v0.3.2 (2019/09/25)
+
+### Fixes
+
+- Do not publish test files, see c730ea
+
 ## v0.3.1 (2019/09/23)
 
 ### Features
@@ -35,13 +41,13 @@
 - Allow to pass options
 - Upgrade npm packages
 
-### Fix
+### Fixes
 
 - Do not reinterpret the response, see 00b5ec
 
 ## v0.0.4 (2019/03/25)
 
-### Fix
+### Fixes
 
 - No package.json side effects
 
