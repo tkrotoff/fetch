@@ -1,3 +1,9 @@
+## v0.3.3 (2020/01/04)
+
+### Features
+
+- Update npm packages
+
 ## v0.3.2 (2019/09/25)
 
 ### Fixes
