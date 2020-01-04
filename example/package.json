@@ -8,25 +8,27 @@
     "clean:all": "npm run clean && rm -rf node_modules package-lock.json",
     "start": "webpack-dev-server -d --host 0.0.0.0",
     "build": "webpack -d",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "npm:update": "ncu --upgrade"
   },
   "dependencies": {
     "@tkrotoff/fetch": "^0.3.2",
-    "core-js": "^3.2.1",
+    "core-js": "^3.6.1",
     "expect": "^24.9.0",
-    "ua-parser-js": "^0.7.20",
+    "ua-parser-js": "^0.7.21",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.0",
-    "@babel/preset-env": "^7.6.0",
-    "@babel/preset-typescript": "^7.6.0",
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-typescript": "^7.7.7",
     "@types/ua-parser-js": "^0.7.33",
     "babel-loader": "^8.0.6",
-    "file-loader": "^4.2.0",
-    "typescript": "^3.6.3",
-    "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.1"
+    "file-loader": "^5.0.2",
+    "npm-check-updates": "^4.0.1",
+    "typescript": "^3.7.4",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
   }
 }
