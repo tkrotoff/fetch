@@ -33,7 +33,7 @@
     "prepush": "npm run precommit && npm run test",
     "prepublishOnly": "npm run build",
     "publish:beta": "npm version 0.1.0-beta.1 && npm publish --tag next --dry-run",
-    "npm:update": "ncu --upgrade"
+    "npm:update": "npm run clean:all && npx npm-check-updates --upgrade && npm install"
   },
   "dependencies": {},
   "devDependencies": {
@@ -54,7 +54,6 @@
     "husky": "^3.1.0",
     "jest": "^24.9.0",
     "node-fetch": "^2.6.0",
-    "npm-check-updates": "^4.0.1",
     "prettier": "^1.19.1",
     "typescript": "^3.7.4"
   }
