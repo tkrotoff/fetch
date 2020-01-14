@@ -4,5 +4,14 @@
 const { defaults } = require('jest-config');
 
 module.exports = {
-  testPathIgnorePatterns: [...defaults.testPathIgnorePatterns, 'dist']
+  testPathIgnorePatterns: [...defaults.testPathIgnorePatterns, 'dist'],
+
+  coverageThreshold: {
+    global: {
+      statements: 100,
+      branches: 100,
+      functions: 100,
+      lines: 100
+    }
+  }
 };
