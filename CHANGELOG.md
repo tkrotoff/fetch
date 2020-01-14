@@ -1,3 +1,9 @@
+## v0.3.4 (2020/01/14)
+
+### Features
+
+- Add error.statusCode because of Node.js http.ServerResponse.statusCode
+
 ## v0.3.3 (2020/01/04)
 
 ### Features
