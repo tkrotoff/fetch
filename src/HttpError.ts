@@ -6,7 +6,11 @@
     Object.setPrototypeOf(this, HttpError.prototype);
   }
 
+  // https://developer.mozilla.org/en-US/docs/Web/API/Response/status
   status!: number;
+
+  // https://nodejs.org/docs/latest-v12.x/api/http.html#http_response_statuscode
+  statusCode!: number;
 
   response: unknown;
 }

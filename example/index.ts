@@ -71,6 +71,7 @@ async function getJson404NotFoundExample() {
     expect(e).toBeInstanceOf(HttpError);
     expect(e.message).toEqual('Not Found');
     expect(e.status).toEqual(HttpStatus._404_NotFound);
+    expect(e.statusCode).toEqual(HttpStatus._404_NotFound);
     expect(e.response).toEqual({ code: 404, description: 'Not Found' });
   }
   console.groupEnd();
@@ -87,6 +88,7 @@ async function getJson500InternalServerErrorExample() {
     expect(e).toBeInstanceOf(HttpError);
     expect(e.message).toEqual('Internal Server Error');
     expect(e.status).toEqual(HttpStatus._500_InternalServerError);
+    expect(e.statusCode).toEqual(HttpStatus._500_InternalServerError);
     expect(e.response).toEqual({ code: 500, description: 'Internal Server Error' });
   }
   console.groupEnd();

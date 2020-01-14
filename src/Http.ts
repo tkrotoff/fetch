@@ -23,8 +23,16 @@ export function createHttpError(
   parsedResponseBody: unknown
 ) {
   const error = new HttpError(statusText);
-  error.status = status;
+
+  // Fetch API Response has fields status (number) and statusText (string)
+  // Node.js http.ServerResponse has fields statusCode (number) and statusMessage (string)
+  // They didn't choose the same naming conventions :-/
+
+  error.status = status; // https://developer.mozilla.org/en-US/docs/Web/API/Response/status
+  error.statusCode = status; // https://nodejs.org/docs/latest-v12.x/api/http.html#http_response_statuscode
+
   error.response = parsedResponseBody;
+
   return error;
 }
 

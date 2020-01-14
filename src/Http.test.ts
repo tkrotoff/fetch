@@ -163,6 +163,7 @@ describe('getJson()', () => {
     } catch (e) {
       expect(e).toEqual(new HttpError('Internal Server Error'));
       expect(e.status).toEqual(HttpStatus._500_InternalServerError);
+      expect(e.statusCode).toEqual(HttpStatus._500_InternalServerError);
       expect(e.response).toEqual(
         '<!DOCTYPE html><html><head><title>500 Internal Server Error</title></head></html>'
       );
@@ -481,6 +482,7 @@ describe('checkStatus()', () => {
     } catch (e) {
       expect(e).toEqual(new HttpError('Bad Request'));
       expect(e.status).toEqual(HttpStatus._400_BadRequest);
+      expect(e.statusCode).toEqual(HttpStatus._400_BadRequest);
       expect(e.response).toEqual(parsedResponseBody);
     }
   });
@@ -490,6 +492,7 @@ test('createHttpError()', () => {
   const error = createHttpError('Bad Request', HttpStatus._400_BadRequest, { error: 400 });
   expect(error).toEqual(new HttpError('Bad Request'));
   expect(error.status).toEqual(HttpStatus._400_BadRequest);
+  expect(error.statusCode).toEqual(HttpStatus._400_BadRequest);
   expect(error.response).toEqual({ error: 400 });
 });
 
