@@ -43,7 +43,7 @@ With @tkrotoff/fetch it becomes:
 
 ```JavaScript
 try {
-  const response = await postJson(url, data);
+  const response = await postJSON(url, data);
   console.log(response);
 } catch (e /* HttpError | TypeError */) {
   console.error('Error:', e);
@@ -65,11 +65,11 @@ Example: https://codesandbox.io/s/github/tkrotoff/fetch/tree/master/example
 `npm install @tkrotoff/fetch`
 
 ```JS
-import { defaults, postJson } from '@tkrotoff/fetch';
+import { defaults, postJSON } from '@tkrotoff/fetch';
 
 defaults.init = { /* ... */ };
 
-const response = await postJson(
+const response = await postJSON(
   'https://jsonplaceholder.typicode.com/posts',
   {
     title: 'foo',
@@ -85,11 +85,11 @@ The Fetch API is not supported by IE and old browsers, use https://github.com/gi
 
 ## API
 
-- `getJson(url: string, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`) => response`
-- `postJson(url: string, body: T, init?: RequestInit) => response`
-- `putJson(url: string, body: T, init?: RequestInit) => response`
-- `patchJson(url: string, body: T, init?: RequestInit) => response`
-- `deleteJson(url: string, init?: RequestInit) => response`
+- `getJSON(url: string, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`) => response`
+- `postJSON(url: string, body: T, init?: RequestInit) => response`
+- `putJSON(url: string, body: T, init?: RequestInit) => response`
+- `patchJSON(url: string, body: T, init?: RequestInit) => response`
+- `deleteJSON(url: string, init?: RequestInit) => response`
 
 ### Configuration
 

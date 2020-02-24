@@ -3,14 +3,14 @@ import { HttpStatus } from './HttpStatus';
 
 const JSON_MIME_TYPE = 'application/json';
 
-function isJsonMimeType(headers: Headers) {
+function isJSONMimeType(headers: Headers) {
   const contentType = headers.get('Content-Type') || '';
   return contentType.includes(JSON_MIME_TYPE);
 }
 
 // Exported for testing purpose only
 export async function parseResponseBody(response: Response) {
-  if (isJsonMimeType(response.headers)) {
+  if (isJSONMimeType(response.headers)) {
     // FIXME Remove the cast when response.json() will return unknown
     return response.json() as Promise<unknown>;
   }
@@ -109,7 +109,7 @@ type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 // - TypeError if request blocked (DevTools or CORS) or network timeout (net::ERR_TIMED_OUT):
 //   - Firefox 68: "TypeError: "NetworkError when attempting to fetch resource.""
 //   - Chrome 76: "TypeError: Failed to fetch"
-async function fetchJson<T extends object>(
+async function fetchJSON<T extends object>(
   url: string,
   init: Init | undefined,
   method: Method,
@@ -127,15 +127,15 @@ async function fetchJson<T extends object>(
   return parsedResponseBody;
 }
 
-export const getJson = (url: string, init?: Init) => fetchJson(url, init, 'GET');
+export const getJSON = (url: string, init?: Init) => fetchJSON(url, init, 'GET');
 
-export const postJson = <T extends object>(url: string, body: T, init?: Init) =>
-  fetchJson(url, init, 'POST', body);
+export const postJSON = <T extends object>(url: string, body: T, init?: Init) =>
+  fetchJSON(url, init, 'POST', body);
 
-export const putJson = <T extends object>(url: string, body: T, init?: Init) =>
-  fetchJson(url, init, 'PUT', body);
+export const putJSON = <T extends object>(url: string, body: T, init?: Init) =>
+  fetchJSON(url, init, 'PUT', body);
 
-export const patchJson = <T extends object>(url: string, body: T, init?: Init) =>
-  fetchJson(url, init, 'PATCH', body);
+export const patchJSON = <T extends object>(url: string, body: T, init?: Init) =>
+  fetchJSON(url, init, 'PATCH', body);
 
-export const deleteJson = (url: string, init?: Init) => fetchJson(url, init, 'DELETE');
+export const deleteJSON = (url: string, init?: Init) => fetchJSON(url, init, 'DELETE');

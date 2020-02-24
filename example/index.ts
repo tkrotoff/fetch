@@ -7,14 +7,14 @@ import expect from 'expect';
 
 import { UAParser } from 'ua-parser-js';
 
-import { defaults, postJson, getJson, deleteJson, HttpError, HttpStatus } from '@tkrotoff/fetch';
+import { defaults, postJSON, getJSON, deleteJSON, HttpError, HttpStatus } from '@tkrotoff/fetch';
 
 import './index.html';
 
-async function getJson200OKExample() {
-  console.group(getJson200OKExample.name);
+async function getJSON200OKExample() {
+  console.group(getJSON200OKExample.name);
   try {
-    const response = await getJson('https://jsonplaceholder.typicode.com/posts/1');
+    const response = await getJSON('https://jsonplaceholder.typicode.com/posts/1');
     console.log(response);
     expect(response).toEqual({
       id: 1,
@@ -27,12 +27,12 @@ async function getJson200OKExample() {
   }
   console.groupEnd();
 }
-document.getElementById('getJson200OKExample')!.onclick = getJson200OKExample;
+document.getElementById('getJSON200OKExample')!.onclick = getJSON200OKExample;
 
-async function postJson201CreatedExample() {
-  console.group(postJson201CreatedExample.name);
+async function postJSON201CreatedExample() {
+  console.group(postJSON201CreatedExample.name);
   try {
-    const response = await postJson('https://jsonplaceholder.typicode.com/posts', {
+    const response = await postJSON('https://jsonplaceholder.typicode.com/posts', {
       title: 'foo',
       body: 'bar',
       userId: 1
@@ -44,12 +44,12 @@ async function postJson201CreatedExample() {
   }
   console.groupEnd();
 }
-document.getElementById(postJson201CreatedExample.name)!.onclick = postJson201CreatedExample;
+document.getElementById(postJSON201CreatedExample.name)!.onclick = postJSON201CreatedExample;
 
-async function deteleJson200OKExample() {
-  console.group(deteleJson200OKExample.name);
+async function deteleJSON200OKExample() {
+  console.group(deteleJSON200OKExample.name);
   try {
-    const response = await deleteJson('https://jsonplaceholder.typicode.com/posts/1');
+    const response = await deleteJSON('https://jsonplaceholder.typicode.com/posts/1');
     console.log(response);
     expect(response).toEqual({});
   } catch (e) {
@@ -57,14 +57,14 @@ async function deteleJson200OKExample() {
   }
   console.groupEnd();
 }
-document.getElementById(deteleJson200OKExample.name)!.onclick = deteleJson200OKExample;
+document.getElementById(deteleJSON200OKExample.name)!.onclick = deteleJSON200OKExample;
 
 // See [Special handling for CORS preflight headers?](https://github.com/Readify/httpstatus/issues/25)
 
-async function getJson404NotFoundExample() {
-  console.group(getJson404NotFoundExample.name);
+async function getJSON404NotFoundExample() {
+  console.group(getJSON404NotFoundExample.name);
   try {
-    await getJson('https://httpstat.us/404/cors');
+    await getJSON('https://httpstat.us/404/cors');
     console.assert(false, 'Code should not be reached');
   } catch (e) {
     console.dir(e);
@@ -76,12 +76,12 @@ async function getJson404NotFoundExample() {
   }
   console.groupEnd();
 }
-document.getElementById(getJson404NotFoundExample.name)!.onclick = getJson404NotFoundExample;
+document.getElementById(getJSON404NotFoundExample.name)!.onclick = getJSON404NotFoundExample;
 
-async function getJson500InternalServerErrorExample() {
-  console.group(getJson500InternalServerErrorExample.name);
+async function getJSON500InternalServerErrorExample() {
+  console.group(getJSON500InternalServerErrorExample.name);
   try {
-    await getJson('https://httpstat.us/500/cors');
+    await getJSON('https://httpstat.us/500/cors');
     console.assert(false, 'Code should not be reached');
   } catch (e) {
     console.dir(e);
@@ -94,8 +94,8 @@ async function getJson500InternalServerErrorExample() {
   console.groupEnd();
 }
 document.getElementById(
-  getJson500InternalServerErrorExample.name
-)!.onclick = getJson500InternalServerErrorExample;
+  getJSON500InternalServerErrorExample.name
+)!.onclick = getJSON500InternalServerErrorExample;
 
 function checkTypeError(e: any) {
   const browser = new UAParser();
@@ -137,10 +137,10 @@ function checkTypeError(e: any) {
   }
 }
 
-async function getJsonCorsBlockedExample() {
-  console.group(getJsonCorsBlockedExample.name);
+async function getJSONCorsBlockedExample() {
+  console.group(getJSONCorsBlockedExample.name);
   try {
-    await getJson('https://postman-echo.com/get?foo1=bar1&foo2=bar2');
+    await getJSON('https://postman-echo.com/get?foo1=bar1&foo2=bar2');
     console.assert(false, 'Code should not be reached');
   } catch (e) {
     console.dir(e);
@@ -149,7 +149,7 @@ async function getJsonCorsBlockedExample() {
   }
   console.groupEnd();
 }
-document.getElementById(getJsonCorsBlockedExample.name)!.onclick = getJsonCorsBlockedExample;
+document.getElementById(getJSONCorsBlockedExample.name)!.onclick = getJSONCorsBlockedExample;
 
 async function fetchCorsBlockedExample() {
   console.group(fetchCorsBlockedExample.name);

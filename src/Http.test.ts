@@ -2,11 +2,11 @@ import fetchMock, { MockResponseObject } from 'fetch-mock';
 
 import {
   defaults,
-  getJson,
-  postJson,
-  putJson,
-  patchJson,
-  deleteJson,
+  getJSON,
+  postJSON,
+  putJSON,
+  patchJSON,
+  deleteJSON,
   createHttpError,
   parseResponseBody,
   checkStatus
@@ -49,7 +49,7 @@ describe('defaults.init', () => {
   test('201 Created + defaults', async () => {
     const spy = jest.spyOn(window, 'fetch');
 
-    const response = await postJson('http://addressbook.com/contacts', requestBody);
+    const response = await postJSON('http://addressbook.com/contacts', requestBody);
     expect(response).toEqual(responseBody);
 
     expect(spy).toHaveBeenCalledTimes(1);
@@ -67,7 +67,7 @@ describe('defaults.init', () => {
   test('201 Created + options + defaults', async () => {
     const spy = jest.spyOn(window, 'fetch');
 
-    const response = await postJson('http://addressbook.com/contacts', requestBody, {
+    const response = await postJSON('http://addressbook.com/contacts', requestBody, {
       headers: { Accept: 'test', 'Content-Type': 'test' },
       mode: 'cors'
     });
@@ -86,7 +86,7 @@ describe('defaults.init', () => {
   });
 });
 
-describe('getJson()', () => {
+describe('getJSON()', () => {
   afterEach(fetchMock.reset);
 
   describe('200 OK', () => {
@@ -106,14 +106,14 @@ describe('getJson()', () => {
     });
 
     test('200 OK', async () => {
-      const response = await getJson('http://addressbook.com/contacts/1');
+      const response = await getJSON('http://addressbook.com/contacts/1');
       expect(response).toEqual(responseBody);
     });
 
     test('200 OK + options', async () => {
       const spy = jest.spyOn(window, 'fetch');
 
-      const response = await getJson('http://addressbook.com/contacts/1', {
+      const response = await getJSON('http://addressbook.com/contacts/1', {
         headers: { Accept: 'test', 'Content-Type': 'test' },
         mode: 'cors'
       });
@@ -133,7 +133,7 @@ describe('getJson()', () => {
     test('200 OK + options with method', async () => {
       const spy = jest.spyOn(window, 'fetch');
 
-      const response = await getJson('http://addressbook.com/contacts/1', {
+      const response = await getJSON('http://addressbook.com/contacts/1', {
         method: 'will be ignored'
       } as any);
       expect(response).toEqual(responseBody);
@@ -155,11 +155,11 @@ describe('getJson()', () => {
       body: '<!DOCTYPE html><html><head><title>500 Internal Server Error</title></head></html>'
     });
 
-    await expect(getJson('http://addressbook.com/contacts/1')).rejects.toEqual(
+    await expect(getJSON('http://addressbook.com/contacts/1')).rejects.toEqual(
       new HttpError('Internal Server Error')
     );
     try {
-      await getJson('http://addressbook.com/contacts/1');
+      await getJSON('http://addressbook.com/contacts/1');
     } catch (e) {
       expect(e).toEqual(new HttpError('Internal Server Error'));
       expect(e.status).toEqual(HttpStatus._500_InternalServerError);
@@ -173,12 +173,12 @@ describe('getJson()', () => {
   test('204 No Content', async () => {
     fetchMock.get('http://addressbook.com/contacts/1', HttpStatus._204_NoContent);
 
-    const response = await getJson('http://addressbook.com/contacts/1');
+    const response = await getJSON('http://addressbook.com/contacts/1');
     expect(response).toEqual('');
   });
 });
 
-describe('postJson()', () => {
+describe('postJSON()', () => {
   const requestBody = {
     firstName: 'John',
     lastName: 'Lennon',
@@ -200,14 +200,14 @@ describe('postJson()', () => {
   afterEach(fetchMock.reset);
 
   test('201 Created', async () => {
-    const response = await postJson('http://addressbook.com/contacts', requestBody);
+    const response = await postJSON('http://addressbook.com/contacts', requestBody);
     expect(response).toEqual(responseBody);
   });
 
   test('201 Created + options', async () => {
     const spy = jest.spyOn(window, 'fetch');
 
-    const response = await postJson('http://addressbook.com/contacts', requestBody, {
+    const response = await postJSON('http://addressbook.com/contacts', requestBody, {
       headers: { Accept: 'test', 'Content-Type': 'test' },
       mode: 'cors'
     });
@@ -228,7 +228,7 @@ describe('postJson()', () => {
   test('201 Created + options with method and body', async () => {
     const spy = jest.spyOn(window, 'fetch');
 
-    const response = await postJson('http://addressbook.com/contacts', requestBody, {
+    const response = await postJSON('http://addressbook.com/contacts', requestBody, {
       method: 'will be ignored',
       body: 'will be ignored'
     } as any);
@@ -246,7 +246,7 @@ describe('postJson()', () => {
   });
 });
 
-describe('putJson()', () => {
+describe('putJSON()', () => {
   const requestBody = {
     firstName: 'John',
     lastName: 'Lennon',
@@ -265,14 +265,14 @@ describe('putJson()', () => {
   afterEach(fetchMock.reset);
 
   test('200 OK', async () => {
-    const response = await putJson('http://addressbook.com/contacts/1', requestBody);
+    const response = await putJSON('http://addressbook.com/contacts/1', requestBody);
     expect(response).toEqual(responseBody);
   });
 
   test('200 OK + options', async () => {
     const spy = jest.spyOn(window, 'fetch');
 
-    const response = await putJson('http://addressbook.com/contacts/1', requestBody, {
+    const response = await putJSON('http://addressbook.com/contacts/1', requestBody, {
       headers: { Accept: 'test', 'Content-Type': 'test' },
       mode: 'cors'
     });
@@ -293,7 +293,7 @@ describe('putJson()', () => {
   test('200 OK + options with method and body', async () => {
     const spy = jest.spyOn(window, 'fetch');
 
-    const response = await putJson('http://addressbook.com/contacts/1', requestBody, {
+    const response = await putJSON('http://addressbook.com/contacts/1', requestBody, {
       method: 'will be ignored',
       body: 'will be ignored'
     } as any);
@@ -311,7 +311,7 @@ describe('putJson()', () => {
   });
 });
 
-describe('patchJson()', () => {
+describe('patchJSON()', () => {
   const requestBody = {
     email: 'john@beatles.com'
   };
@@ -330,14 +330,14 @@ describe('patchJson()', () => {
   afterEach(fetchMock.reset);
 
   test('200 OK', async () => {
-    const response = await patchJson('http://addressbook.com/contacts/1', requestBody);
+    const response = await patchJSON('http://addressbook.com/contacts/1', requestBody);
     expect(response).toEqual(responseBody);
   });
 
   test('200 OK + options', async () => {
     const spy = jest.spyOn(window, 'fetch');
 
-    const response = await patchJson('http://addressbook.com/contacts/1', requestBody, {
+    const response = await patchJSON('http://addressbook.com/contacts/1', requestBody, {
       headers: { Accept: 'test', 'Content-Type': 'test' },
       mode: 'cors'
     });
@@ -358,7 +358,7 @@ describe('patchJson()', () => {
   test('200 OK + options with method and body', async () => {
     const spy = jest.spyOn(window, 'fetch');
 
-    const response = await patchJson('http://addressbook.com/contacts/1', requestBody, {
+    const response = await patchJSON('http://addressbook.com/contacts/1', requestBody, {
       method: 'will be ignored',
       body: 'will be ignored'
     } as any);
@@ -376,7 +376,7 @@ describe('patchJson()', () => {
   });
 });
 
-describe('deleteJson()', () => {
+describe('deleteJSON()', () => {
   beforeEach(() => {
     fetchMock.delete('http://addressbook.com/contacts/1', { status: HttpStatus._204_NoContent });
   });
@@ -384,14 +384,14 @@ describe('deleteJson()', () => {
   afterEach(fetchMock.reset);
 
   test('204 No Content', async () => {
-    const response = await deleteJson('http://addressbook.com/contacts/1');
+    const response = await deleteJSON('http://addressbook.com/contacts/1');
     expect(response).toEqual('');
   });
 
   test('204 No Content + options', async () => {
     const spy = jest.spyOn(window, 'fetch');
 
-    const response = await deleteJson('http://addressbook.com/contacts/1', {
+    const response = await deleteJSON('http://addressbook.com/contacts/1', {
       headers: { Accept: 'test', 'Content-Type': 'test' },
       mode: 'cors'
     });
@@ -411,7 +411,7 @@ describe('deleteJson()', () => {
   test('204 No Content + options with method', async () => {
     const spy = jest.spyOn(window, 'fetch');
 
-    const response = await deleteJson('http://addressbook.com/contacts/1', {
+    const response = await deleteJSON('http://addressbook.com/contacts/1', {
       method: 'will be ignored'
     } as any);
     expect(response).toEqual('');
@@ -504,5 +504,5 @@ test('throw TypeError', async () => {
 
   fetchMock.get('http://siteDoesntExist.com', { throws: error });
 
-  await expect(getJson('http://siteDoesntExist.com')).rejects.toThrow(error);
+  await expect(getJSON('http://siteDoesntExist.com')).rejects.toThrow(error);
 });
