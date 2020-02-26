@@ -19,6 +19,8 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run build
+      - run: npm run npm:install:example
+      - run: npm run build:example
       - run: npm run test:coverage
         env:
           CI: true
