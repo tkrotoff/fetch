@@ -1,3 +1,9 @@
+## v0.4.0 (2020/01/26)
+
+### Breaking Changes
+
+- Rename Json to JSON
+
 ## v0.3.4 (2020/01/14)
 
 ### Features
