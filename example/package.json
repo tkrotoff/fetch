@@ -12,7 +12,7 @@
     "npm:update": "ncu --upgrade"
   },
   "dependencies": {
-    "@tkrotoff/fetch": "^0.3.4",
+    "@tkrotoff/fetch": "file:..",
     "core-js": "^3.6.1",
     "expect": "^24.9.0",
     "ua-parser-js": "^0.7.21",

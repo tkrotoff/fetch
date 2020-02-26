@@ -60,7 +60,7 @@ You don't have to worry about:
 
 ## Usage
 
-Example: https://codesandbox.io/s/github/tkrotoff/fetch/tree/master/example
+Example: https://codesandbox.io/s/github/tkrotoff/fetch/tree/codesandbox.io/example
 
 `npm install @tkrotoff/fetch`
 
