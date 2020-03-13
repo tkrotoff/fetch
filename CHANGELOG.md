@@ -1,3 +1,9 @@
+## v0.5.0 (2020/03/13)
+
+### Breaking Changes
+
+- Rework HttpError, remove createHttpError()
+
 ## v0.4.0 (2020/01/26)
 
 ### Breaking Changes
