@@ -7,7 +7,6 @@ import {
   putJSON,
   patchJSON,
   deleteJSON,
-  createHttpError,
   parseResponseBody,
   checkStatus
 } from './Http';
@@ -156,18 +155,12 @@ describe('getJSON()', () => {
     });
 
     await expect(getJSON('http://addressbook.com/contacts/1')).rejects.toEqual(
-      new HttpError('Internal Server Error')
-    );
-    try {
-      await getJSON('http://addressbook.com/contacts/1');
-    } catch (e) {
-      expect(e).toEqual(new HttpError('Internal Server Error'));
-      expect(e.status).toEqual(HttpStatus._500_InternalServerError);
-      expect(e.statusCode).toEqual(HttpStatus._500_InternalServerError);
-      expect(e.response).toEqual(
+      new HttpError(
+        'Internal Server Error',
+        HttpStatus._500_InternalServerError,
         '<!DOCTYPE html><html><head><title>500 Internal Server Error</title></head></html>'
-      );
-    }
+      )
+    );
   });
 
   test('204 No Content', async () => {
@@ -476,24 +469,10 @@ describe('checkStatus()', () => {
   test('400 Bad Request', async () => {
     const response = await create400BadRequestResponse('http://400.com', { error: 400 });
     const parsedResponseBody = await parseResponseBody(response);
-    expect(() => checkStatus(response, parsedResponseBody)).toThrow(new HttpError('Bad Request'));
-    try {
-      checkStatus(response, parsedResponseBody);
-    } catch (e) {
-      expect(e).toEqual(new HttpError('Bad Request'));
-      expect(e.status).toEqual(HttpStatus._400_BadRequest);
-      expect(e.statusCode).toEqual(HttpStatus._400_BadRequest);
-      expect(e.response).toEqual(parsedResponseBody);
-    }
+    expect(() => checkStatus(response, parsedResponseBody)).toThrow(
+      new HttpError('Bad Request', HttpStatus._400_BadRequest, parsedResponseBody)
+    );
   });
-});
-
-test('createHttpError()', () => {
-  const error = createHttpError('Bad Request', HttpStatus._400_BadRequest, { error: 400 });
-  expect(error).toEqual(new HttpError('Bad Request'));
-  expect(error.status).toEqual(HttpStatus._400_BadRequest);
-  expect(error.statusCode).toEqual(HttpStatus._400_BadRequest);
-  expect(error.response).toEqual({ error: 400 });
 });
 
 test('throw TypeError', async () => {

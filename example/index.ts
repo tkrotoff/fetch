@@ -59,7 +59,7 @@ async function deteleJSON200OKExample() {
 }
 document.getElementById(deteleJSON200OKExample.name)!.onclick = deteleJSON200OKExample;
 
-// See [Special handling for CORS preflight headers?](https://github.com/Readify/httpstatus/issues/25)
+// [Special handling for CORS preflight headers?](https://github.com/Readify/httpstatus/issues/25)
 
 async function getJSON404NotFoundExample() {
   console.group(getJSON404NotFoundExample.name);
@@ -69,6 +69,7 @@ async function getJSON404NotFoundExample() {
   } catch (e) {
     console.dir(e);
     expect(e).toBeInstanceOf(HttpError);
+    expect(e.name).toEqual('HttpError');
     expect(e.message).toEqual('Not Found');
     expect(e.status).toEqual(HttpStatus._404_NotFound);
     expect(e.statusCode).toEqual(HttpStatus._404_NotFound);
@@ -86,6 +87,7 @@ async function getJSON500InternalServerErrorExample() {
   } catch (e) {
     console.dir(e);
     expect(e).toBeInstanceOf(HttpError);
+    expect(e.name).toEqual('HttpError');
     expect(e.message).toEqual('Internal Server Error');
     expect(e.status).toEqual(HttpStatus._500_InternalServerError);
     expect(e.statusCode).toEqual(HttpStatus._500_InternalServerError);
@@ -97,7 +99,10 @@ document.getElementById(
   getJSON500InternalServerErrorExample.name
 )!.onclick = getJSON500InternalServerErrorExample;
 
-function checkTypeError(e: any) {
+function checkTypeError(e: TypeError) {
+  expect(e).toBeInstanceOf(TypeError);
+  expect(e.name).toEqual('TypeError');
+
   const browser = new UAParser();
   const engine = browser.getEngine().name;
 
@@ -144,7 +149,6 @@ async function getJSONCorsBlockedExample() {
     console.assert(false, 'Code should not be reached');
   } catch (e) {
     console.dir(e);
-    expect(e).toBeInstanceOf(TypeError);
     checkTypeError(e);
   }
   console.groupEnd();
@@ -155,10 +159,9 @@ async function fetchCorsBlockedExample() {
   console.group(fetchCorsBlockedExample.name);
   try {
     await fetch('https://httpstat.us/whatever', defaults.init);
-    console.assert(true, 'Code should not be reached');
+    console.assert(false, 'Code should not be reached');
   } catch (e) {
     console.dir(e);
-    expect(e).toBeInstanceOf(TypeError);
     checkTypeError(e);
   }
   console.groupEnd();

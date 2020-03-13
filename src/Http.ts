@@ -1,5 +1,4 @@
 import { HttpError } from './HttpError';
-import { HttpStatus } from './HttpStatus';
 
 const JSON_MIME_TYPE = 'application/json';
 
@@ -17,26 +16,7 @@ export async function parseResponseBody(response: Response) {
   return response.text();
 }
 
-export function createHttpError(
-  statusText: string,
-  status: HttpStatus,
-  parsedResponseBody: unknown
-) {
-  const error = new HttpError(statusText);
-
-  // Fetch API Response has fields status (number) and statusText (string)
-  // Node.js http.ServerResponse has fields statusCode (number) and statusMessage (string)
-  // They didn't choose the same naming conventions :-/
-
-  error.status = status; // https://developer.mozilla.org/en-US/docs/Web/API/Response/status
-  error.statusCode = status; // https://nodejs.org/docs/latest-v12.x/api/http.html#http_response_statuscode
-
-  error.response = parsedResponseBody;
-
-  return error;
-}
-
-// See [Handling HTTP error statuses](https://github.com/github/fetch/blob/v3.0.0/README.md#handling-http-error-statuses)
+// [Handling HTTP error statuses](https://github.com/github/fetch/blob/v3.0.0/README.md#handling-http-error-statuses)
 // Exported for testing purpose only
 export function checkStatus(response: Response, parsedResponseBody: unknown) {
   // Response examples under Chrome 76:
@@ -78,7 +58,7 @@ export function checkStatus(response: Response, parsedResponseBody: unknown) {
   // }
 
   if (!response.ok) {
-    throw createHttpError(response.statusText, response.status, parsedResponseBody);
+    throw new HttpError(response.statusText, response.status, parsedResponseBody);
   }
 }
 
@@ -95,7 +75,7 @@ interface Config {
 
 export const defaults: Config = {
   init: {
-    // See https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
+    // https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
     // TODO Remove when old browsers are not supported anymore
     credentials: 'same-origin' as RequestCredentials,
     headers: JSON_HEADERS
