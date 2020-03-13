@@ -80,7 +80,7 @@ const response = await postJSON(
 console.log(response);
 ```
 
-The Fetch API is not supported by IE and old browsers, use https://github.com/github/fetch polyfill
+The Fetch API is not supported by IE and old browsers, use [whatwg-fetch](https://github.com/github/fetch) polyfill
 (+ [core-js](https://github.com/zloirock/core-js) for other modern JS features like async/await).
 
 ## API

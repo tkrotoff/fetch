@@ -8,8 +8,10 @@
   "description": "Fetch wrapper for JSON",
   "license": "MIT",
   "keywords": [
+    "http-client",
+    "http",
     "fetch",
-    "json"
+    "fetch-api"
   ],
   "main": "dist/cjs/index.js",
   "module": "dist/index.js",
