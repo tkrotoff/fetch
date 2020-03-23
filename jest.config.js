@@ -3,7 +3,8 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { defaults } = require('jest-config');
 
-module.exports = {
+/** @type Partial<import('@jest/types').Config.InitialOptions> */
+const config = {
   testPathIgnorePatterns: [...defaults.testPathIgnorePatterns, 'dist'],
 
   coverageThreshold: {
@@ -15,3 +16,5 @@ module.exports = {
     }
   }
 };
+
+module.exports = config;

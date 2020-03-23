@@ -1,13 +1,14 @@
 // @ts-check
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require('path');
+const { join } = require('path');
 
-module.exports = {
+/** @type import('webpack').Configuration */
+const config = {
   entry: './index.ts',
 
   output: {
-    path: path.join(__dirname, 'build'),
+    path: join(__dirname, 'build'),
     filename: '[name].js'
   },
 
@@ -33,3 +34,5 @@ module.exports = {
     ]
   }
 };
+
+module.exports = config;

@@ -1,6 +1,7 @@
 // @ts-check
 
-module.exports = {
+/** @type {import('prettier').Options} */
+const config = {
   endOfLine: 'lf',
 
   // https://github.com/airbnb/javascript/tree/eslint-config-airbnb-v16.1.0#strings--quotes
@@ -14,3 +15,5 @@ module.exports = {
 
   htmlWhitespaceSensitivity: 'ignore'
 };
+
+module.exports = config;
