@@ -1,5 +1,5 @@
-﻿import { HttpStatus } from './HttpStatus';
-import { HttpError } from './HttpError';
+﻿import { HttpError } from './HttpError';
+import { HttpStatus } from './HttpStatus';
 
 /* eslint-disable jest/no-try-expect */
 

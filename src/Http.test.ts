@@ -1,17 +1,17 @@
 import fetchMock, { MockResponseObject } from 'fetch-mock';
 
 import {
+  checkStatus,
   defaults,
-  getJSON,
-  postJSON,
-  putJSON,
-  patchJSON,
   deleteJSON,
+  getJSON,
   parseResponseBody,
-  checkStatus
+  patchJSON,
+  postJSON,
+  putJSON
 } from './Http';
-import { HttpStatus } from './HttpStatus';
 import { HttpError } from './HttpError';
+import { HttpStatus } from './HttpStatus';
 
 describe('defaults.init', () => {
   const originalInit = { ...defaults.init };

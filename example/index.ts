@@ -2,12 +2,10 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import 'whatwg-fetch';
 
+import { defaults, deleteJSON, getJSON, HttpError, HttpStatus, postJSON } from '@tkrotoff/fetch';
 // Yes, you can use [Jest expect](https://github.com/facebook/jest/tree/v24.9.0/packages/expect) inside a browser, how cool it that!
 import expect from 'expect';
-
 import { UAParser } from 'ua-parser-js';
-
-import { defaults, postJSON, getJSON, deleteJSON, HttpError, HttpStatus } from '@tkrotoff/fetch';
 
 import './index.html';
 

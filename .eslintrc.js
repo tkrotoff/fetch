@@ -12,7 +12,7 @@ const config = {
     'plugin:prettier/recommended',
     'prettier/@typescript-eslint'
   ],
-  plugins: [],
+  plugins: ['simple-import-sort'],
   env: {
     browser: true
   },
@@ -24,6 +24,47 @@ const config = {
     'import/no-unresolved': 'off',
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
+
+    'simple-import-sort/sort': [
+      'error',
+      {
+        // https://github.com/lydell/eslint-plugin-simple-import-sort/blob/v5.0.2/src/sort.js#L3-L15
+        groups: [
+          // Side effect imports
+          ['^\\u0000'],
+
+          // Packages
+          [
+            // React first
+            '^react$',
+            // Things that start with a letter (or digit or underscore), or `@` followed by a letter
+            '^@?\\w'
+          ],
+
+          // Absolute imports and other imports such as Vue-style `@/foo`
+          // Anything that does not start with a dot
+          ['^[^.]'],
+
+          // Relative imports
+          [
+            // https://github.com/lydell/eslint-plugin-simple-import-sort/issues/15
+
+            // ../whatever/
+            '^\\.\\./(?=.*/)',
+            // ../
+            '^\\.\\./',
+            // ./whatever/
+            '^\\./(?=.*/)',
+            // Anything that starts with a dot
+            '^\\.',
+            // .html are not side effect imports
+            '^.+\\.html$',
+            // .scss/.css are not side effect imports
+            '^.+\\.s?css$'
+          ]
+        ]
+      }
+    ],
 
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/camelcase': 'off',
