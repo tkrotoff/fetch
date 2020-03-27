@@ -5,19 +5,16 @@ const config = {
   parser: '@typescript-eslint/parser',
   parserOptions: {},
   extends: [
-    // /!\ Order seems to matter
-
+    // /!\ Order matters: the next one overrides rules from the previous one
+    'plugin:jest/recommended',
     'airbnb-base',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'prettier/@typescript-eslint'
   ],
-  plugins: ['@typescript-eslint'],
+  plugins: [],
   env: {
-    es6: true,
-    browser: true,
-    node: true,
-    jest: true
+    browser: true
   },
 
   rules: {
@@ -28,13 +25,13 @@ const config = {
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
 
-    '@typescript-eslint/indent': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/class-name-casing': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
-    '@typescript-eslint/explicit-member-accessibility': 'off',
-    '@typescript-eslint/no-explicit-any': 'off'
+    '@typescript-eslint/no-explicit-any': 'off',
+
+    'jest/no-expect-resolves': 'error'
   },
 
   overrides: [

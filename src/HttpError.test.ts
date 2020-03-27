@@ -1,6 +1,8 @@
 ﻿import { HttpStatus } from './HttpStatus';
 import { HttpError } from './HttpError';
 
+/* eslint-disable jest/no-try-expect */
+
 test('throw', () => {
   expect.assertions(6);
 
