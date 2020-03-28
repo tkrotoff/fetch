@@ -1,17 +1,18 @@
 # @tkrotoff/fetch
 
 [![npm version](https://badge.fury.io/js/%40tkrotoff%2Ffetch.svg)](https://www.npmjs.com/package/@tkrotoff/fetch)
-[![Build Status](https://travis-ci.org/tkrotoff/fetch.svg?branch=master)](https://travis-ci.org/tkrotoff/fetch)
+[![Build status](https://travis-ci.org/tkrotoff/fetch.svg?branch=master)](https://travis-ci.org/tkrotoff/fetch)
 [![Codecov](https://codecov.io/gh/tkrotoff/fetch/branch/master/graph/badge.svg)](https://codecov.io/gh/tkrotoff/fetch)
-[![npm bundle size](https://img.shields.io/bundlephobia/min/%40tkrotoff/fetch.svg)](https://bundlephobia.com/result?p=@tkrotoff/fetch)
+[![Bundle size](https://badgen.net/bundlephobia/minzip/@tkrotoff/fetch)](https://bundlephobia.com/result?p=@tkrotoff/fetch)
 [![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![Airbnb Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 
 A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper for JSON.
 
 - Simplifies the use of Fetch with JSON
-- Small: less than [100 lines of code](src/Http.ts), [less than 1 kB min.gz](https://bundlephobia.com/result?p=@tkrotoff/fetch) vs [4.3 kB for Axios](https://bundlephobia.com/result?p=axios@0.19.0)
+- Tiny: less than [100 lines of code](src/Http.ts), [less than 1 kB min.gz](https://bundlephobia.com/result?p=@tkrotoff/fetch) vs [4.3 kB for Axios](https://bundlephobia.com/result?p=axios@0.19.0)
 - Fully tested
+- Written in TypeScript
 
 ## Why?
 
@@ -30,7 +31,7 @@ try {
     }
   });
   if (!response.ok) {
-    throw new Error('Network response was not ok.');
+    throw new Error('Network response was not ok');
   }
   const json = await response.json();
   console.log('Success:', JSON.stringify(json));
@@ -44,7 +45,7 @@ With @tkrotoff/fetch it becomes:
 ```JavaScript
 try {
   const response = await postJSON(url, data);
-  console.log(response);
+  console.log('Success:', response);
 } catch (e /* HttpError | TypeError */) {
   console.error('Error:', e);
 }
@@ -80,7 +81,7 @@ const response = await postJSON(
 console.log(response);
 ```
 
-The Fetch API is not supported by IE and old browsers, use [whatwg-fetch](https://github.com/github/fetch) polyfill
+Fetch is not supported by IE and old browsers, use [whatwg-fetch](https://github.com/github/fetch) polyfill
 (+ [core-js](https://github.com/zloirock/core-js) for other modern JS features like async/await).
 
 ## API
@@ -104,10 +105,10 @@ defaults.init.credentials = 'include';
 
 ## Usage with Next.js
 
-For @tkrotoff/fetch to work with [`getInitialProps()`](https://nextjs.org/docs/api-reference/data-fetching/getInitialProps), create a `next.config.js` file:
+For Fetch to work with [`getInitialProps()`](https://nextjs.org/docs/api-reference/data-fetching/getInitialProps), create a `next.config.js` file:
 
 ```JavaScript
-const fetch = require('node-fetch');
+// next.config.js
 
-global.fetch = fetch;
+global.fetch = require('node-fetch');
 ```
