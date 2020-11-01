@@ -89,7 +89,7 @@ type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 // - TypeError if request blocked (DevTools or CORS) or network timeout (net::ERR_TIMED_OUT):
 //   - Firefox 68: "TypeError: "NetworkError when attempting to fetch resource.""
 //   - Chrome 76: "TypeError: Failed to fetch"
-async function fetchJSON<T extends object>(
+async function fetchJSON<T extends Record<string, unknown>>(
   url: string,
   init: Init | undefined,
   method: Method,
@@ -109,13 +109,13 @@ async function fetchJSON<T extends object>(
 
 export const getJSON = (url: string, init?: Init) => fetchJSON(url, init, 'GET');
 
-export const postJSON = <T extends object>(url: string, body: T, init?: Init) =>
+export const postJSON = <T extends Record<string, unknown>>(url: string, body: T, init?: Init) =>
   fetchJSON(url, init, 'POST', body);
 
-export const putJSON = <T extends object>(url: string, body: T, init?: Init) =>
+export const putJSON = <T extends Record<string, unknown>>(url: string, body: T, init?: Init) =>
   fetchJSON(url, init, 'PUT', body);
 
-export const patchJSON = <T extends object>(url: string, body: T, init?: Init) =>
+export const patchJSON = <T extends Record<string, unknown>>(url: string, body: T, init?: Init) =>
   fetchJSON(url, init, 'PATCH', body);
 
 export const deleteJSON = (url: string, init?: Init) => fetchJSON(url, init, 'DELETE');

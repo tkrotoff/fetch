@@ -422,7 +422,7 @@ describe('deleteJSON()', () => {
 
 async function createResponse(
   url: string,
-  body?: object | string,
+  body?: Record<string, unknown> | string,
   otherParams?: MockResponseObject
 ) {
   fetchMock.get(url, { body, ...otherParams });
@@ -451,11 +451,11 @@ describe('parseResponseBody()', () => {
   });
 });
 
-async function create200OKResponse(url: string, body: object | string) {
+async function create200OKResponse(url: string, body: Record<string, unknown> | string) {
   return createResponse(url, body, { status: HttpStatus._200_OK });
 }
 
-async function create400BadRequestResponse(url: string, body: object | string) {
+async function create400BadRequestResponse(url: string, body: Record<string, unknown> | string) {
   return createResponse(url, body, { status: HttpStatus._400_BadRequest });
 }
 

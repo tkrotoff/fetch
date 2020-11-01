@@ -19,6 +19,7 @@ const config = {
 
   rules: {
     'no-underscore-dangle': 'off',
+    camelcase: 'off',
 
     'import/no-extraneous-dependencies': 'off',
     'import/no-unresolved': 'off',
@@ -66,11 +67,15 @@ const config = {
       }
     ],
 
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': 'error',
+
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/class-name-casing': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
 
     'jest/no-expect-resolves': 'error'
   },

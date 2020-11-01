@@ -12,10 +12,6 @@ const config = {
     filename: '[name].js'
   },
 
-  // https://github.com/facebook/create-react-app/blob/v2.1.0/packages/react-scripts/config/webpack.config.dev.js#L93
-  // https://reactjs.org/docs/cross-origin-errors.html#source-maps
-  devtool: 'cheap-module-source-map',
-
   resolve: {
     extensions: ['.js', '.ts']
   },
