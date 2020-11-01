@@ -44,8 +44,8 @@ async function postJSON201CreatedExample() {
 }
 document.getElementById(postJSON201CreatedExample.name)!.onclick = postJSON201CreatedExample;
 
-async function deteleJSON200OKExample() {
-  console.group(deteleJSON200OKExample.name);
+async function deleteJSON200OKExample() {
+  console.group(deleteJSON200OKExample.name);
   try {
     const response = await deleteJSON('https://jsonplaceholder.typicode.com/posts/1');
     console.log(response);
@@ -55,7 +55,7 @@ async function deteleJSON200OKExample() {
   }
   console.groupEnd();
 }
-document.getElementById(deteleJSON200OKExample.name)!.onclick = deteleJSON200OKExample;
+document.getElementById(deleteJSON200OKExample.name)!.onclick = deleteJSON200OKExample;
 
 // [Special handling for CORS preflight headers?](https://github.com/Readify/httpstatus/issues/25)
 
