@@ -1,14 +1,14 @@
 // @ts-check
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { join } = require('path');
+const path = require('path');
 
 /** @type import('webpack').Configuration */
 const config = {
   entry: './index.ts',
 
   output: {
-    path: join(__dirname, 'build'),
+    path: path.join(__dirname, 'build'),
     filename: '[name].js'
   },
 

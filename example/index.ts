@@ -9,6 +9,8 @@ import { UAParser } from 'ua-parser-js';
 
 import './index.html';
 
+/* eslint-disable unicorn/prefer-add-event-listener */
+
 async function getJSON200OKExample() {
   console.group(getJSON200OKExample.name);
   try {
@@ -20,7 +22,7 @@ async function getJSON200OKExample() {
       body: expect.any(String),
       userId: 1
     });
-  } catch (e) {
+  } catch {
     console.assert(false, 'Code should not be reached');
   }
   console.groupEnd();
@@ -37,7 +39,7 @@ async function postJSON201CreatedExample() {
     });
     console.log(response);
     expect(response).toEqual({ id: 101, title: 'foo', body: 'bar', userId: 1 });
-  } catch (e) {
+  } catch {
     console.assert(false, 'Code should not be reached');
   }
   console.groupEnd();
@@ -50,7 +52,7 @@ async function deleteJSON200OKExample() {
     const response = await deleteJSON('https://jsonplaceholder.typicode.com/posts/1');
     console.log(response);
     expect(response).toEqual({});
-  } catch (e) {
+  } catch {
     console.assert(false, 'Code should not be reached');
   }
   console.groupEnd();
