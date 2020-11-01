@@ -102,13 +102,3 @@ import { defaults } from '@tkrotoff/fetch';
 defaults.init.mode = 'cors';
 defaults.init.credentials = 'include';
 ```
-
-## Usage with Next.js
-
-For Fetch to work with [`getInitialProps()`](https://nextjs.org/docs/api-reference/data-fetching/getInitialProps), create a `next.config.js` file:
-
-```JavaScript
-// next.config.js
-
-global.fetch = require('node-fetch');
-```
