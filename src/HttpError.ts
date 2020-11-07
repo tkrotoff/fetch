@@ -10,6 +10,7 @@ export class HttpError extends Error {
 
   response: unknown;
 
+  // statusText can be empty: https://stackoverflow.com/q/41632077
   constructor(statusText: string, status: HttpStatus, response: unknown) {
     super(statusText);
 

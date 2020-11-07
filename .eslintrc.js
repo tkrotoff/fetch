@@ -20,6 +20,7 @@ const config = {
 
   rules: {
     'no-underscore-dangle': 'off',
+    'spaced-comment': 'off',
     camelcase: 'off',
 
     'import/no-extraneous-dependencies': 'off',
