@@ -30,6 +30,7 @@ export enum HttpStatus {
 
   _400_BadRequest = 400,
   _401_Unauthorized = 401,
+  _403_Forbidden = 403,
   _404_NotFound = 404,
   _409_Conflict = 409,
 
@@ -42,5 +43,6 @@ export enum HttpStatus {
    * 5xx Server Error
    */
 
-  _500_InternalServerError = 500
+  _500_InternalServerError = 500,
+  _503_ServiceUnavailable = 503
 }
