@@ -39,7 +39,7 @@ describe('defaults.init', () => {
     });
   });
 
-  afterEach(fetchMock.reset);
+  afterEach(() => fetchMock.restore());
 
   afterAll(() => {
     defaults.init = originalInit;
@@ -86,7 +86,7 @@ describe('defaults.init', () => {
 });
 
 describe('getJSON()', () => {
-  afterEach(fetchMock.reset);
+  afterEach(() => fetchMock.restore());
 
   describe('200 OK', () => {
     const requestBody = {
@@ -190,7 +190,7 @@ describe('postJSON()', () => {
     });
   });
 
-  afterEach(fetchMock.reset);
+  afterEach(() => fetchMock.restore());
 
   test('201 Created', async () => {
     const response = await postJSON('http://addressbook.com/contacts', requestBody);
@@ -255,7 +255,7 @@ describe('putJSON()', () => {
     fetchMock.put('http://addressbook.com/contacts/1', responseBody);
   });
 
-  afterEach(fetchMock.reset);
+  afterEach(() => fetchMock.restore());
 
   test('200 OK', async () => {
     const response = await putJSON('http://addressbook.com/contacts/1', requestBody);
@@ -320,7 +320,7 @@ describe('patchJSON()', () => {
     fetchMock.patch('http://addressbook.com/contacts/1', responseBody);
   });
 
-  afterEach(fetchMock.reset);
+  afterEach(() => fetchMock.restore());
 
   test('200 OK', async () => {
     const response = await patchJSON('http://addressbook.com/contacts/1', requestBody);
@@ -374,7 +374,7 @@ describe('deleteJSON()', () => {
     fetchMock.delete('http://addressbook.com/contacts/1', { status: HttpStatus._204_NoContent });
   });
 
-  afterEach(fetchMock.reset);
+  afterEach(() => fetchMock.restore());
 
   test('204 No Content', async () => {
     const response = await deleteJSON('http://addressbook.com/contacts/1');
@@ -427,7 +427,7 @@ async function createResponse(
 ) {
   fetchMock.get(url, { body, ...otherParams });
   const response = await fetch(url);
-  fetchMock.reset();
+  fetchMock.restore();
   return response;
 }
 
@@ -484,4 +484,6 @@ test('throw TypeError', async () => {
   fetchMock.get('http://siteDoesntExist.com', { throws: error });
 
   await expect(getJSON('http://siteDoesntExist.com')).rejects.toThrow(error);
+
+  fetchMock.restore();
 });
