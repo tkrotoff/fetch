@@ -47,9 +47,13 @@
       <button type="button" id="uploadFilesExample">postJSON() upload files</button>
     </p>
     <p>
-      <button type="button" id="fetchCorsBlockedExample">
-        <code>fetch() CORS blocked</code>
-      </button>
+      <button type="button" id="abortRequestExample">getJSON() abort</button>
+    </p>
+    <p>
+      <button type="button" id="downloadProgressExample">fetch() progress</button>
+      <progress id="download-progress-indicator" value="0"></progress>
+      <!-- https://stackoverflow.com/a/53365710 -->
+      <img id="download-progress-img" alt="download-progress-img" src="data:," />
     </p>
 
     <script src="main.js"></script>

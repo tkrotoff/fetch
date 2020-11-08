@@ -200,3 +200,70 @@ async function uploadFilesExample() {
   console.groupEnd();
 }
 document.getElementById(uploadFilesExample.name)!.onclick = uploadFilesExample;
+
+async function abortRequestExample() {
+  console.group(abortRequestExample.name);
+
+  const controller = new AbortController();
+
+  const timeout = setTimeout(() => controller.abort(), 500);
+
+  try {
+    await getJSON('https://httpbin.org/drip?duration=2&numbytes=10&code=200&delay=2', {
+      signal: controller.signal
+    });
+    clearTimeout(timeout);
+    console.assert(false, 'Code should not be reached');
+  } catch (e) {
+    console.dir(e);
+    expect(e).toBeInstanceOf(DOMException);
+    expect(e.name).toEqual('AbortError');
+    expect(e.message).toEqual('The user aborted a request.');
+    expect(e.stack).toEqual(undefined);
+  }
+  console.groupEnd();
+}
+document.getElementById(abortRequestExample.name)!.onclick = abortRequestExample;
+
+// https://github.com/AnthumChris/fetch-progress-indicators/issues/16
+//
+// https://stackoverflow.com/a/64635408
+// https://stackoverflow.com/a/64635024
+// https://stackoverflow.com/a/64635519
+async function downloadProgressExample() {
+  const progressIndicator = document.getElementById(
+    'download-progress-indicator'
+  ) as HTMLProgressElement;
+
+  const { headers, body } = await fetch(
+    'https://fetch-progress.anthum.com/30kbps/images/sunrise-baseline.jpg'
+  );
+
+  const contentLength = headers.get('Content-Length');
+  if (contentLength === null) throw new Error('No Content-Length response header');
+  const totalBytes = Number.parseInt(contentLength, 10);
+  progressIndicator.max = totalBytes;
+
+  if (body === null) throw new Error('No response body');
+  const reader = body.getReader();
+
+  const content = new Array<Uint8Array>();
+  let bytesReceived = 0;
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    // eslint-disable-next-line no-await-in-loop
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    content.push(value!);
+    bytesReceived += value!.byteLength;
+
+    progressIndicator.value = bytesReceived;
+  }
+
+  (document.getElementById('download-progress-img') as HTMLImageElement).src = URL.createObjectURL(
+    new Blob(content)
+  );
+}
+document.getElementById(downloadProgressExample.name)!.onclick = downloadProgressExample;
