@@ -2,7 +2,15 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import 'whatwg-fetch';
 
-import { defaults, deleteJSON, getJSON, HttpError, HttpStatus, postJSON } from '@tkrotoff/fetch';
+import {
+  defaults,
+  deleteJSON,
+  getJSON,
+  HttpError,
+  HttpStatus,
+  postFormData,
+  postJSON
+} from '@tkrotoff/fetch';
 // Yes, you can use [Jest expect](https://github.com/facebook/jest/tree/v24.9.0/packages/expect) inside a browser, how cool it that!
 import expect from 'expect';
 import { UAParser } from 'ua-parser-js';
@@ -169,3 +177,26 @@ async function fetchCorsBlockedExample() {
   console.groupEnd();
 }
 document.getElementById(fetchCorsBlockedExample.name)!.onclick = fetchCorsBlockedExample;
+
+async function uploadFilesExample() {
+  console.group(uploadFilesExample.name);
+  const fileField = document.querySelector(
+    'input[type="file"][multiple][name="fileField"]'
+  ) as HTMLInputElement;
+
+  const data = new FormData();
+  const { files } = fileField;
+  for (let i = 0; i < files!.length; i++) {
+    data.append(`file${i}`, files![i]);
+  }
+
+  try {
+    const response = await postFormData('https://httpbin.org/anything', data);
+    console.log(response);
+    expect(response).toHaveProperty('files');
+  } catch (e) {
+    console.error('Error:', e);
+  }
+  console.groupEnd();
+}
+document.getElementById(uploadFilesExample.name)!.onclick = uploadFilesExample;

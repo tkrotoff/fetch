@@ -87,9 +87,16 @@ Fetch is not supported by IE and old browsers, use [whatwg-fetch](https://github
 ## API
 
 - `getJSON(url: string, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`) => response`
-- `postJSON(url: string, body: T, init?: RequestInit) => response`
-- `putJSON(url: string, body: T, init?: RequestInit) => response`
-- `patchJSON(url: string, body: T, init?: RequestInit) => response`
+
+- `postJSON(url: string, body: Object, init?: RequestInit) => response`
+- `postFormData(url: string, body:` [`FormData`](https://xhr.spec.whatwg.org/#formdata)`, init?: RequestInit) => response`
+
+- `putJSON(url: string, body: Object, init?: RequestInit) => response`
+- `putFormData(url: string, body: FormData, init?: Init) => response`
+
+- `patchJSON(url: string, body: Object, init?: RequestInit) => response`
+- `patchFormData(url: string, body: FormData, init?: Init) => response`
+
 - `deleteJSON(url: string, init?: RequestInit) => response`
 
 ### Configuration

@@ -69,6 +69,13 @@ const JSON_HEADERS = {
   'Content-Type': JSON_MIME_TYPE
 };
 
+const FORM_DATA_HEADERS = {
+  Accept: JSON_MIME_TYPE
+
+  // /!\ Content-Type should *not* be specified, even 'multipart/form-data'
+  // otherwise it does not work
+};
+
 interface Config {
   init: Init;
 }
@@ -77,8 +84,7 @@ export const defaults: Config = {
   init: {
     // https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
     // TODO Remove when old browsers are not supported anymore
-    credentials: 'same-origin' as RequestCredentials,
-    headers: JSON_HEADERS
+    credentials: 'same-origin' as RequestCredentials
   }
 };
 
@@ -97,9 +103,29 @@ async function fetchJSON<T extends Record<string, unknown>>(
 ) {
   const response = await fetch(url, {
     ...defaults.init,
+    headers: { ...defaults.init.headers, ...JSON_HEADERS },
     ...init,
     method,
     body: body !== undefined ? JSON.stringify(body) : undefined
+  });
+
+  const parsedResponseBody = await parseResponseBody(response);
+  checkStatus(response, parsedResponseBody);
+  return parsedResponseBody;
+}
+
+async function fetchFormData<T extends FormData>(
+  url: string,
+  init: Init | undefined,
+  method: Method,
+  body?: T
+) {
+  const response = await fetch(url, {
+    ...defaults.init,
+    headers: { ...defaults.init.headers, ...FORM_DATA_HEADERS },
+    ...init,
+    method,
+    body
   });
 
   const parsedResponseBody = await parseResponseBody(response);
@@ -111,11 +137,17 @@ export const getJSON = (url: string, init?: Init) => fetchJSON(url, init, 'GET')
 
 export const postJSON = <T extends Record<string, unknown>>(url: string, body: T, init?: Init) =>
   fetchJSON(url, init, 'POST', body);
+export const postFormData = <T extends FormData>(url: string, body: T, init?: Init) =>
+  fetchFormData(url, init, 'POST', body);
 
 export const putJSON = <T extends Record<string, unknown>>(url: string, body: T, init?: Init) =>
   fetchJSON(url, init, 'PUT', body);
+export const putFormData = <T extends FormData>(url: string, body: T, init?: Init) =>
+  fetchFormData(url, init, 'PUT', body);
 
 export const patchJSON = <T extends Record<string, unknown>>(url: string, body: T, init?: Init) =>
   fetchJSON(url, init, 'PATCH', body);
+export const patchFormData = <T extends FormData>(url: string, body: T, init?: Init) =>
+  fetchFormData(url, init, 'PATCH', body);
 
 export const deleteJSON = (url: string, init?: Init) => fetchJSON(url, init, 'DELETE');
