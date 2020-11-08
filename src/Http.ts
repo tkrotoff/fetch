@@ -73,7 +73,7 @@ const FORM_DATA_HEADERS = {
   Accept: JSON_MIME_TYPE
 
   // /!\ Content-Type should *not* be specified, even 'multipart/form-data'
-  // otherwise it does not work
+  // otherwise it does not work on inscription.pmu.fr
 };
 
 interface Config {
