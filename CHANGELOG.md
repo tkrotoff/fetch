@@ -1,3 +1,11 @@
+## 0.6.0 (2020/11/08)
+
+### Features
+
+- Update npm packages
+- Add postFormData(), putFormData(), patchFormData()
+- Improve types
+
 ## 0.5.1 (2020/03/16)
 
 ### Features
