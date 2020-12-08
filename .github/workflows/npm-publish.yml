@@ -1,4 +1,4 @@
-# https://github.com/actions/starter-workflows/blob/c934669ce246e6d64e54006b714b04199cbe445b/ci/npm-publish.yml
+# https://github.com/actions/starter-workflows/blob/aa9d3bc6cc46ac11a53ca196e504d4f901a8de8d/ci/npm-publish.yml
 
 name: Node.js Package
 
@@ -19,7 +19,7 @@ jobs:
       - run: npm run build
       - run: npm run npm:install:example
       - run: npm run build:example
-      - run: npm run test:coverage
+      - run: npm run test:coverage:whatwg-fetch
 
   publish-npm:
     needs: build

@@ -1,84 +1,75 @@
 import { HttpError } from './HttpError';
+import { wait } from './wait';
 
+// https://github.com/microsoft/TypeScript/blob/v4.1.2/lib/lib.dom.d.ts#L2546-L2550
+export interface ResponsePromiseWithBodyMethods extends Promise<Response> {
+  arrayBuffer(): Promise<ArrayBuffer>;
+  blob(): Promise<Blob>;
+  formData(): Promise<FormData>;
+  json(): Promise<unknown>; // FIXME Changed from Promise<any> to Promise<unknown> which is better: forces the user to cast
+  text(): Promise<string>;
+}
+
+const ARRAYBUFFER_MIME_TYPE = '*/*';
+const BLOB_MIME_TYPE = '*/*';
+const FORMDATA_MIME_TYPE = 'multipart/form-data';
 const JSON_MIME_TYPE = 'application/json';
+const TEXT_MIME_TYPE = 'text/*';
 
-function isJSONMimeType(headers: Headers) {
-  const contentType = headers.get('Content-Type') || '';
+export function isJSONResponse(response: Response) {
+  const contentType = response.headers.get('content-type') ?? '';
   return contentType.includes(JSON_MIME_TYPE);
 }
 
-// Exported for testing purpose only
-export async function parseResponseBody(response: Response) {
-  if (isJSONMimeType(response.headers)) {
-    // FIXME Remove the cast when response.json() will return unknown
-    return response.json() as Promise<unknown>;
+function extendResponsePromiseWithBodyMethods(
+  responsePromise: ResponsePromiseWithBodyMethods,
+  headers: Headers
+) {
+  /* eslint-disable no-param-reassign */
+
+  function setAcceptHeader(mimeType: string) {
+    headers.set('accept', headers.get('accept') ?? mimeType);
   }
-  return response.text();
+
+  responsePromise.arrayBuffer = async () => {
+    setAcceptHeader(ARRAYBUFFER_MIME_TYPE);
+    const response = await responsePromise;
+    return response.arrayBuffer();
+  };
+
+  responsePromise.blob = async () => {
+    setAcceptHeader(BLOB_MIME_TYPE);
+    const response = await responsePromise;
+    return response.blob();
+  };
+
+  responsePromise.formData = async () => {
+    setAcceptHeader(FORMDATA_MIME_TYPE);
+    const response = await responsePromise;
+    return response.formData();
+  };
+
+  responsePromise.json = async () => {
+    setAcceptHeader(JSON_MIME_TYPE);
+    const response = await responsePromise;
+    if (isJSONResponse(response)) {
+      return response.json();
+    }
+    return response.text();
+  };
+
+  responsePromise.text = async () => {
+    setAcceptHeader(TEXT_MIME_TYPE);
+    const response = await responsePromise;
+    return response.text();
+  };
+
+  /* eslint-enable no-param-reassign */
 }
 
-// [Handling HTTP error statuses](https://github.com/github/fetch/blob/v3.0.0/README.md#handling-http-error-statuses)
-// Exported for testing purpose only
-export function checkStatus(response: Response, parsedResponseBody: unknown) {
-  // Response examples under Chrome 76:
-  //
-  // {
-  //   body: ReadableStream,
-  //   bodyUsed: true,
-  //   headers: Headers,
-  //   ok: true,
-  //   redirected: false,
-  //   status: 201,
-  //   statusText: 'Created',
-  //   type: 'cors',
-  //   url: 'https://jsonplaceholder.typicode.com/posts'
-  // }
-  //
-  // {
-  //   body: ReadableStream,
-  //   bodyUsed: true,
-  //   headers: Headers,
-  //   ok: false,
-  //   redirected: false,
-  //   status: 404,
-  //   statusText: 'Not Found',
-  //   type: 'cors',
-  //   url: 'https://jsonplaceholder.typicode.com/posts/101'
-  // }
-  //
-  // {
-  //   body: ReadableStream,
-  //   bodyUsed: true,
-  //   headers: Headers,
-  //   ok: false,
-  //   redirected: false,
-  //   status: 500,
-  //   statusText: 'Internal Server Error',
-  //   type: 'cors',
-  //   url: 'https://httpstat.us/500'
-  // }
+export type Init = Omit<RequestInit, 'method' | 'body'>;
 
-  if (!response.ok) {
-    throw new HttpError(response.statusText, response.status, parsedResponseBody);
-  }
-}
-
-type Init = Omit<RequestInit, 'method' | 'body'>;
-
-const JSON_HEADERS = {
-  Accept: JSON_MIME_TYPE,
-  'Content-Type': JSON_MIME_TYPE
-};
-
-const FORM_DATA_HEADERS = {
-  Accept: JSON_MIME_TYPE
-
-  // /!\ Content-Type should *not* be specified, even 'multipart/form-data'
-  // otherwise it does not work on inscription.pmu.fr
-};
-
-interface Config {
-  init: Init;
-}
+export type Config = { init: Init };
 
 export const defaults: Config = {
   init: {
@@ -91,63 +82,95 @@ export const defaults: Config = {
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 // Can throw:
-// - HttpError with e.response being the response body
+// - HttpError if !response.ok
 // - TypeError if request blocked (DevTools or CORS) or network timeout (net::ERR_TIMED_OUT):
 //   - Firefox 68: "TypeError: "NetworkError when attempting to fetch resource.""
 //   - Chrome 76: "TypeError: Failed to fetch"
-async function fetchJSON<T extends Record<string, unknown>>(
-  url: string,
-  init: Init | undefined,
+// - DOMException if request aborted
+function request<T extends BodyInit>(
+  input: RequestInfo,
+  headers: Headers,
+  init: Omit<Init, 'headers'> | undefined,
   method: Method,
   body?: T
 ) {
-  const response = await fetch(url, {
-    ...defaults.init,
-    headers: { ...defaults.init.headers, ...JSON_HEADERS },
-    ...init,
-    method,
-    body: body !== undefined ? JSON.stringify(body) : undefined
-  });
+  async function _fetch() {
+    // Have to wait for headers to be modified inside extendResponsePromiseWithBodyMethods
+    await wait(1);
 
-  const parsedResponseBody = await parseResponseBody(response);
-  checkStatus(response, parsedResponseBody);
-  return parsedResponseBody;
+    const response = await fetch(input, {
+      ...defaults.init,
+      ...init,
+      headers,
+      method,
+      body
+    });
+
+    if (!response.ok) throw new HttpError(response);
+
+    return response;
+  }
+
+  const responsePromise = _fetch() as ResponsePromiseWithBodyMethods;
+  extendResponsePromiseWithBodyMethods(responsePromise, headers);
+
+  return responsePromise;
 }
 
-async function fetchFormData<T extends FormData>(
-  url: string,
-  init: Init | undefined,
-  method: Method,
-  body?: T
-) {
-  const response = await fetch(url, {
-    ...defaults.init,
-    headers: { ...defaults.init.headers, ...FORM_DATA_HEADERS },
-    ...init,
-    method,
-    body
-  });
-
-  const parsedResponseBody = await parseResponseBody(response);
-  checkStatus(response, parsedResponseBody);
-  return parsedResponseBody;
+function getHeaders(init?: Init) {
+  // We don't know if defaults.init.headers and init.headers are JSON or Headers instances
+  // thus we have to make the conversion
+  // https://gist.github.com/userpixel/fedfe80d59aa1c096267600595ba423e
+  const defaultInitHeaders = Object.fromEntries(new Headers(defaults.init.headers).entries());
+  const initHeaders = Object.fromEntries(new Headers(init?.headers).entries());
+  return new Headers({ ...defaultInitHeaders, ...initHeaders });
 }
 
-export const getJSON = (url: string, init?: Init) => fetchJSON(url, init, 'GET');
+function getJSONHeaders(init?: Init) {
+  const headers = getHeaders(init);
+  headers.set('content-type', JSON_MIME_TYPE);
+  return headers;
+}
 
-export const postJSON = <T extends Record<string, unknown>>(url: string, body: T, init?: Init) =>
-  fetchJSON(url, init, 'POST', body);
-export const postFormData = <T extends FormData>(url: string, body: T, init?: Init) =>
-  fetchFormData(url, init, 'POST', body);
+export function get(input: RequestInfo, init?: Init) {
+  return request(input, getHeaders(init), init, 'GET');
+}
 
-export const putJSON = <T extends Record<string, unknown>>(url: string, body: T, init?: Init) =>
-  fetchJSON(url, init, 'PUT', body);
-export const putFormData = <T extends FormData>(url: string, body: T, init?: Init) =>
-  fetchFormData(url, init, 'PUT', body);
+// Should be named postJson or postJSON?
+// - JS uses JSON.parse(), JSON.stringify(), toJSON()
+// - Deno uses [JSON](https://github.com/denoland/deno/blob/v1.5.3/cli/dts/lib.webworker.d.ts#L387) and [Json](https://github.com/denoland/deno/blob/v1.5.3/cli/dts/lib.webworker.d.ts#L260)
+//
+// Record<string, unknown> is compatible with "type" not with "interface": "Index signature is missing in type 'MyInterface'"
+// Best alternative is object, why? https://stackoverflow.com/a/58143592
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function postJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
+  return request(input, getJSONHeaders(init), init, 'POST', JSON.stringify(body));
+}
 
-export const patchJSON = <T extends Record<string, unknown>>(url: string, body: T, init?: Init) =>
-  fetchJSON(url, init, 'PATCH', body);
-export const patchFormData = <T extends FormData>(url: string, body: T, init?: Init) =>
-  fetchFormData(url, init, 'PATCH', body);
+// No need to have postFormData() and friends: the browser already sets the proper request content type
+// Something like "content-type: multipart/form-data; boundary=----WebKitFormBoundaryl8VQ0sfwUpJEWna3"
 
-export const deleteJSON = (url: string, init?: Init) => fetchJSON(url, init, 'DELETE');
+export function post<T extends BodyInit>(input: RequestInfo, body: T, init?: Init) {
+  return request(input, getHeaders(init), init, 'POST', body);
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function putJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
+  return request(input, getJSONHeaders(init), init, 'PUT', JSON.stringify(body));
+}
+export function put<T extends BodyInit>(input: RequestInfo, body: T, init?: Init) {
+  return request(input, getHeaders(init), init, 'PUT', body);
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function patchJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
+  return request(input, getJSONHeaders(init), init, 'PATCH', JSON.stringify(body));
+}
+export function patch<T extends BodyInit>(input: RequestInfo, body: T, init?: Init) {
+  return request(input, getHeaders(init), init, 'PATCH', body);
+}
+
+// Cannot be named delete :-/
+export function del(input: RequestInfo, init?: Init) {
+  return request(input, getHeaders(init), init, 'DELETE');
+}

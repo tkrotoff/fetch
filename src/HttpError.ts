@@ -1,30 +1,19 @@
-﻿import { HttpStatus } from './HttpStatus';
-
+﻿// Should be named HTTPError or HttpError?
+// - [Web APIs](https://developer.mozilla.org/en-US/docs/Web/API) have XMLHttpRequest
+// - Node.js uses http: https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/
+// - Deno uses Http: https://github.com/denoland/deno/blob/v1.5.3/cli/rt/01_errors.js#L116
 export class HttpError extends Error {
-  // https://developer.mozilla.org/en-US/docs/Web/API/Response/status
-  // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/status
-  status: HttpStatus;
+  response: Response;
 
-  // https://nodejs.org/docs/latest-v12.x/api/http.html#http_response_statuscode
-  statusCode: HttpStatus;
+  constructor(response: Response) {
+    const { statusText, status } = response;
 
-  response: unknown;
+    super(
+      // statusText can be empty: https://stackoverflow.com/q/41632077
+      statusText || String(status)
+    );
 
-  // statusText can be empty: https://stackoverflow.com/q/41632077
-  constructor(statusText: string, status: HttpStatus, response: unknown) {
-    super(statusText);
-
-    this.name = 'HttpError';
-
-    // Fetch API Response has fields status (number) and statusText (string) (same for XMLHttpRequest)
-    // Node.js http.ServerResponse has fields statusCode (number) and statusMessage (string)
-    // They didn't choose the same naming conventions :-/
-    this.status = status;
-    this.statusCode = status;
-
+    this.name = HttpError.name;
     this.response = response;
-
-    // [Extending built-ins like Error, Array, and Map may no longer work](https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work)
-    Object.setPrototypeOf(this, HttpError.prototype);
   }
 }

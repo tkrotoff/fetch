@@ -1,19 +1,80 @@
-﻿import { HttpError } from './HttpError';
-import { HttpStatus } from './HttpStatus';
+﻿import assert from 'assert';
+
+import { createTestServer, randomPort, TestServer } from './createTestServer';
+import { get } from './Http';
+import { HttpError } from './HttpError';
 
 /* eslint-disable jest/no-try-expect, jest/no-conditional-expect */
 
-test('throw', () => {
-  expect.assertions(6);
+// https://github.com/github/fetch/blob/v3.5.0/fetch.js#L598
+const isWhatwgFetch = (fetch as any).polyfill === true;
+
+const path = '/';
+
+let server: TestServer;
+
+beforeEach(() => {
+  server = createTestServer();
+});
+
+afterEach(async () => {
+  await server.close();
+});
+
+test('HttpError with statusText (HTTP/1.1)', async () => {
+  expect.assertions(4);
+
+  server.silenceErrors();
+
+  server.get(path, (_request, reply) => {
+    reply.code(404).send(new Error('Not Found'));
+  });
+  const url = await server.listen(randomPort);
 
   try {
-    throw new HttpError('Bad Request', HttpStatus._400_BadRequest, { error: 400 });
-  } catch (e) {
-    expect(e).toBeInstanceOf(HttpError);
-    expect(e.name).toEqual('HttpError');
-    expect(e.message).toEqual('Bad Request');
-    expect(e.status).toEqual(HttpStatus._400_BadRequest);
-    expect(e.statusCode).toEqual(HttpStatus._400_BadRequest);
-    expect(e.response).toEqual({ error: 400 });
+    await get(url).text();
+  } catch (e: unknown) {
+    assert(e instanceof HttpError);
+    const { name, message, response } = e;
+    expect(name).toEqual('HttpError');
+    expect(message).toEqual('Not Found');
+    expect(response.headers.get('content-type')).toEqual('application/json; charset=utf-8');
+    expect(await response.json()).toEqual({
+      error: 'Not Found',
+      message: 'Not Found',
+      statusCode: 404
+    });
   }
+});
+
+test('HttpError without statusText because of HTTP/2', async () => {
+  // ["HTTP/2 doesn't have reason phrases anymore"](https://stackoverflow.com/q/41632077)
+  // Unfortunately HTTP/2 does not work with whatwg-fetch/jsdom and node-fetch so we cannot test using HTTP/2
+  // Let's emulate an empty statusText instead
+
+  const body = {
+    error: 'Not Found',
+    message: 'Not Found',
+    statusCode: 404
+  };
+
+  // With statusText
+  let e = new HttpError(
+    new Response(JSON.stringify(body), { status: 404, statusText: 'Not Found' })
+  );
+  expect(e.name).toEqual('HttpError');
+  expect(e.message).toEqual('Not Found');
+  expect(await e.response.json()).toEqual(body);
+
+  // Without statusText
+  e = new HttpError(new Response(JSON.stringify(body), { status: 404 }));
+  expect(e.name).toEqual('HttpError');
+  expect(e.message).toEqual(isWhatwgFetch ? '404' : 'Not Found');
+  expect(await e.response.json()).toEqual(body);
+
+  // With empty statusText
+  e = new HttpError(new Response(JSON.stringify(body), { status: 404, statusText: '' }));
+  expect(e.name).toEqual('HttpError');
+  expect(e.message).toEqual(isWhatwgFetch ? '404' : 'Not Found');
+  expect(await e.response.json()).toEqual(body);
 });

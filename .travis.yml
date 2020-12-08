@@ -11,7 +11,7 @@ before_script:
 script:
   - npm run lint
   - npm run build
-  - npm run test:coverage
+  - npm run test:coverage:whatwg-fetch
 
 after_success:
   - npm install --global codecov

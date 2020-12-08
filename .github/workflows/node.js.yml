@@ -1,4 +1,4 @@
-# https://github.com/actions/starter-workflows/blob/c934669ce246e6d64e54006b714b04199cbe445b/ci/node.js.yml
+# https://github.com/actions/starter-workflows/blob/aa9d3bc6cc46ac11a53ca196e504d4f901a8de8d/ci/node.js.yml
 
 name: Node.js CI
 
@@ -19,11 +19,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{matrix.node-version}}
+      - uses: microsoft/playwright-github-action@v1
       - run: npm ci
       - run: npm run lint
       - run: npm run build
       - run: npm run npm:install:example
       - run: npm run build:example
-      - run: npm run test:coverage
-        env:
-          CI: true
+      - run: npm run test:node-fetch
+      - run: npm run test:e2e
+      - run: npm run test:coverage:whatwg-fetch

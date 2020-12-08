@@ -8,3 +8,5 @@ LICENSE
 
 coverage/
 dist/
+src/*.cert
+src/*.key

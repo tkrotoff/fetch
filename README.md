@@ -7,10 +7,10 @@
 [![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![Airbnb Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 
-A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper for JSON.
+A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper.
 
-- Simplifies the use of Fetch with JSON
-- Tiny: less than [100 lines of code](src/Http.ts), [less than 1 kB min.gz](https://bundlephobia.com/result?p=@tkrotoff/fetch) vs [4.3 kB for Axios](https://bundlephobia.com/result?p=axios@0.19.0)
+- Simplifies the use of Fetch
+- Tiny
 - Fully tested
 - Written in TypeScript
 
@@ -27,14 +27,14 @@ try {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
-      'Content-Type': 'application/json'
+      'content-type': 'application/json'
     }
   });
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
   const json = await response.json();
-  console.log('Success:', JSON.stringify(json));
+  console.log('Success:', json);
 } catch (e) {
   console.error('Error:', e);
 }
@@ -44,7 +44,7 @@ With @tkrotoff/fetch it becomes:
 
 ```JavaScript
 try {
-  const response = await postJSON(url, data);
+  const response = await postJSON(url, data).json();
   console.log('Success:', response);
 } catch (e /* HttpError | TypeError */) {
   console.error('Error:', e);
@@ -53,11 +53,10 @@ try {
 
 You don't have to worry about:
 
-- HTTP headers: Accept and Content-Type are already set to application/json inside `defaults.init`
-- stringifying the input data
-- stringifying the [response body](https://fetch.spec.whatwg.org/#body)
-- `await response.json()`: one `await` instead of two
-- `response.ok()`: no need to manually throw an exception on HTTP error status (like 404 or 500)
+- HTTP headers: Accept and Content-Type are already set
+- stringifying the request body
+- One `await` instead of two
+- No need to manually throw an exception on HTTP error status (like 404 or 500)
 
 ## Usage
 
@@ -77,27 +76,31 @@ const response = await postJSON(
     body: 'bar',
     userId: 1
   }
-);
+).json();
 console.log(response);
 ```
 
-Fetch is not supported by IE and old browsers, use [whatwg-fetch](https://github.com/github/fetch) polyfill
-(+ [core-js](https://github.com/zloirock/core-js) for other modern JS features like async/await).
+Fetch is not supported by old browsers (IE), use [whatwg-fetch](https://github.com/github/fetch) polyfill
+\+ [core-js](https://github.com/zloirock/core-js) for other modern JS features like async/await.
+
+With Node.js use [node-fetch](https://github.com/node-fetch/node-fetch) polyfill.
 
 ## API
 
-- `getJSON(url: string, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`) => response`
+- `get(url: string, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`) => ResponsePromiseWithBodyMethods`
 
-- `postJSON(url: string, body: Object, init?: RequestInit) => response`
-- `postFormData(url: string, body:` [`FormData`](https://xhr.spec.whatwg.org/#formdata)`, init?: RequestInit) => response`
+- `postJSON(url: string, body: Object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+- `post(url: string, body:` [`BodyInit`](https://fetch.spec.whatwg.org/#bodyinit)`, init?: RequestInit) => ResponsePromiseWithBodyMethods`
 
-- `putJSON(url: string, body: Object, init?: RequestInit) => response`
-- `putFormData(url: string, body: FormData, init?: Init) => response`
+- `putJSON(url: string, body: Object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+- `put(url: string, body: BodyInit, init?: Init) => ResponsePromiseWithBodyMethods`
 
-- `patchJSON(url: string, body: Object, init?: RequestInit) => response`
-- `patchFormData(url: string, body: FormData, init?: Init) => response`
+- `patchJSON(url: string, body: Object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+- `patch(url: string, body: BodyInit, init?: Init) => ResponsePromiseWithBodyMethods`
 
-- `deleteJSON(url: string, init?: RequestInit) => response`
+- `del(url: string, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+
+`ResponsePromiseWithBodyMethods` being `Promise<`[`Response`](https://fetch.spec.whatwg.org/#response)`>` with methods from [`Body`](https://fetch.spec.whatwg.org/#body-mixin)
 
 ### Configuration
 
