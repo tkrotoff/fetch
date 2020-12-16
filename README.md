@@ -86,7 +86,7 @@ const response = await postJSON(
 console.log(response);
 ```
 
-Fetch is not supported by old browsers (IE), use [whatwg-fetch](https://github.com/github/fetch) polyfill
+[Fetch](https://caniuse.com/fetch) is not supported by old browsers (IE), use [whatwg-fetch](https://github.com/github/fetch) polyfill
 \+ [core-js](https://github.com/zloirock/core-js) for other modern JS features like async/await.
 
 With Node.js use [node-fetch](https://github.com/node-fetch/node-fetch) polyfill.
