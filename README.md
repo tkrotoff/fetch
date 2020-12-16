@@ -1,6 +1,7 @@
 # @tkrotoff/fetch
 
 [![npm version](https://badge.fury.io/js/%40tkrotoff%2Ffetch.svg)](https://www.npmjs.com/package/@tkrotoff/fetch)
+[![Node.js CI](https://github.com/tkrotoff/fetch/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/tkrotoff/fetch/actions)
 [![Build status](https://travis-ci.org/tkrotoff/fetch.svg?branch=master)](https://travis-ci.org/tkrotoff/fetch)
 [![Codecov](https://codecov.io/gh/tkrotoff/fetch/branch/master/graph/badge.svg)](https://codecov.io/gh/tkrotoff/fetch)
 [![Bundle size](https://badgen.net/bundlephobia/minzip/@tkrotoff/fetch)](https://bundlephobia.com/result?p=@tkrotoff/fetch)
