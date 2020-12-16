@@ -1,4 +1,4 @@
 coverage/
 dist/
-example/node_modules/
-example/build/
+examples/*/node_modules/
+examples/*/build/

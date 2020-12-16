@@ -92,10 +92,11 @@ const config = {
 
   overrides: [
     {
-      files: ['example/*.ts'],
+      files: ['examples/**/*.ts'],
       rules: {
         'no-console': 'off',
-        '@typescript-eslint/no-non-null-assertion': 'off'
+        '@typescript-eslint/no-non-null-assertion': 'off',
+        'unicorn/prefer-add-event-listener': 'off'
       }
     }
   ]

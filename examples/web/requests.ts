@@ -1,19 +1,15 @@
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
-import 'whatwg-fetch';
-
 import { del, get, HttpError, post, postJSON } from '@tkrotoff/fetch';
-// Yes, you can use [Jest expect](https://github.com/facebook/jest/tree/v24.9.0/packages/expect) inside a browser, how cool it that!
+// Yes, you can use [Jest expect](https://github.com/facebook/jest/tree/v24.9.0/packages/expect) without Jest, how cool it that!
 import expect from 'expect';
 import { UAParser } from 'ua-parser-js';
 
-import './index.html';
+let browserEngine = new UAParser().getEngine().name;
+// istanbul ignore next
+if (window.navigator.userAgent.includes('jsdom')) {
+  browserEngine = 'jsdom';
+}
 
-/* eslint-disable unicorn/prefer-add-event-listener */
-
-const browserEngine = new UAParser().getEngine().name;
-
-async function get200OKExample() {
+export async function get200OKExample() {
   console.group(get200OKExample.name);
   try {
     const response = await get('https://jsonplaceholder.typicode.com/posts/1').json();
@@ -24,13 +20,13 @@ async function get200OKExample() {
       userId: 1
     });
   } catch {
+    // istanbul ignore next
     console.assert(false, 'Code should not be reached');
   }
   console.groupEnd();
 }
-document.getElementById(get200OKExample.name)!.onclick = get200OKExample;
 
-async function postJSON201CreatedExample() {
+export async function postJSON201CreatedExample() {
   console.group(postJSON201CreatedExample.name);
   try {
     const response = await postJSON('https://jsonplaceholder.typicode.com/posts', {
@@ -40,35 +36,37 @@ async function postJSON201CreatedExample() {
     }).json();
     expect(response).toEqual({ id: 101, title: 'foo', body: 'bar', userId: 1 });
   } catch {
+    // istanbul ignore next
     console.assert(false, 'Code should not be reached');
   }
   console.groupEnd();
 }
-document.getElementById(postJSON201CreatedExample.name)!.onclick = postJSON201CreatedExample;
 
-async function del200OKExample() {
+export async function del200OKExample() {
   console.group(del200OKExample.name);
   try {
     const response = await del('https://jsonplaceholder.typicode.com/posts/1').json();
     expect(response).toEqual({});
   } catch {
+    // istanbul ignore next
     console.assert(false, 'Code should not be reached');
   }
   console.groupEnd();
 }
-document.getElementById(del200OKExample.name)!.onclick = del200OKExample;
 
 // [Special handling for CORS preflight headers?](https://github.com/Readify/httpstatus/issues/25)
 
-async function get404NotFoundExample() {
+export async function get404NotFoundExample() {
   console.group(get404NotFoundExample.name);
   try {
     await get('https://httpstat.us/404/cors');
+    // istanbul ignore next
     console.assert(false, 'Code should not be reached');
   } catch (e) {
     expect(e).toBeInstanceOf(HttpError);
     expect(e.name).toEqual('HttpError');
 
+    // istanbul ignore next
     switch (browserEngine) {
       case 'EdgeHTML':
       case 'Trident':
@@ -76,6 +74,7 @@ async function get404NotFoundExample() {
       case 'Blink':
         expect(e.message).toEqual('404');
         break;
+      case 'jsdom':
       case 'Gecko':
         expect(e.message).toEqual('Not Found');
         break;
@@ -88,17 +87,18 @@ async function get404NotFoundExample() {
   }
   console.groupEnd();
 }
-document.getElementById(get404NotFoundExample.name)!.onclick = get404NotFoundExample;
 
-async function get500InternalServerErrorExample() {
+export async function get500InternalServerErrorExample() {
   console.group(get500InternalServerErrorExample.name);
   try {
     await get('https://httpstat.us/500/cors');
+    // istanbul ignore next
     console.assert(false, 'Code should not be reached');
   } catch (e) {
     expect(e).toBeInstanceOf(HttpError);
     expect(e.name).toEqual('HttpError');
 
+    // istanbul ignore next
     switch (browserEngine) {
       case 'EdgeHTML':
       case 'Trident':
@@ -106,6 +106,7 @@ async function get500InternalServerErrorExample() {
       case 'Blink':
         expect(e.message).toEqual('500');
         break;
+      case 'jsdom':
       case 'Gecko':
         expect(e.message).toEqual('Internal Server Error');
         break;
@@ -118,15 +119,16 @@ async function get500InternalServerErrorExample() {
   }
   console.groupEnd();
 }
-document.getElementById(
-  get500InternalServerErrorExample.name
-)!.onclick = get500InternalServerErrorExample;
 
 function checkTypeError(e: TypeError) {
   expect(e).toBeInstanceOf(TypeError);
   expect(e.name).toEqual('TypeError');
 
+  // istanbul ignore next
   switch (browserEngine) {
+    case 'jsdom':
+      expect(e.message).toEqual('Failed to fetch');
+      break;
     case 'Blink':
       expect(e.message).toEqual('Failed to fetch');
       expect(e.stack).toEqual('TypeError: Failed to fetch');
@@ -162,28 +164,23 @@ function checkTypeError(e: TypeError) {
   }
 }
 
-async function getCorsBlockedExample() {
+export async function getCorsBlockedExample() {
   console.group(getCorsBlockedExample.name);
   try {
     await get('https://postman-echo.com/get?foo1=bar1&foo2=bar2');
+    // istanbul ignore next
     console.assert(false, 'Code should not be reached');
   } catch (e) {
     checkTypeError(e);
   }
   console.groupEnd();
 }
-document.getElementById(getCorsBlockedExample.name)!.onclick = getCorsBlockedExample;
 
-async function uploadFilesExample() {
+export async function uploadFilesExample(files: FileList) {
   console.group(uploadFilesExample.name);
 
-  const fileField = document.querySelector(
-    'input[type="file"][multiple][name="fileField"]'
-  ) as HTMLInputElement;
-
   const formData = new FormData();
-  const { files } = fileField;
-  for (let i = 0; i < files!.length; i++) {
+  for (let i = 0; i < files.length; i++) {
     formData.append(`file${i}`, files![i]);
   }
 
@@ -191,18 +188,20 @@ async function uploadFilesExample() {
     const response = await post('https://httpbin.org/anything', formData).json();
     expect(response).toHaveProperty('files');
   } catch {
+    // istanbul ignore next
     console.assert(false, 'Code should not be reached');
   }
 
   console.groupEnd();
 }
-document.getElementById(uploadFilesExample.name)!.onclick = uploadFilesExample;
 
 function checkAbortError(e: DOMException) {
   expect(e).toBeInstanceOf(DOMException);
   expect(e.name).toEqual('AbortError');
 
+  // istanbul ignore next
   switch (browserEngine) {
+    case 'jsdom':
     case 'Blink':
       expect(e.message).toEqual('The user aborted a request.');
       break;
@@ -220,7 +219,7 @@ function checkAbortError(e: DOMException) {
   }
 }
 
-async function abortRequestExample() {
+export async function abortRequestExample() {
   console.group(abortRequestExample.name);
 
   const controller = new AbortController();
@@ -231,7 +230,9 @@ async function abortRequestExample() {
     await get('https://httpbin.org/drip?duration=2&numbytes=10&code=200&delay=2', {
       signal: controller.signal
     });
+    // istanbul ignore next
     clearTimeout(timeout);
+    // istanbul ignore next
     console.assert(false, 'Code should not be reached');
   } catch (e) {
     checkAbortError(e);
@@ -239,14 +240,14 @@ async function abortRequestExample() {
 
   console.groupEnd();
 }
-document.getElementById(abortRequestExample.name)!.onclick = abortRequestExample;
 
 // https://github.com/AnthumChris/fetch-progress-indicators/issues/16
 //
 // https://stackoverflow.com/a/64635408
 // https://stackoverflow.com/a/64635024
 // https://stackoverflow.com/a/64635519
-async function downloadProgressExample() {
+// istanbul ignore next
+export async function downloadProgressExample() {
   console.group(downloadProgressExample.name);
 
   const progressIndicator = document.getElementById(
@@ -286,4 +287,3 @@ async function downloadProgressExample() {
 
   console.groupEnd();
 }
-document.getElementById(downloadProgressExample.name)!.onclick = downloadProgressExample;
