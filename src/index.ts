@@ -1,5 +1,4 @@
+export * from './createResponsePromise';
 export * from './Http';
 export * from './HttpError';
 export * from './HttpStatus';
-
-export * from './createResponsePromise';

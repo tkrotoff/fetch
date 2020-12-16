@@ -30,10 +30,10 @@ const config = {
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
 
-    'simple-import-sort/sort': [
+    'simple-import-sort/imports': [
       'error',
       {
-        // https://github.com/lydell/eslint-plugin-simple-import-sort/blob/v5.0.2/src/sort.js#L3-L15
+        // https://github.com/lydell/eslint-plugin-simple-import-sort/blob/v7.0.0/src/imports.js#L5
         groups: [
           // Side effect imports
           ['^\\u0000'],
@@ -47,8 +47,8 @@ const config = {
           ],
 
           // Absolute imports and other imports such as Vue-style `@/foo`
-          // Anything that does not start with a dot
-          ['^[^.]'],
+          // Anything not matched in another group
+          ['^'],
 
           // Relative imports
           [
@@ -70,6 +70,7 @@ const config = {
         ]
       }
     ],
+    'simple-import-sort/exports': 'error',
 
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': 'error',
