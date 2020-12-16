@@ -11,8 +11,10 @@ A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper.
 
 - Simplifies the use of Fetch
 - Tiny
+- No dependencies
 - Fully tested
 - Written in TypeScript
+- Comes with test utilities
 
 ## Why?
 
@@ -46,7 +48,7 @@ With @tkrotoff/fetch it becomes:
 try {
   const response = await postJSON(url, data).json();
   console.log('Success:', response);
-} catch (e /* HttpError | TypeError */) {
+} catch (e /* HttpError | TypeError | DOMException */) {
   console.error('Error:', e);
 }
 ```
@@ -60,11 +62,14 @@ You don't have to worry about:
 
 ## Usage
 
-Example: https://codesandbox.io/s/github/tkrotoff/fetch/tree/codesandbox.io/example
+Examples:
+
+- https://codesandbox.io/s/github/tkrotoff/fetch/tree/codesandbox.io/examples/web
+- https://codesandbox.io/s/github/tkrotoff/fetch/tree/codesandbox.io/examples/node
 
 `npm install @tkrotoff/fetch`
 
-```JS
+```JavaScript
 import { defaults, postJSON } from '@tkrotoff/fetch';
 
 defaults.init = { /* ... */ };
@@ -100,7 +105,24 @@ With Node.js use [node-fetch](https://github.com/node-fetch/node-fetch) polyfill
 
 - `del(url: string, init?: RequestInit) => ResponsePromiseWithBodyMethods`
 
-`ResponsePromiseWithBodyMethods` being `Promise<`[`Response`](https://fetch.spec.whatwg.org/#response)`>` with methods from [`Body`](https://fetch.spec.whatwg.org/#body-mixin)
+`ResponsePromiseWithBodyMethods` being `Promise<`[`Response`](https://fetch.spec.whatwg.org/#response)`>` with added methods from [`Body`](https://fetch.spec.whatwg.org/#body-mixin).
+
+### Test utilities
+
+- `createResponsePromise(body?: BodyInit, init?:` [`ResponseInit`](https://fetch.spec.whatwg.org/#responseinit)`) => ResponsePromiseWithBodyMethods`
+- `createJSONResponsePromise(body: Object, init?: ResponseInit) => ResponsePromiseWithBodyMethods`
+
+### HttpStatus
+
+Instead of writing HTTP statuses as numbers `201`, `403`, `503`... you can replace them with [`HttpStatus`](src/HttpStatus.ts) and write more explicit code:
+
+```JavaScript
+import { HttpStatus } from '@tkrotoff/fetch';
+
+console.log(HttpStatus._201_Created);
+console.log(HttpStatus._403_Forbidden);
+console.log(HttpStatus._503_ServiceUnavailable);
+```
 
 ### Configuration
 
@@ -112,3 +134,45 @@ import { defaults } from '@tkrotoff/fetch';
 defaults.init.mode = 'cors';
 defaults.init.credentials = 'include';
 ```
+
+## Testing
+
+When testing your code, use `createResponsePromise()` and `createJSONResponsePromise()`:
+
+```JavaScript
+import './mockFetch';
+
+import * as Http from '@tkrotoff/fetch';
+
+test('OK', async () => {
+  const getSpy = jest.spyOn(Http, 'get').mockImplementation(() =>
+    Http.createResponsePromise('test')
+  );
+
+  const response = await Http.get(url).text();
+  expect(response).toEqual('test');
+
+  expect(getSpy).toHaveBeenCalledTimes(1);
+  expect(getSpy).toHaveBeenCalledWith(url);
+
+  getSpy.mockRestore();
+});
+
+test('fail', async () => {
+  const getSpy = jest.spyOn(Http, 'get').mockImplementation(() =>
+    Http.createResponsePromise('<!DOCTYPE html><title>404</title>', {
+      status: 404,
+      statusText: 'Not Found'
+    })
+  );
+
+  await expect(Http.get(url).text()).rejects.toThrow('Not Found');
+
+  expect(getSpy).toHaveBeenCalledTimes(1);
+  expect(getSpy).toHaveBeenCalledWith(url);
+
+  getSpy.mockRestore();
+});
+```
+
+Check [examples/node](examples/node) and [examples/web](examples/web).
