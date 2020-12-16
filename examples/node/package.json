@@ -1,0 +1,27 @@
+{
+  "name": "@tkrotoff/fetch-node-example",
+  "version": "1.0.0",
+  "private": true,
+  "description": "@tkrotoff/fetch Node.js example",
+  "scripts": {
+    "clean": "rm -rf build",
+    "clean:all": "npm run clean && rm -rf node_modules package-lock.json",
+    "start": "ts-node index.ts",
+    "test": "jest --verbose",
+    "test:coverage": "jest --coverage",
+    "tsc": "tsc",
+    "npm:update": "npm run clean:all && npx npm-check-updates --upgrade && npm install"
+  },
+  "dependencies": {
+    "@tkrotoff/fetch": "file:../..",
+    "@types/node-fetch": "^2.5.7",
+    "abort-controller": "^3.0.0",
+    "node-fetch": "^2.6.1",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.2"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.12.7",
+    "jest": "^26.6.3"
+  }
+}
