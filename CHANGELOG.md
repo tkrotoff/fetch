@@ -1,3 +1,16 @@
+## 0.10.0 (2020/12/16)
+
+### Breaking Changes
+
+- Make everything more generic: add Body methods to Promise<Response>
+- New Node.js example
+
+### Features
+
+- Update npm packages
+- Add postFormData(), putFormData(), patchFormData()
+- Improve types
+
 ## 0.6.0 (2020/11/08)
 
 ### Features
