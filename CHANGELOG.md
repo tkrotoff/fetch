@@ -1,3 +1,10 @@
+## 0.10.1 (2021/01/06)
+
+### Features
+
+- Update documentation: use RequestInfo as first parameter
+- Update npm packages
+
 ## 0.10.0 (2020/12/16)
 
 ### Breaking Changes
