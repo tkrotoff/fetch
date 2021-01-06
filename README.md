@@ -93,18 +93,18 @@ With Node.js use [node-fetch](https://github.com/node-fetch/node-fetch) polyfill
 
 ## API
 
-- `get(url: string, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`) => ResponsePromiseWithBodyMethods`
+- `get(input:` [`RequestInfo`](https://fetch.spec.whatwg.org/#requestinfo)`, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`) => ResponsePromiseWithBodyMethods`
 
-- `postJSON(url: string, body: Object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
-- `post(url: string, body:` [`BodyInit`](https://fetch.spec.whatwg.org/#bodyinit)`, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+- `postJSON(input: RequestInfo, body: Object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+- `post(input: RequestInfo, body:` [`BodyInit`](https://fetch.spec.whatwg.org/#bodyinit)`, init?: RequestInit) => ResponsePromiseWithBodyMethods`
 
-- `putJSON(url: string, body: Object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
-- `put(url: string, body: BodyInit, init?: Init) => ResponsePromiseWithBodyMethods`
+- `putJSON(input: RequestInfo, body: Object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+- `put(input: RequestInfo, body: BodyInit, init?: Init) => ResponsePromiseWithBodyMethods`
 
-- `patchJSON(url: string, body: Object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
-- `patch(url: string, body: BodyInit, init?: Init) => ResponsePromiseWithBodyMethods`
+- `patchJSON(input: RequestInfo, body: Object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+- `patch(input: RequestInfo, body: BodyInit, init?: Init) => ResponsePromiseWithBodyMethods`
 
-- `del(url: string, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+- `del(input: RequestInfo, init?: RequestInit) => ResponsePromiseWithBodyMethods`
 
 `ResponsePromiseWithBodyMethods` being `Promise<`[`Response`](https://fetch.spec.whatwg.org/#response)`>` with added methods from [`Body`](https://fetch.spec.whatwg.org/#body-mixin).
 
