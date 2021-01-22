@@ -107,6 +107,10 @@ With Node.js use [node-fetch](https://github.com/node-fetch/node-fetch) polyfill
 
 `ResponsePromiseWithBodyMethods` being `Promise<`[`Response`](https://fetch.spec.whatwg.org/#response)`>` with added methods from [`Body`](https://fetch.spec.whatwg.org/#body-mixin).
 
+### HttpError
+
+@tkrotoff/fetch throws [`HttpError`](src/HttpError.ts) with a [`response`](https://fetch.spec.whatwg.org/#response) property when the HTTP status code is < `200` or >= `300`.
+
 ### Test utilities
 
 - `createResponsePromise(body?: BodyInit, init?:` [`ResponseInit`](https://fetch.spec.whatwg.org/#responseinit)`) => ResponsePromiseWithBodyMethods`
