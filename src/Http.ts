@@ -117,13 +117,19 @@ function request<T extends BodyInit>(
   return responsePromise;
 }
 
+// FIXME Remove when support for [EdgeHTML](https://en.wikipedia.org/wiki/EdgeHTML) will be dropped
+function newHeaders(init?: HeadersInit) {
+  // Why "|| {}"? Microsoft Edge <= 18 (EdgeHTML) throws "Invalid argument" with "new Headers(undefined)" and "new Headers(null)"
+  return new Headers(init || {});
+}
+
 function getHeaders(init?: Init) {
   // We don't know if defaults.init.headers and init.headers are JSON or Headers instances
   // thus we have to make the conversion
   // https://gist.github.com/userpixel/fedfe80d59aa1c096267600595ba423e
-  const defaultInitHeaders = Object.fromEntries(new Headers(defaults.init.headers).entries());
-  const initHeaders = Object.fromEntries(new Headers(init?.headers).entries());
-  return new Headers({ ...defaultInitHeaders, ...initHeaders });
+  const defaultInitHeaders = Object.fromEntries(newHeaders(defaults.init.headers).entries());
+  const initHeaders = Object.fromEntries(newHeaders(init?.headers).entries());
+  return newHeaders({ ...defaultInitHeaders, ...initHeaders });
 }
 
 function getJSONHeaders(init?: Init) {

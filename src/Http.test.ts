@@ -466,3 +466,28 @@ test('cannot connect', async () => {
 
   consoleSpy.mockRestore();
 });
+
+// FIXME Remove when support for [EdgeHTML](https://en.wikipedia.org/wiki/EdgeHTML) will be dropped
+test('should not throw under EdgeHTML', async () => {
+  const OriginalHeaders = Headers;
+
+  // Simulate Microsoft Edge <= 18 (EdgeHTML) throwing "Invalid argument" with "new Headers(undefined)" and "new Headers(null)"
+  globalThis.Headers = class extends OriginalHeaders {
+    constructor(init?: HeadersInit) {
+      if (init === undefined || init === null) {
+        throw new TypeError('Invalid argument');
+      }
+      super(init);
+    }
+  };
+
+  server.get(path, (_request, reply) => {
+    reply.send('should not throw');
+  });
+  const url = await server.listen(randomPort);
+
+  const response = await get(url).text();
+  expect(response).toEqual('should not throw');
+
+  globalThis.Headers = OriginalHeaders;
+});
