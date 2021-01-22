@@ -1,3 +1,13 @@
+## 0.10.2 (2021/01/22)
+
+### Fixes
+
+- Fix for Microsoft Edge <= 18 (EdgeHTML)
+
+### Features
+
+- Document HttpError
+
 ## 0.10.1 (2021/01/06)
 
 ### Features
