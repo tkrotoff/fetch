@@ -119,8 +119,8 @@ function request<T extends BodyInit>(
 
 // FIXME Remove when support for [EdgeHTML](https://en.wikipedia.org/wiki/EdgeHTML) will be dropped
 function newHeaders(init?: HeadersInit) {
-  // Why "|| {}"? Microsoft Edge <= 18 (EdgeHTML) throws "Invalid argument" with "new Headers(undefined)" and "new Headers(null)"
-  return new Headers(init || {});
+  // Why "?? {}"? Microsoft Edge <= 18 (EdgeHTML) throws "Invalid argument" with "new Headers(undefined)" and "new Headers(null)"
+  return new Headers(init ?? {});
 }
 
 function getHeaders(init?: Init) {
