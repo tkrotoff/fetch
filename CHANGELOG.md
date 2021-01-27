@@ -1,3 +1,9 @@
+## 0.11.0 (2021/01/27)
+
+### Features
+
+- Introduce createHttpError() & createJSONHttpError()
+
 ## 0.10.2 (2021/01/22)
 
 ### Fixes
