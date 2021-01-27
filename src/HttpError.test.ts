@@ -3,7 +3,6 @@
 import { createTestServer, randomPort, TestServer } from './createTestServer';
 import { get } from './Http';
 import { HttpError } from './HttpError';
-import { isWhatwgFetch } from './isWhatwgFetch';
 
 /* eslint-disable jest/no-try-expect, jest/no-conditional-expect */
 
@@ -67,12 +66,12 @@ test('HttpError without statusText because of HTTP/2', async () => {
   // Without statusText
   e = new HttpError(new Response(JSON.stringify(body), { status: 404 }));
   expect(e.name).toEqual('HttpError');
-  expect(e.message).toEqual(isWhatwgFetch ? '404' : 'Not Found');
+  expect(e.message).toEqual('404');
   expect(await e.response.json()).toEqual(body);
 
   // With empty statusText
   e = new HttpError(new Response(JSON.stringify(body), { status: 404, statusText: '' }));
   expect(e.name).toEqual('HttpError');
-  expect(e.message).toEqual(isWhatwgFetch ? '404' : 'Not Found');
+  expect(e.message).toEqual('404');
   expect(await e.response.json()).toEqual(body);
 });

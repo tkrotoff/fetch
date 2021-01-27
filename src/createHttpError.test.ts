@@ -55,13 +55,14 @@ const type = isWhatwgFetch ? 'default' : undefined;
 
 test('new Response()', async () => {
   const response = new Response();
+  // https://github.com/github/fetch/issues/746
   expect(response.body).toEqual(isWhatwgFetch ? undefined : null); // Should be null
   expect(response.bodyUsed).toEqual(false);
   expect(entriesToObject(response.headers)).toEqual({});
   expect(response.ok).toEqual(true);
   expect(response.redirected).toEqual(redirected); // Should be false
   expect(response.status).toEqual(200);
-  expect(response.statusText).toEqual(isWhatwgFetch ? '' : 'OK'); // Should be ''
+  expect(response.statusText).toEqual('');
   expect(response.type).toEqual(type); // Should be 'default'
   expect(response.url).toEqual('');
 
@@ -71,6 +72,7 @@ test('new Response()', async () => {
 
 test("new Response('body')", async () => {
   const response = new Response('body');
+  // https://github.com/github/fetch/issues/746
   expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
   expect(response.bodyUsed).toEqual(false);
   expect(entriesToObject(response.headers)).toEqual({
@@ -79,7 +81,7 @@ test("new Response('body')", async () => {
   expect(response.ok).toEqual(true);
   expect(response.redirected).toEqual(redirected); // Should be false
   expect(response.status).toEqual(200);
-  expect(response.statusText).toEqual(isWhatwgFetch ? '' : 'OK'); // Should be ''
+  expect(response.statusText).toEqual('');
   expect(response.type).toEqual(type); // Should be 'default'
   expect(response.url).toEqual('');
 
@@ -233,7 +235,7 @@ test('no statusText', async () => {
   {
     const { name, message, response } = createHttpError('body', 200);
     expect(name).toEqual('HttpError');
-    expect(message).toEqual(isWhatwgFetch ? '200' : 'OK');
+    expect(message).toEqual('200');
     expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
@@ -242,7 +244,7 @@ test('no statusText', async () => {
     expect(response.ok).toEqual(true);
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(200);
-    expect(response.statusText).toEqual(isWhatwgFetch ? undefined : 'OK');
+    expect(response.statusText).toEqual(isWhatwgFetch ? undefined : '');
     expect(response.type).toEqual(type);
     expect(response.url).toEqual('');
 
@@ -253,7 +255,7 @@ test('no statusText', async () => {
   {
     const { name, message, response } = createJSONHttpError({ body: true }, 200);
     expect(name).toEqual('HttpError');
-    expect(message).toEqual(isWhatwgFetch ? '200' : 'OK');
+    expect(message).toEqual('200');
     expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
@@ -262,7 +264,7 @@ test('no statusText', async () => {
     expect(response.ok).toEqual(true);
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(200);
-    expect(response.statusText).toEqual(isWhatwgFetch ? undefined : 'OK');
+    expect(response.statusText).toEqual(isWhatwgFetch ? undefined : '');
     expect(response.type).toEqual(type);
     expect(response.url).toEqual('');
 

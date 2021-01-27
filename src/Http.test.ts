@@ -410,6 +410,7 @@ describe('body methods', () => {
     expect(response).toEqual('text/plain');
   });
 
+  // https://github.com/whatwg/fetch/issues/1147
   // eslint-disable-next-line unicorn/consistent-function-scoping
   const nodeFetchBodyAlreadyUsedError = (url: string) => `body used already for: ${url}`;
   const whatwgFetchBodyAlreadyUsedError = 'Already read';

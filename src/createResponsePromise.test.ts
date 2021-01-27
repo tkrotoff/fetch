@@ -12,7 +12,7 @@ test('default Response object', async () => {
   expect(response.ok).toEqual(true);
   expect(response.redirected).toEqual(isWhatwgFetch ? undefined : false);
   expect(response.status).toEqual(200);
-  expect(response.statusText).toEqual(isWhatwgFetch ? '' : 'OK');
+  expect(response.statusText).toEqual('');
   expect(response.url).toEqual('');
 });
 
@@ -48,33 +48,21 @@ describe('body methods', () => {
     expect(await responsePromise.json()).toEqual({ test: 'true' });
   });
 
-  const whatwgFetchUnexpectedJSONToken = 'Unexpected token e in JSON at position 1';
-  const nodeFetchUnexpectedJSONToken =
-    'invalid json response body at  reason: Unexpected token e in JSON at position 1';
-  const unexpectedJSONToken = isWhatwgFetch
-    ? whatwgFetchUnexpectedJSONToken
-    : nodeFetchUnexpectedJSONToken;
-
   test('.json() with text response', async () => {
     const responsePromise = createResponsePromise('test');
-    await expect(responsePromise.json()).rejects.toThrow(unexpectedJSONToken);
+    await expect(responsePromise.json()).rejects.toThrow(
+      'Unexpected token e in JSON at position 1'
+    );
   });
-
-  const whatwgFetchUnexpectedJSONEnd = 'Unexpected end of JSON input';
-  const nodeFetchUnexpectedJSONEnd =
-    'invalid json response body at  reason: Unexpected end of JSON input';
-  const unexpectedJSONEnd = isWhatwgFetch
-    ? whatwgFetchUnexpectedJSONEnd
-    : nodeFetchUnexpectedJSONEnd;
 
   test('.json() with empty response', async () => {
     const responsePromise = createResponsePromise('');
-    await expect(responsePromise.json()).rejects.toThrow(unexpectedJSONEnd);
+    await expect(responsePromise.json()).rejects.toThrow('Unexpected end of JSON input');
   });
 
   test('.json() with no response', async () => {
     const responsePromise = createResponsePromise();
-    await expect(responsePromise.json()).rejects.toThrow(unexpectedJSONEnd);
+    await expect(responsePromise.json()).rejects.toThrow('Unexpected end of JSON input');
   });
 
   test('.text()', async () => {
@@ -83,7 +71,8 @@ describe('body methods', () => {
     expect(text).toEqual('test');
   });
 
-  const nodeFetchBodyAlreadyUsedError = 'body used already for:';
+  // https://github.com/whatwg/fetch/issues/1147
+  const nodeFetchBodyAlreadyUsedError = 'body used already for: ';
   const whatwgFetchBodyAlreadyUsedError = 'Already read';
   const bodyAlreadyUsedError = isWhatwgFetch
     ? whatwgFetchBodyAlreadyUsedError
