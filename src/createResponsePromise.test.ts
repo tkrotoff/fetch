@@ -1,14 +1,12 @@
 import { createJSONResponsePromise, createResponsePromise } from './createResponsePromise';
 import * as Http from './Http';
 import { HttpStatus } from './HttpStatus';
-
-// https://github.com/github/fetch/blob/v3.5.0/fetch.js#L598
-const isWhatwgFetch = (fetch as any).polyfill === true;
+import { isWhatwgFetch } from './isWhatwgFetch';
 
 test('default Response object', async () => {
   const responsePromise = createResponsePromise('text');
   const response = await responsePromise;
-  expect(Object.fromEntries(response.headers.entries())).toEqual({
+  expect(Http.entriesToObject(response.headers)).toEqual({
     'content-type': 'text/plain;charset=UTF-8'
   });
   expect(response.ok).toEqual(true);
@@ -41,7 +39,7 @@ describe('body methods', () => {
     test('.formData()', async () => {
       const responsePromise = createResponsePromise('test');
       const formData = await responsePromise.formData();
-      expect(Object.fromEntries(formData.entries())).toEqual({ test: '' });
+      expect(Http.entriesToObject(formData)).toEqual({ test: '' });
     });
   }
 

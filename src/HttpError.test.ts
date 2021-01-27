@@ -3,11 +3,9 @@
 import { createTestServer, randomPort, TestServer } from './createTestServer';
 import { get } from './Http';
 import { HttpError } from './HttpError';
+import { isWhatwgFetch } from './isWhatwgFetch';
 
 /* eslint-disable jest/no-try-expect, jest/no-conditional-expect */
-
-// https://github.com/github/fetch/blob/v3.5.0/fetch.js#L598
-const isWhatwgFetch = (fetch as any).polyfill === true;
 
 const path = '/';
 

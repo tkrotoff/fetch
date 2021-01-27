@@ -1,8 +1,17 @@
 import { createTestServer, randomPort, TestServer } from './createTestServer';
-import { defaults, del, get, patch, patchJSON, post, postJSON, put, putJSON } from './Http';
-
-// https://github.com/github/fetch/blob/v3.5.0/fetch.js#L598
-const isWhatwgFetch = (fetch as any).polyfill === true;
+import {
+  defaults,
+  del,
+  entriesToObject,
+  get,
+  patch,
+  patchJSON,
+  post,
+  postJSON,
+  put,
+  putJSON
+} from './Http';
+import { isWhatwgFetch } from './isWhatwgFetch';
 
 const path = '/';
 
@@ -32,7 +41,7 @@ test('defaults.init', async () => {
     headers: expect.any(Headers),
     method: 'GET'
   });
-  let headers = Object.fromEntries((spy.mock.calls[0][1]?.headers as Headers).entries());
+  let headers = entriesToObject(spy.mock.calls[0][1]?.headers as Headers);
   expect(headers).toEqual({ accept: 'text/*' });
 
   // What happens when defaults.init is modified?
@@ -52,7 +61,7 @@ test('defaults.init', async () => {
     headers: expect.any(Headers),
     method: 'GET'
   });
-  headers = Object.fromEntries((spy.mock.calls[0][1]?.headers as Headers).entries());
+  headers = entriesToObject(spy.mock.calls[0][1]?.headers as Headers);
   expect(headers).toEqual({ accept: 'text/*', test1: 'true' });
 
   // Should not overwrite defaults.init.headers
@@ -65,7 +74,7 @@ test('defaults.init', async () => {
     headers: expect.any(Headers),
     method: 'GET'
   });
-  headers = Object.fromEntries((spy.mock.calls[0][1]?.headers as Headers).entries());
+  headers = entriesToObject(spy.mock.calls[0][1]?.headers as Headers);
   expect(headers).toEqual({ accept: 'text/*', test1: 'true', test2: 'true' });
 
   defaults.init = originalInit;
@@ -336,7 +345,7 @@ describe('body methods', () => {
       const url = await server.listen(randomPort);
 
       const response = await get(url).formData();
-      expect(Object.fromEntries(response.entries())).toEqual({ 'multipart/form-data': '' });
+      expect(entriesToObject(response)).toEqual({ 'multipart/form-data': '' });
     });
   }
 

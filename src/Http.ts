@@ -13,7 +13,7 @@ export interface ResponsePromiseWithBodyMethods extends Promise<Response> {
 const ARRAYBUFFER_MIME_TYPE = '*/*';
 const BLOB_MIME_TYPE = '*/*';
 const FORMDATA_MIME_TYPE = 'multipart/form-data';
-const JSON_MIME_TYPE = 'application/json';
+export const JSON_MIME_TYPE = 'application/json';
 const TEXT_MIME_TYPE = 'text/*';
 
 export function isJSONResponse(response: Response) {
@@ -117,6 +117,15 @@ function request<T extends BodyInit>(
   return responsePromise;
 }
 
+interface ObjectWithEntries {
+  entries(): IterableIterator<[string, any]>;
+}
+
+// https://gist.github.com/userpixel/fedfe80d59aa1c096267600595ba423e
+export function entriesToObject<T extends ObjectWithEntries>(object: T) {
+  return Object.fromEntries(object.entries());
+}
+
 // FIXME Remove when support for [EdgeHTML](https://en.wikipedia.org/wiki/EdgeHTML) will be dropped
 function newHeaders(init?: HeadersInit) {
   // Why "?? {}"? Microsoft Edge <= 18 (EdgeHTML) throws "Invalid argument" with "new Headers(undefined)" and "new Headers(null)"
@@ -126,9 +135,8 @@ function newHeaders(init?: HeadersInit) {
 function getHeaders(init?: Init) {
   // We don't know if defaults.init.headers and init.headers are JSON or Headers instances
   // thus we have to make the conversion
-  // https://gist.github.com/userpixel/fedfe80d59aa1c096267600595ba423e
-  const defaultInitHeaders = Object.fromEntries(newHeaders(defaults.init.headers).entries());
-  const initHeaders = Object.fromEntries(newHeaders(init?.headers).entries());
+  const defaultInitHeaders = entriesToObject(newHeaders(defaults.init.headers));
+  const initHeaders = entriesToObject(newHeaders(init?.headers));
   return newHeaders({ ...defaultInitHeaders, ...initHeaders });
 }
 

@@ -1,7 +1,5 @@
 import { createTestServer, randomPort } from './createTestServer';
-
-// https://github.com/github/fetch/blob/v3.5.0/fetch.js#L598
-const isWhatwgFetch = (fetch as any).polyfill === true;
+import { isWhatwgFetch } from './isWhatwgFetch';
 
 const path = '/';
 

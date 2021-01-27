@@ -6,7 +6,7 @@ export class HttpError extends Error {
   response: Response;
 
   constructor(response: Response) {
-    const { statusText, status } = response;
+    const { status, statusText } = response;
 
     super(
       // statusText can be empty: https://stackoverflow.com/q/41632077

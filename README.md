@@ -116,6 +116,9 @@ With Node.js use [node-fetch](https://github.com/node-fetch/node-fetch) polyfill
 - `createResponsePromise(body?: BodyInit, init?:` [`ResponseInit`](https://fetch.spec.whatwg.org/#responseinit)`) => ResponsePromiseWithBodyMethods`
 - `createJSONResponsePromise(body: Object, init?: ResponseInit) => ResponsePromiseWithBodyMethods`
 
+- `createHttpError(body: BodyInit, status: number, statusText?: string) => HttpError`
+- `createJSONHttpError(body: Object, status: number, statusText?: string) => HttpError`
+
 ### HttpStatus
 
 Instead of writing HTTP statuses as numbers `201`, `403`, `503`... you can replace them with [`HttpStatus`](src/HttpStatus.ts) and write more explicit code:
