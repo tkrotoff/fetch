@@ -116,8 +116,8 @@ With Node.js use [node-fetch](https://github.com/node-fetch/node-fetch) polyfill
 - `createResponsePromise(body?: BodyInit, init?:` [`ResponseInit`](https://fetch.spec.whatwg.org/#responseinit)`) => ResponsePromiseWithBodyMethods`
 - `createJSONResponsePromise(body: Object, init?: ResponseInit) => ResponsePromiseWithBodyMethods`
 
-- `createHttpError(body: BodyInit, status: number, statusText?: string) => HttpError`
-- `createJSONHttpError(body: Object, status: number, statusText?: string) => HttpError`
+- `createHttpError(body?: BodyInit, status = 0, statusText?: string) => HttpError`
+- `createJSONHttpError(body: Object, status = 0, statusText?: string) => HttpError`
 
 ### HttpStatus
 

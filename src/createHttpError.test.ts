@@ -272,3 +272,66 @@ test('no statusText', async () => {
     expect(response.bodyUsed).toEqual(true);
   }
 });
+
+// FIXME https://github.com/node-fetch/node-fetch/pull/1078
+if (isWhatwgFetch) {
+  test('no status', async () => {
+    {
+      const { name, message, response } = createHttpError('body');
+      expect(name).toEqual('HttpError');
+      expect(message).toEqual('0');
+      expect(response.body).toEqual(undefined);
+      expect(response.bodyUsed).toEqual(false);
+      expect(entriesToObject(response.headers)).toEqual({
+        'content-type': 'text/plain;charset=UTF-8'
+      });
+      expect(response.ok).toEqual(false);
+      expect(response.redirected).toEqual(redirected);
+      expect(response.status).toEqual(0);
+      expect(response.statusText).toEqual(isWhatwgFetch ? undefined : '');
+      expect(response.type).toEqual(type);
+      expect(response.url).toEqual('');
+
+      expect(await response.text()).toEqual('body');
+      expect(response.bodyUsed).toEqual(true);
+    }
+
+    {
+      const { name, message, response } = createJSONHttpError({ body: true });
+      expect(name).toEqual('HttpError');
+      expect(message).toEqual('0');
+      expect(response.body).toEqual(undefined);
+      expect(response.bodyUsed).toEqual(false);
+      expect(entriesToObject(response.headers)).toEqual({
+        'content-type': 'application/json'
+      });
+      expect(response.ok).toEqual(false);
+      expect(response.redirected).toEqual(redirected);
+      expect(response.status).toEqual(0);
+      expect(response.statusText).toEqual(isWhatwgFetch ? undefined : '');
+      expect(response.type).toEqual(type);
+      expect(response.url).toEqual('');
+
+      expect(await response.json()).toEqual({ body: true });
+      expect(response.bodyUsed).toEqual(true);
+    }
+  });
+
+  test('no params', async () => {
+    const { name, message, response } = createHttpError();
+    expect(name).toEqual('HttpError');
+    expect(message).toEqual('0');
+    expect(response.body).toEqual(undefined);
+    expect(response.bodyUsed).toEqual(false);
+    expect(entriesToObject(response.headers)).toEqual({});
+    expect(response.ok).toEqual(false);
+    expect(response.redirected).toEqual(redirected);
+    expect(response.status).toEqual(0);
+    expect(response.statusText).toEqual(isWhatwgFetch ? undefined : '');
+    expect(response.type).toEqual(type);
+    expect(response.url).toEqual('');
+
+    expect(await response.text()).toEqual('');
+    expect(response.bodyUsed).toEqual(true);
+  });
+}
