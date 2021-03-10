@@ -13,7 +13,7 @@ export class HttpError extends Error {
       statusText || String(status)
     );
 
-    this.name = HttpError.name;
+    this.name = 'HttpError';
     this.response = response;
   }
 }
