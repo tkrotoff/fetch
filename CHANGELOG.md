@@ -1,3 +1,10 @@
+## 0.11.1 (2021/03/10)
+
+### Features
+
+- More HTTP status codes
+- Update npm packages
+
 ## 0.11.0 (2021/01/27)
 
 ### Features
