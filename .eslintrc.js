@@ -11,8 +11,7 @@ const config = {
     'plugin:jest/recommended',
     'airbnb-base',
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-    'prettier/@typescript-eslint'
+    'plugin:prettier/recommended'
   ],
   plugins: ['simple-import-sort'],
   env: {

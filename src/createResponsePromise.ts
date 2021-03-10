@@ -5,6 +5,7 @@ function extendResponsePromiseWithBodyMethods(
   responsePromise: ResponsePromiseWithBodyMethods,
   response: Response
 ) {
+  // eslint-disable-next-line unicorn/no-array-for-each
   (['arrayBuffer', 'blob', 'formData', 'json', 'text'] as const).forEach(methodName => {
     // eslint-disable-next-line no-param-reassign
     responsePromise[methodName] = () =>

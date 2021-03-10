@@ -7,9 +7,6 @@ import { isWhatwgFetch } from './isWhatwgFetch';
 const redirected = isWhatwgFetch ? undefined : false;
 const type = isWhatwgFetch ? 'default' : undefined;
 
-// FIXME https://github.com/github/fetch/pull/897
-const emptyStatusText = isWhatwgFetch ? undefined : '';
-
 // "new Response()" gives a 200 response:
 // {
 //   body: null
@@ -247,7 +244,7 @@ test('no statusText', async () => {
     expect(response.ok).toEqual(true);
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(200);
-    expect(response.statusText).toEqual(emptyStatusText);
+    expect(response.statusText).toEqual('');
     expect(response.type).toEqual(type);
     expect(response.url).toEqual('');
 
@@ -267,7 +264,7 @@ test('no statusText', async () => {
     expect(response.ok).toEqual(true);
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(200);
-    expect(response.statusText).toEqual(emptyStatusText);
+    expect(response.statusText).toEqual('');
     expect(response.type).toEqual(type);
     expect(response.url).toEqual('');
 
@@ -291,7 +288,7 @@ if (isWhatwgFetch) {
       expect(response.ok).toEqual(false);
       expect(response.redirected).toEqual(redirected);
       expect(response.status).toEqual(0);
-      expect(response.statusText).toEqual(emptyStatusText);
+      expect(response.statusText).toEqual('');
       expect(response.type).toEqual(type);
       expect(response.url).toEqual('');
 
@@ -311,7 +308,7 @@ if (isWhatwgFetch) {
       expect(response.ok).toEqual(false);
       expect(response.redirected).toEqual(redirected);
       expect(response.status).toEqual(0);
-      expect(response.statusText).toEqual(emptyStatusText);
+      expect(response.statusText).toEqual('');
       expect(response.type).toEqual(type);
       expect(response.url).toEqual('');
 
@@ -330,7 +327,7 @@ if (isWhatwgFetch) {
     expect(response.ok).toEqual(false);
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(0);
-    expect(response.statusText).toEqual(emptyStatusText);
+    expect(response.statusText).toEqual('');
     expect(response.type).toEqual(type);
     expect(response.url).toEqual('');
 
