@@ -1,5 +1,3 @@
-import './mockFetch';
-
 import * as Http from '@tkrotoff/fetch';
 
 import {

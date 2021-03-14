@@ -147,8 +147,6 @@ defaults.init.credentials = 'include';
 When testing your code, use `createResponsePromise()` and `createJSONResponsePromise()`:
 
 ```JavaScript
-import './mockFetch';
-
 import * as Http from '@tkrotoff/fetch';
 
 test('OK', async () => {
