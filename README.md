@@ -157,8 +157,7 @@ test('OK', async () => {
   const response = await Http.get(url).text();
   expect(response).toEqual('test');
 
-  expect(getSpy).toHaveBeenCalledTimes(1);
-  expect(getSpy).toHaveBeenCalledWith(url);
+  expect(getSpy).toHaveBeenNthCalledWith(1, url);
 
   getSpy.mockRestore();
 });
@@ -173,8 +172,7 @@ test('fail', async () => {
 
   await expect(Http.get(url).text()).rejects.toThrow('Not Found');
 
-  expect(getSpy).toHaveBeenCalledTimes(1);
-  expect(getSpy).toHaveBeenCalledWith(url);
+  expect(getSpy).toHaveBeenNthCalledWith(1, url);
 
   getSpy.mockRestore();
 });
