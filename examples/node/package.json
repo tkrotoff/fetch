@@ -4,7 +4,7 @@
   "private": true,
   "description": "@tkrotoff/fetch Node.js example",
   "scripts": {
-    "clean": "rm -rf build",
+    "clean": "rm -rf build coverage",
     "clean:all": "npm run clean && rm -rf node_modules package-lock.json",
     "start": "ts-node index.ts",
     "test": "jest --verbose",
