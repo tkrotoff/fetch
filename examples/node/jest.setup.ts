@@ -20,7 +20,6 @@ process.on('unhandledRejection', (reason: Error | any, _promise: Promise<any>) =
   throw reason;
 });
 
-globalThis.fetch = nodeFetch as any;
 globalThis.Headers = nodeFetch.Headers as any;
 globalThis.Response = nodeFetch.Response as any;
 
