@@ -1,3 +1,11 @@
+## 0.11.3 (2021/03/15)
+
+### Fixes
+
+- Use Rollup to generate CommonJS and UMD outputs
+  - No need anymore for mockFetch.ts: no more "TypeError: Cannot redefine property: ..." with Jest thx to Rollup CommonJS output
+- Fix HttpError name when minified
+
 ## 0.11.1 (2021/03/10)
 
 ### Features
