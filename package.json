@@ -47,7 +47,7 @@
     "tsc": "tsc",
     "format": "prettier --write '**/*'",
     "lint": "npm run tsc && eslint . '**/*.{js,ts}'",
-    "precommit": "npm run format && npm run lint",
+    "precommit": "npm run lint",
     "prepush": "npm run test",
     "prepublishOnly": "npm run build",
     "publish:beta": "npm version 0.1.0-beta.1 && npm publish --tag next --dry-run",
