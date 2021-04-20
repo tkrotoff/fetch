@@ -1,3 +1,11 @@
+## 0.11.4 (2021/04/20)
+
+### Features
+
+- Improve documentation
+- Various internal improvements
+- Update npm packages
+
 ## 0.11.3 (2021/03/15)
 
 ### Fixes
