@@ -7,8 +7,8 @@ const config = {
   extends: [
     // /!\ Order matters: the next one overrides rules from the previous one
     'plugin:jest-playwright/recommended',
-    'plugin:unicorn/recommended',
     'plugin:jest/recommended',
+    'plugin:unicorn/recommended',
     'airbnb-base',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended'

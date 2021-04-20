@@ -1,4 +1,5 @@
 .git/
+.husky/
 .gitignore
 .prettierignore
 .eslintignore
