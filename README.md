@@ -94,14 +94,14 @@ With Node.js use [node-fetch](https://github.com/node-fetch/node-fetch) polyfill
 
 - `get(input:` [`RequestInfo`](https://fetch.spec.whatwg.org/#requestinfo)`, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`) => ResponsePromiseWithBodyMethods`
 
-- `postJSON(input: RequestInfo, body: object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
 - `post(input: RequestInfo, body:` [`BodyInit`](https://fetch.spec.whatwg.org/#bodyinit)`, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+- `postJSON(input: RequestInfo, body: object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
 
-- `putJSON(input: RequestInfo, body: object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
 - `put(input: RequestInfo, body: BodyInit, init?: Init) => ResponsePromiseWithBodyMethods`
+- `putJSON(input: RequestInfo, body: object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
 
-- `patchJSON(input: RequestInfo, body: object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
 - `patch(input: RequestInfo, body: BodyInit, init?: Init) => ResponsePromiseWithBodyMethods`
+- `patchJSON(input: RequestInfo, body: object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
 
 - `del(input: RequestInfo, init?: RequestInit) => ResponsePromiseWithBodyMethods`
 
