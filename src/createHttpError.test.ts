@@ -1,6 +1,6 @@
+import { entriesToObject } from './utils/entriesToObject';
 import { isWhatwgFetch } from './utils/isWhatwgFetch';
 import { createHttpError, createJSONHttpError } from './createHttpError';
-import { entriesToObject } from './Http';
 
 /* eslint-disable unicorn/no-null */
 

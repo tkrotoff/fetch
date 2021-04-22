@@ -1,17 +1,7 @@
 import { createTestServer, randomPort, TestServer } from './createTestServer/createTestServer';
+import { entriesToObject } from './utils/entriesToObject';
 import { isWhatwgFetch } from './utils/isWhatwgFetch';
-import {
-  defaults,
-  del,
-  entriesToObject,
-  get,
-  patch,
-  patchJSON,
-  post,
-  postJSON,
-  put,
-  putJSON
-} from './Http';
+import { defaults, del, get, patch, patchJSON, post, postJSON, put, putJSON } from './Http';
 
 const path = '/';
 

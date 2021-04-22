@@ -1,3 +1,4 @@
+import { entriesToObject } from './utils/entriesToObject';
 import { isWhatwgFetch } from './utils/isWhatwgFetch';
 import { createJSONResponsePromise, createResponsePromise } from './createResponsePromise';
 import * as Http from './Http';
@@ -6,7 +7,7 @@ import { HttpStatus } from './HttpStatus';
 test('default Response object', async () => {
   const responsePromise = createResponsePromise('text');
   const response = await responsePromise;
-  expect(Http.entriesToObject(response.headers)).toEqual({
+  expect(entriesToObject(response.headers)).toEqual({
     'content-type': 'text/plain;charset=UTF-8'
   });
   expect(response.ok).toEqual(true);
@@ -39,7 +40,7 @@ describe('body methods', () => {
     test('.formData()', async () => {
       const responsePromise = createResponsePromise('test');
       const formData = await responsePromise.formData();
-      expect(Http.entriesToObject(formData)).toEqual({ test: '' });
+      expect(entriesToObject(formData)).toEqual({ test: '' });
     });
   }
 
