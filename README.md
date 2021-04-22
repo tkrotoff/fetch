@@ -105,7 +105,7 @@ With Node.js use [node-fetch](https://github.com/node-fetch/node-fetch) polyfill
 
 - `del(input: RequestInfo, init?: RequestInit): ResponsePromiseWithBodyMethods`
 
-- `del(input: RequestInfo, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+- `isJSONResponse(response: `[`Response`](https://fetch.spec.whatwg.org/#response)`): boolean`
 
 `ResponsePromiseWithBodyMethods` being `Promise<`[`Response`](https://fetch.spec.whatwg.org/#response)`>` with added methods from [`Body`](https://fetch.spec.whatwg.org/#body-mixin).
 
