@@ -1,3 +1,15 @@
+## 0.12.0 (2021/04/22)
+
+### Breaking Changes
+
+- Switch HttpStatus from an enum to an object to reduce bundle size
+- Do not bundle export entriesToObject()
+
+### Features
+
+- Document isJSONResponse() & improve documentation
+- Change internal file organization
+
 ## 0.11.4 (2021/04/20)
 
 ### Features
