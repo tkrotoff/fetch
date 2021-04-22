@@ -92,16 +92,18 @@ With Node.js use [node-fetch](https://github.com/node-fetch/node-fetch) polyfill
 
 ## API
 
-- `get(input:` [`RequestInfo`](https://fetch.spec.whatwg.org/#requestinfo)`, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`) => ResponsePromiseWithBodyMethods`
+- `get(input:` [`RequestInfo`](https://fetch.spec.whatwg.org/#requestinfo)`, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`): ResponsePromiseWithBodyMethods`
 
-- `post(input: RequestInfo, body:` [`BodyInit`](https://fetch.spec.whatwg.org/#bodyinit)`, init?: RequestInit) => ResponsePromiseWithBodyMethods`
-- `postJSON(input: RequestInfo, body: object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+- `post(input: RequestInfo, body:` [`BodyInit`](https://fetch.spec.whatwg.org/#bodyinit)`, init?: RequestInit): ResponsePromiseWithBodyMethods`
+- `postJSON(input: RequestInfo, body: object, init?: RequestInit): ResponsePromiseWithBodyMethods`
 
-- `put(input: RequestInfo, body: BodyInit, init?: Init) => ResponsePromiseWithBodyMethods`
-- `putJSON(input: RequestInfo, body: object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+- `put(input: RequestInfo, body: BodyInit, init?: Init): ResponsePromiseWithBodyMethods`
+- `putJSON(input: RequestInfo, body: object, init?: RequestInit): ResponsePromiseWithBodyMethods`
 
-- `patch(input: RequestInfo, body: BodyInit, init?: Init) => ResponsePromiseWithBodyMethods`
-- `patchJSON(input: RequestInfo, body: object, init?: RequestInit) => ResponsePromiseWithBodyMethods`
+- `patch(input: RequestInfo, body: BodyInit, init?: Init): ResponsePromiseWithBodyMethods`
+- `patchJSON(input: RequestInfo, body: object, init?: RequestInit): ResponsePromiseWithBodyMethods`
+
+- `del(input: RequestInfo, init?: RequestInit): ResponsePromiseWithBodyMethods`
 
 - `del(input: RequestInfo, init?: RequestInit) => ResponsePromiseWithBodyMethods`
 
@@ -113,11 +115,11 @@ With Node.js use [node-fetch](https://github.com/node-fetch/node-fetch) polyfill
 
 ### Test utilities
 
-- `createResponsePromise(body?:` [`BodyInit`](https://fetch.spec.whatwg.org/#bodyinit)`, init?:` [`ResponseInit`](https://fetch.spec.whatwg.org/#responseinit)`) => ResponsePromiseWithBodyMethods`
-- `createJSONResponsePromise(body: object, init?: ResponseInit) => ResponsePromiseWithBodyMethods`
+- `createResponsePromise(body?:` [`BodyInit`](https://fetch.spec.whatwg.org/#bodyinit)`, init?:` [`ResponseInit`](https://fetch.spec.whatwg.org/#responseinit)`): ResponsePromiseWithBodyMethods`
+- `createJSONResponsePromise(body: object, init?: ResponseInit): ResponsePromiseWithBodyMethods`
 
-- `createHttpError(body?: BodyInit, status = 0, statusText?: string) => HttpError`
-- `createJSONHttpError(body: object, status = 0, statusText?: string) => HttpError`
+- `createHttpError(body?: BodyInit, status = 0, statusText?: string): HttpError`
+- `createJSONHttpError(body: object, status = 0, statusText?: string): HttpError`
 
 ### HttpStatus
 
