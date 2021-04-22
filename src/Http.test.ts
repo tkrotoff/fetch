@@ -1,4 +1,5 @@
-import { createTestServer, randomPort, TestServer } from './createTestServer';
+import { createTestServer, randomPort, TestServer } from './createTestServer/createTestServer';
+import { isWhatwgFetch } from './utils/isWhatwgFetch';
 import {
   defaults,
   del,
@@ -11,7 +12,6 @@ import {
   put,
   putJSON
 } from './Http';
-import { isWhatwgFetch } from './isWhatwgFetch';
 
 const path = '/';
 

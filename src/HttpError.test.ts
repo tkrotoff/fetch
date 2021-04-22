@@ -1,6 +1,6 @@
 ﻿import assert from 'assert';
 
-import { createTestServer, randomPort, TestServer } from './createTestServer';
+import { createTestServer, randomPort, TestServer } from './createTestServer/createTestServer';
 import { get } from './Http';
 import { HttpError } from './HttpError';
 

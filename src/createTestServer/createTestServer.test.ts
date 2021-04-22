@@ -1,5 +1,5 @@
+import { isWhatwgFetch } from '../utils/isWhatwgFetch';
 import { createTestServer, randomPort } from './createTestServer';
-import { isWhatwgFetch } from './isWhatwgFetch';
 
 const path = '/';
 

@@ -1,5 +1,5 @@
+import { wait } from './utils/wait';
 import { HttpError } from './HttpError';
-import { wait } from './wait';
 
 // https://github.com/microsoft/TypeScript/blob/v4.1.2/lib/lib.dom.d.ts#L2546-L2550
 export interface ResponsePromiseWithBodyMethods extends Promise<Response> {

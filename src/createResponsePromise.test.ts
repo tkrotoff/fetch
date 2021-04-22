@@ -1,7 +1,7 @@
+import { isWhatwgFetch } from './utils/isWhatwgFetch';
 import { createJSONResponsePromise, createResponsePromise } from './createResponsePromise';
 import * as Http from './Http';
 import { HttpStatus } from './HttpStatus';
-import { isWhatwgFetch } from './isWhatwgFetch';
 
 test('default Response object', async () => {
   const responsePromise = createResponsePromise('text');

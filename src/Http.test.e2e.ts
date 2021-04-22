@@ -2,9 +2,9 @@
 
 import { UAParser } from 'ua-parser-js';
 
+import { createTestServer, randomPort } from './createTestServer/createTestServer';
+import { wait } from './utils/wait';
 import * as Http from '.';
-import { createTestServer, randomPort } from './createTestServer';
-import { wait } from './wait';
 
 /* eslint-disable @typescript-eslint/no-shadow */
 
