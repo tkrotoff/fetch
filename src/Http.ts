@@ -142,6 +142,9 @@ export function get(input: RequestInfo, init?: Init) {
   return request(input, getHeaders(init), init, 'GET');
 }
 
+export function post<T extends BodyInit>(input: RequestInfo, body: T, init?: Init) {
+  return request(input, getHeaders(init), init, 'POST', body);
+}
 // Should be named postJson or postJSON?
 // - JS uses JSON.parse(), JSON.stringify(), toJSON()
 // - Deno uses [JSON](https://github.com/denoland/deno/blob/v1.5.3/cli/dts/lib.webworker.d.ts#L387) and [Json](https://github.com/denoland/deno/blob/v1.5.3/cli/dts/lib.webworker.d.ts#L260)
@@ -152,28 +155,23 @@ export function get(input: RequestInfo, init?: Init) {
 export function postJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
   return request(input, getJSONHeaders(init), init, 'POST', JSON.stringify(body));
 }
-
 // No need to have postFormData() and friends: the browser already sets the proper request content type
 // Something like "content-type: multipart/form-data; boundary=----WebKitFormBoundaryl8VQ0sfwUpJEWna3"
 
-export function post<T extends BodyInit>(input: RequestInfo, body: T, init?: Init) {
-  return request(input, getHeaders(init), init, 'POST', body);
+export function put<T extends BodyInit>(input: RequestInfo, body: T, init?: Init) {
+  return request(input, getHeaders(init), init, 'PUT', body);
 }
-
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function putJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
   return request(input, getJSONHeaders(init), init, 'PUT', JSON.stringify(body));
 }
-export function put<T extends BodyInit>(input: RequestInfo, body: T, init?: Init) {
-  return request(input, getHeaders(init), init, 'PUT', body);
-}
 
+export function patch<T extends BodyInit>(input: RequestInfo, body: T, init?: Init) {
+  return request(input, getHeaders(init), init, 'PATCH', body);
+}
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function patchJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
   return request(input, getJSONHeaders(init), init, 'PATCH', JSON.stringify(body));
-}
-export function patch<T extends BodyInit>(input: RequestInfo, body: T, init?: Init) {
-  return request(input, getHeaders(init), init, 'PATCH', body);
 }
 
 // Cannot be named delete :-/
