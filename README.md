@@ -85,10 +85,23 @@ const response = await postJSON(
 console.log(response);
 ```
 
-[Fetch](https://caniuse.com/fetch) is not supported by old browsers (IE), use [whatwg-fetch](https://github.com/github/fetch) polyfill
-\+ [core-js](https://github.com/zloirock/core-js) for other modern JS features like async/await.
+## JavaScript runtimes support
 
-With Node.js use [node-fetch](https://github.com/node-fetch/node-fetch) polyfill.
+@tkrotoff/fetch supports Node.js, all modern browsers + IE 11
+
+### With Node.js you need:
+
+- [node-fetch](https://github.com/node-fetch/node-fetch)
+
+Check [examples/node](examples/node)
+
+### With IE 11 you need:
+
+- [whatwg-fetch](https://github.com/github/fetch) polyfill
+- [core-js](https://github.com/zloirock/core-js) for other modern JS features like async/await
+- to transpile @tkrotoff/fetch code to ES5
+
+Check [examples/web](examples/web)
 
 ## API
 
