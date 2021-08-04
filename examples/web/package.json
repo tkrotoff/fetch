@@ -6,8 +6,8 @@
   "scripts": {
     "clean": "rm -rf build coverage",
     "clean:all": "npm run clean && rm -rf node_modules package-lock.json",
-    "start": "webpack serve --mode development --host 0.0.0.0",
-    "build": "webpack --mode development",
+    "start": "webpack serve --mode=development --host 0.0.0.0",
+    "build": "webpack --mode=development",
     "test": "jest --verbose",
     "test:coverage": "jest --coverage",
     "tsc": "tsc",
@@ -15,21 +15,21 @@
   },
   "dependencies": {
     "@tkrotoff/fetch": "file:../..",
-    "core-js": "^3.10.2",
+    "core-js": "^3.16.0",
     "expect": "^25.5.0",
     "ua-parser-js": "^0.7.28",
     "whatwg-fetch": "^3.6.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.15",
-    "@babel/preset-env": "^7.13.15",
-    "@babel/preset-typescript": "^7.13.0",
-    "@types/ua-parser-js": "^0.7.35",
+    "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.14.9",
+    "@babel/preset-typescript": "^7.14.5",
+    "@types/ua-parser-js": "^0.7.36",
     "babel-loader": "^8.2.2",
-    "jest": "^26.6.3",
-    "typescript": "^4.2.4",
-    "webpack": "^5.34.0",
-    "webpack-cli": "^4.6.0",
+    "jest": "^27.0.6",
+    "typescript": "^4.3.5",
+    "webpack": "^5.48.0",
+    "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2"
   }
 }

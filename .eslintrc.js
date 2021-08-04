@@ -82,6 +82,10 @@ const config = {
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/catch-error-name': 'off',
     'unicorn/prefer-query-selector': 'off',
+    // FIXME Activate when ES modules are well supported
+    'unicorn/prefer-module': 'off',
+    // FIXME Activate when ES modules are well supported
+    'unicorn/prefer-node-protocol': 'off',
 
     'jest/no-expect-resolves': 'error'
   },

@@ -18,8 +18,7 @@ test('get200OKExample()', async () => {
       userId: 1,
       id: 1,
       title: 'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',
-      body:
-        'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'
+      body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'
     })
   );
 
@@ -107,7 +106,7 @@ test('uploadFilesExample()', async () => {
   const file0 = new File(['file0Content'], 'file0', { type: 'text/plain' });
   const file1 = new File(['file1Content'], 'file1', { type: 'text/plain' });
 
-  await uploadFilesExample(([file0, file1] as unknown) as FileList);
+  await uploadFilesExample([file0, file1] as unknown as FileList);
   expect(postSpy).toHaveBeenNthCalledWith(1, 'https://httpbin.org/anything', expect.any(FormData));
 
   postSpy.mockRestore();

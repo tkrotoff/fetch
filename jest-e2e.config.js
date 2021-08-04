@@ -11,6 +11,7 @@ const config = {
       //   slowMo: 100 // Slow down by 100ms
       // },
       contextOptions: {
+        // Because the certificate is self-signed
         ignoreHTTPSErrors: true
       }
     }

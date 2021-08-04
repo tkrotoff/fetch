@@ -3,6 +3,10 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { defaults } = require('jest-config');
 
+// [How to set transformIgnorePatterns to fix "Jest encountered an unexpected token"](https://github.com/nrwl/nx/issues/812)
+// https://jestjs.io/docs/en/tutorial-react-native#transformignorepatterns-customization
+const esModules = ['node-fetch', 'fetch-blob'];
+
 /** @type Partial<import('@jest/types').Config.InitialOptions> */
 const config = {
   setupFilesAfterEnv: ['./jest.setup.ts'],
@@ -11,6 +15,8 @@ const config = {
   // https://jestjs.io/docs/en/26.5/configuration#testregex-string--arraystring
   // Let's be strict and use *.test.js only
   testRegex: '\\.test\\.ts$',
+
+  transformIgnorePatterns: [`/node_modules/(?!${esModules.join('|')})`],
 
   testPathIgnorePatterns: [...defaults.testPathIgnorePatterns, '/examples/'],
 

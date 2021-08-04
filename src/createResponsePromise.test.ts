@@ -303,7 +303,7 @@ describe('post()', () => {
 });
 
 function flushPromises() {
-  return new Promise<void>(resolve => setImmediate(resolve));
+  return new Promise<void>(resolve => setTimeout(resolve));
 }
 
 describe('flushPromises()', () => {

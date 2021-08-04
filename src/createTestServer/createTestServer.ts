@@ -69,7 +69,7 @@ const defaults = {
 export function createTestServer(options?: Options) {
   const { logger, https, http2, corsOrigin } = { ...defaults, ...options };
 
-  const server = (fastify({
+  const server = fastify({
     logger,
 
     // @ts-ignore
@@ -84,7 +84,7 @@ export function createTestServer(options?: Options) {
     // node-fetch does not support HTTP/2: https://github.com/node-fetch/node-fetch/issues/342
     // @ts-ignore
     http2
-  }) as unknown) as TestServer;
+  }) as unknown as TestServer;
 
   // Needed by whatwg-fetch, not by node-fetch
   server.register(fastifyCors, { origin: corsOrigin });

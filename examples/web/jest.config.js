@@ -2,6 +2,8 @@
 
 /** @type Partial<import('@jest/types').Config.InitialOptions> */
 const config = {
+  testEnvironment: 'jsdom',
+
   setupFilesAfterEnv: ['./jest.setup.ts'],
 
   // By default Jest allows for __tests__/*.js, *.spec.js and *.test.js

@@ -159,7 +159,9 @@ test('abort request', async () => {
   await server.close();
 });
 
-// FIXME Don't know why: it does not work most probably because of Playwright (1.6.1)
+// FIXME With playwright v1.13.1, works for Chromium and Firefox, fails for WebKit:
+// "page.evaluate: Evaluation failed: TypeError: Origin null is not allowed by Access-Control-Allow-Origin."
+//
 // eslint-disable-next-line jest/no-disabled-tests
 test.skip('HTTPS + HTTP/2', async () => {
   const server = createTestServer({ https: true, http2: true });

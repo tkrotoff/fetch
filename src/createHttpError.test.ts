@@ -5,7 +5,6 @@ import { createHttpError, createJSONHttpError } from './createHttpError';
 /* eslint-disable unicorn/no-null */
 
 const redirected = isWhatwgFetch ? undefined : false;
-const type = isWhatwgFetch ? 'default' : undefined;
 
 // "new Response()" gives a 200 response:
 // {
@@ -63,7 +62,7 @@ test('new Response()', async () => {
   expect(response.redirected).toEqual(redirected); // Should be false
   expect(response.status).toEqual(200);
   expect(response.statusText).toEqual('');
-  expect(response.type).toEqual(type); // Should be 'default'
+  expect(response.type).toEqual('default');
   expect(response.url).toEqual('');
 
   expect(await response.text()).toEqual('');
@@ -82,7 +81,7 @@ test("new Response('body')", async () => {
   expect(response.redirected).toEqual(redirected); // Should be false
   expect(response.status).toEqual(200);
   expect(response.statusText).toEqual('');
-  expect(response.type).toEqual(type); // Should be 'default'
+  expect(response.type).toEqual('default');
   expect(response.url).toEqual('');
 
   expect(await response.text()).toEqual('body');
@@ -121,7 +120,7 @@ test('200 OK', async () => {
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(200);
     expect(response.statusText).toEqual('OK');
-    expect(response.type).toEqual(type);
+    expect(response.type).toEqual('default');
     expect(response.url).toEqual('');
 
     expect(await response.text()).toEqual('body');
@@ -141,7 +140,7 @@ test('200 OK', async () => {
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(200);
     expect(response.statusText).toEqual('OK');
-    expect(response.type).toEqual(type);
+    expect(response.type).toEqual('default');
     expect(response.url).toEqual('');
 
     expect(await response.json()).toEqual({ body: true });
@@ -161,7 +160,7 @@ test('204 No Content', async () => {
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(204);
     expect(response.statusText).toEqual('No Content');
-    expect(response.type).toEqual(type);
+    expect(response.type).toEqual('default');
     expect(response.url).toEqual('');
 
     expect(await response.text()).toEqual('');
@@ -181,7 +180,7 @@ test('204 No Content', async () => {
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(204);
     expect(response.statusText).toEqual('No Content');
-    expect(response.type).toEqual(type);
+    expect(response.type).toEqual('default');
     expect(response.url).toEqual('');
 
     expect(await response.json()).toEqual({});
@@ -203,7 +202,7 @@ test('404 Not Found', async () => {
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(404);
     expect(response.statusText).toEqual('Not Found');
-    expect(response.type).toEqual(type);
+    expect(response.type).toEqual('default');
     expect(response.url).toEqual('');
 
     expect(await response.text()).toEqual('error');
@@ -223,7 +222,7 @@ test('404 Not Found', async () => {
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(404);
     expect(response.statusText).toEqual('Not Found');
-    expect(response.type).toEqual(type);
+    expect(response.type).toEqual('default');
     expect(response.url).toEqual('');
 
     expect(await response.json()).toEqual({ error: 404 });
@@ -245,7 +244,7 @@ test('no statusText', async () => {
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(200);
     expect(response.statusText).toEqual('');
-    expect(response.type).toEqual(type);
+    expect(response.type).toEqual('default');
     expect(response.url).toEqual('');
 
     expect(await response.text()).toEqual('body');
@@ -265,7 +264,7 @@ test('no statusText', async () => {
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(200);
     expect(response.statusText).toEqual('');
-    expect(response.type).toEqual(type);
+    expect(response.type).toEqual('default');
     expect(response.url).toEqual('');
 
     expect(await response.json()).toEqual({ body: true });
@@ -273,65 +272,62 @@ test('no statusText', async () => {
   }
 });
 
-// FIXME https://github.com/node-fetch/node-fetch/pull/1078
-if (isWhatwgFetch) {
-  test('no status', async () => {
-    {
-      const { name, message, response } = createHttpError('body');
-      expect(name).toEqual('HttpError');
-      expect(message).toEqual('0');
-      expect(response.body).toEqual(undefined);
-      expect(response.bodyUsed).toEqual(false);
-      expect(entriesToObject(response.headers)).toEqual({
-        'content-type': 'text/plain;charset=UTF-8'
-      });
-      expect(response.ok).toEqual(false);
-      expect(response.redirected).toEqual(redirected);
-      expect(response.status).toEqual(0);
-      expect(response.statusText).toEqual('');
-      expect(response.type).toEqual(type);
-      expect(response.url).toEqual('');
-
-      expect(await response.text()).toEqual('body');
-      expect(response.bodyUsed).toEqual(true);
-    }
-
-    {
-      const { name, message, response } = createJSONHttpError({ body: true });
-      expect(name).toEqual('HttpError');
-      expect(message).toEqual('0');
-      expect(response.body).toEqual(undefined);
-      expect(response.bodyUsed).toEqual(false);
-      expect(entriesToObject(response.headers)).toEqual({
-        'content-type': 'application/json'
-      });
-      expect(response.ok).toEqual(false);
-      expect(response.redirected).toEqual(redirected);
-      expect(response.status).toEqual(0);
-      expect(response.statusText).toEqual('');
-      expect(response.type).toEqual(type);
-      expect(response.url).toEqual('');
-
-      expect(await response.json()).toEqual({ body: true });
-      expect(response.bodyUsed).toEqual(true);
-    }
-  });
-
-  test('no params', async () => {
-    const { name, message, response } = createHttpError();
+test('no status', async () => {
+  {
+    const { name, message, response } = createHttpError('body');
     expect(name).toEqual('HttpError');
     expect(message).toEqual('0');
-    expect(response.body).toEqual(undefined);
+    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
     expect(response.bodyUsed).toEqual(false);
-    expect(entriesToObject(response.headers)).toEqual({});
+    expect(entriesToObject(response.headers)).toEqual({
+      'content-type': 'text/plain;charset=UTF-8'
+    });
     expect(response.ok).toEqual(false);
     expect(response.redirected).toEqual(redirected);
     expect(response.status).toEqual(0);
     expect(response.statusText).toEqual('');
-    expect(response.type).toEqual(type);
+    expect(response.type).toEqual('default');
     expect(response.url).toEqual('');
 
-    expect(await response.text()).toEqual('');
+    expect(await response.text()).toEqual('body');
     expect(response.bodyUsed).toEqual(true);
-  });
-}
+  }
+
+  {
+    const { name, message, response } = createJSONHttpError({ body: true });
+    expect(name).toEqual('HttpError');
+    expect(message).toEqual('0');
+    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
+    expect(response.bodyUsed).toEqual(false);
+    expect(entriesToObject(response.headers)).toEqual({
+      'content-type': 'application/json'
+    });
+    expect(response.ok).toEqual(false);
+    expect(response.redirected).toEqual(redirected);
+    expect(response.status).toEqual(0);
+    expect(response.statusText).toEqual('');
+    expect(response.type).toEqual('default');
+    expect(response.url).toEqual('');
+
+    expect(await response.json()).toEqual({ body: true });
+    expect(response.bodyUsed).toEqual(true);
+  }
+});
+
+test('no params', async () => {
+  const { name, message, response } = createHttpError();
+  expect(name).toEqual('HttpError');
+  expect(message).toEqual('0');
+  expect(response.body).toEqual(isWhatwgFetch ? undefined : null);
+  expect(response.bodyUsed).toEqual(false);
+  expect(entriesToObject(response.headers)).toEqual({});
+  expect(response.ok).toEqual(false);
+  expect(response.redirected).toEqual(redirected);
+  expect(response.status).toEqual(0);
+  expect(response.statusText).toEqual('');
+  expect(response.type).toEqual('default');
+  expect(response.url).toEqual('');
+
+  expect(await response.text()).toEqual('');
+  expect(response.bodyUsed).toEqual(true);
+});

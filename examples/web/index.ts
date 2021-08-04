@@ -18,9 +18,8 @@ document.getElementById(get200OKExample.name)!.onclick = get200OKExample;
 document.getElementById(postJSON201CreatedExample.name)!.onclick = postJSON201CreatedExample;
 document.getElementById(del200OKExample.name)!.onclick = del200OKExample;
 document.getElementById(get404NotFoundExample.name)!.onclick = get404NotFoundExample;
-document.getElementById(
-  get500InternalServerErrorExample.name
-)!.onclick = get500InternalServerErrorExample;
+document.getElementById(get500InternalServerErrorExample.name)!.onclick =
+  get500InternalServerErrorExample;
 document.getElementById(getCorsBlockedExample.name)!.onclick = getCorsBlockedExample;
 
 document.getElementById(uploadFilesExample.name)!.onclick = () => {
