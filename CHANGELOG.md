@@ -1,3 +1,9 @@
+## 0.12.1 (2021/08/04)
+
+### Features
+
+- Update npm packages
+
 ## 0.12.0 (2021/04/22)
 
 ### Breaking Changes
