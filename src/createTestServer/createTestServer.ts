@@ -1,21 +1,9 @@
-import fastify, {
-  FastifyInstance,
-  FastifyLoggerInstance,
-  RawReplyDefaultExpression,
-  RawRequestDefaultExpression
-} from 'fastify';
+import fastify from 'fastify';
 import fastifyCors, { FastifyCorsOptions } from 'fastify-cors';
 import { readFileSync } from 'fs';
-import * as http from 'http';
 import path from 'path';
 
-// FIXME Fastify types are a mess
-//export interface TestServer extends ReturnType<typeof fastify> {
-type Server = http.Server;
-type Request = RawRequestDefaultExpression<Server>;
-type Reply = RawReplyDefaultExpression<Server>;
-type Logger = FastifyLoggerInstance;
-export interface TestServer extends FastifyInstance<Server, Request, Reply, Logger> {
+export interface TestServer extends ReturnType<typeof fastify> {
   silenceErrors: () => void;
 }
 
