@@ -105,7 +105,7 @@ test('CORS fail', async () => {
   const userAgent = await page.evaluate(() => window.navigator.userAgent);
   const browserEngine = new UAParser(userAgent).getEngine().name;
 
-  // FIXME Does not work with WebKit and Playwright 1.6.1
+  // FIXME Does not work with WebKit and Playwright 1.13.1
   if (browserEngine !== 'WebKit') {
     // eslint-disable-next-line jest/no-conditional-expect
     await expect(page.evaluate(url => window.Http.get(url).text(), url)).rejects.toThrow(
@@ -159,11 +159,12 @@ test('abort request', async () => {
   await server.close();
 });
 
-// FIXME With playwright v1.13.1, works for Chromium and Firefox, fails for WebKit:
-// "page.evaluate: Evaluation failed: TypeError: Origin null is not allowed by Access-Control-Allow-Origin."
-//
-// eslint-disable-next-line jest/no-disabled-tests
-test.skip('HTTPS + HTTP/2', async () => {
+test('HTTPS + HTTP/2', async () => {
+  const userAgent = await page.evaluate(() => window.navigator.userAgent);
+  const browserEngine = new UAParser(userAgent).getEngine().name;
+  // FIXME Does not work with WebKit and Playwright 1.13.1
+  if (browserEngine === 'WebKit') return;
+
   const server = createTestServer({ https: true, http2: true });
 
   server.get(path, (request, reply) => {
