@@ -21,7 +21,8 @@ test('get200OKExample()', async () => {
   );
 
   await get200OKExample();
-  expect(getSpy).toHaveBeenNthCalledWith(1, 'https://jsonplaceholder.typicode.com/posts/1');
+  expect(getSpy).toHaveBeenCalledTimes(1);
+  expect(getSpy).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/posts/1');
 
   getSpy.mockRestore();
 });
@@ -37,7 +38,8 @@ test('postJSON201CreatedExample()', async () => {
   );
 
   await postJSON201CreatedExample();
-  expect(postJSONSpy).toHaveBeenNthCalledWith(1, 'https://jsonplaceholder.typicode.com/posts', {
+  expect(postJSONSpy).toHaveBeenCalledTimes(1);
+  expect(postJSONSpy).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/posts', {
     body: 'bar',
     title: 'foo',
     userId: 1
@@ -52,7 +54,8 @@ test('del200OKExample()', async () => {
     .mockImplementation(() => Http.createJSONResponsePromise({}));
 
   await del200OKExample();
-  expect(delSpy).toHaveBeenNthCalledWith(1, 'https://jsonplaceholder.typicode.com/posts/1');
+  expect(delSpy).toHaveBeenCalledTimes(1);
+  expect(delSpy).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/posts/1');
 
   delSpy.mockRestore();
 });
@@ -66,7 +69,8 @@ test('get404NotFoundExample()', async () => {
   );
 
   await get404NotFoundExample();
-  expect(getSpy).toHaveBeenNthCalledWith(1, 'https://httpstat.us/404/cors');
+  expect(getSpy).toHaveBeenCalledTimes(1);
+  expect(getSpy).toHaveBeenCalledWith('https://httpstat.us/404/cors');
 
   getSpy.mockRestore();
 });
@@ -80,7 +84,8 @@ test('get500InternalServerErrorExample()', async () => {
   );
 
   await get500InternalServerErrorExample();
-  expect(getSpy).toHaveBeenNthCalledWith(1, 'https://httpstat.us/500/cors');
+  expect(getSpy).toHaveBeenCalledTimes(1);
+  expect(getSpy).toHaveBeenCalledWith('https://httpstat.us/500/cors');
 
   getSpy.mockRestore();
 });
@@ -89,7 +94,8 @@ test('getCorsBlockedExample()', async () => {
   const getSpy = jest.spyOn(Http, 'get').mockRejectedValue(new TypeError('Failed to fetch'));
 
   await getCorsBlockedExample();
-  expect(getSpy).toHaveBeenNthCalledWith(1, 'https://postman-echo.com/get?foo1=bar1&foo2=bar2');
+  expect(getSpy).toHaveBeenCalledTimes(1);
+  expect(getSpy).toHaveBeenCalledWith('https://postman-echo.com/get?foo1=bar1&foo2=bar2');
 
   getSpy.mockRestore();
 });
@@ -118,8 +124,8 @@ test('abortRequestExample()', async () => {
     });
 
   await abortRequestExample();
-  expect(getSpy).toHaveBeenNthCalledWith(
-    1,
+  expect(getSpy).toHaveBeenCalledTimes(1);
+  expect(getSpy).toHaveBeenCalledWith(
     'https://httpbin.org/drip?duration=2&numbytes=10&code=200&delay=2',
     {
       signal: expect.any(AbortSignal)

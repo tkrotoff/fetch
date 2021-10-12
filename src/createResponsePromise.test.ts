@@ -105,7 +105,8 @@ describe('get()', () => {
     const response = await Http.get('url');
     expect(await response.text()).toEqual('test');
 
-    expect(getSpy).toHaveBeenNthCalledWith(1, 'url');
+    expect(getSpy).toHaveBeenCalledTimes(1);
+    expect(getSpy).toHaveBeenCalledWith('url');
 
     getSpy.mockRestore();
   });
@@ -118,7 +119,8 @@ describe('get()', () => {
     const response = await Http.get('url');
     expect(await response.json()).toEqual({ test: true });
 
-    expect(getSpy).toHaveBeenNthCalledWith(1, 'url');
+    expect(getSpy).toHaveBeenCalledTimes(1);
+    expect(getSpy).toHaveBeenCalledWith('url');
 
     getSpy.mockRestore();
   });
@@ -133,7 +135,8 @@ describe('get()', () => {
 
     await expect(Http.get('url')).rejects.toThrow('Not Found');
 
-    expect(getSpy).toHaveBeenNthCalledWith(1, 'url');
+    expect(getSpy).toHaveBeenCalledTimes(1);
+    expect(getSpy).toHaveBeenCalledWith('url');
 
     getSpy.mockRestore();
   });
@@ -147,7 +150,8 @@ describe('get()', () => {
       const response = await Http.get('url').text();
       expect(response).toEqual('test');
 
-      expect(getSpy).toHaveBeenNthCalledWith(1, 'url');
+      expect(getSpy).toHaveBeenCalledTimes(1);
+      expect(getSpy).toHaveBeenCalledWith('url');
 
       getSpy.mockRestore();
     });
@@ -162,7 +166,8 @@ describe('get()', () => {
 
       await expect(Http.get('url').text()).rejects.toThrow('Not Found');
 
-      expect(getSpy).toHaveBeenNthCalledWith(1, 'url');
+      expect(getSpy).toHaveBeenCalledTimes(1);
+      expect(getSpy).toHaveBeenCalledWith('url');
 
       getSpy.mockRestore();
     });
@@ -177,7 +182,8 @@ describe('get()', () => {
       const response = await Http.get('url').json();
       expect(response).toEqual({ test: true });
 
-      expect(getSpy).toHaveBeenNthCalledWith(1, 'url');
+      expect(getSpy).toHaveBeenCalledTimes(1);
+      expect(getSpy).toHaveBeenCalledWith('url');
 
       getSpy.mockRestore();
     });
@@ -192,7 +198,8 @@ describe('get()', () => {
 
       await expect(Http.get('url').json()).rejects.toThrow('Not Found');
 
-      expect(getSpy).toHaveBeenNthCalledWith(1, 'url');
+      expect(getSpy).toHaveBeenCalledTimes(1);
+      expect(getSpy).toHaveBeenCalledWith('url');
 
       getSpy.mockRestore();
     });
@@ -208,7 +215,8 @@ describe('post()', () => {
     const response = await Http.post('url', 'body');
     expect(await response.text()).toEqual('test');
 
-    expect(postSpy).toHaveBeenNthCalledWith(1, 'url', 'body');
+    expect(postSpy).toHaveBeenCalledTimes(1);
+    expect(postSpy).toHaveBeenCalledWith('url', 'body');
 
     postSpy.mockRestore();
   });
@@ -221,7 +229,8 @@ describe('post()', () => {
     const response = await Http.post('url', 'body');
     expect(await response.json()).toEqual({ test: true });
 
-    expect(postSpy).toHaveBeenNthCalledWith(1, 'url', 'body');
+    expect(postSpy).toHaveBeenCalledTimes(1);
+    expect(postSpy).toHaveBeenCalledWith('url', 'body');
 
     postSpy.mockRestore();
   });
@@ -236,7 +245,8 @@ describe('post()', () => {
 
     await expect(Http.post('url', 'body')).rejects.toThrow('Not Found');
 
-    expect(postSpy).toHaveBeenNthCalledWith(1, 'url', 'body');
+    expect(postSpy).toHaveBeenCalledTimes(1);
+    expect(postSpy).toHaveBeenCalledWith('url', 'body');
 
     postSpy.mockRestore();
   });
@@ -250,7 +260,8 @@ describe('post()', () => {
       const response = await Http.post('url', 'body').text();
       expect(response).toEqual('test');
 
-      expect(postSpy).toHaveBeenNthCalledWith(1, 'url', 'body');
+      expect(postSpy).toHaveBeenCalledTimes(1);
+      expect(postSpy).toHaveBeenCalledWith('url', 'body');
 
       postSpy.mockRestore();
     });
@@ -265,7 +276,8 @@ describe('post()', () => {
 
       await expect(Http.post('url', 'body').text()).rejects.toThrow('Internal Server Error');
 
-      expect(postSpy).toHaveBeenNthCalledWith(1, 'url', 'body');
+      expect(postSpy).toHaveBeenCalledTimes(1);
+      expect(postSpy).toHaveBeenCalledWith('url', 'body');
 
       postSpy.mockRestore();
     });
@@ -280,7 +292,8 @@ describe('post()', () => {
       const response = await Http.post('url', 'body').json();
       expect(response).toEqual({ test: true });
 
-      expect(postSpy).toHaveBeenNthCalledWith(1, 'url', 'body');
+      expect(postSpy).toHaveBeenCalledTimes(1);
+      expect(postSpy).toHaveBeenCalledWith('url', 'body');
 
       postSpy.mockRestore();
     });
@@ -295,7 +308,8 @@ describe('post()', () => {
 
       await expect(Http.post('url', 'body').json()).rejects.toThrow('Internal Server Error');
 
-      expect(postSpy).toHaveBeenNthCalledWith(1, 'url', 'body');
+      expect(postSpy).toHaveBeenCalledTimes(1);
+      expect(postSpy).toHaveBeenCalledWith('url', 'body');
 
       postSpy.mockRestore();
     });
@@ -329,7 +343,8 @@ describe('flushPromises()', () => {
 
     await expect(Http.get('url').text()).rejects.toThrow('Service Unavailable');
 
-    expect(getSpy).toHaveBeenNthCalledWith(1, 'url');
+    expect(getSpy).toHaveBeenCalledTimes(1);
+    expect(getSpy).toHaveBeenCalledWith('url');
 
     getSpy.mockRestore();
   });

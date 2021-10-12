@@ -25,7 +25,8 @@ test('defaults.init', async () => {
 
   // Should use defaults.init
   await get(url).text();
-  expect(spy).toHaveBeenNthCalledWith(1, url, {
+  expect(spy).toHaveBeenCalledTimes(1);
+  expect(spy).toHaveBeenLastCalledWith(url, {
     credentials: 'same-origin',
     headers: expect.any(Headers),
     method: 'GET'
@@ -43,7 +44,8 @@ test('defaults.init', async () => {
 
   spy.mockClear();
   await get(url).text();
-  expect(spy).toHaveBeenNthCalledWith(1, url, {
+  expect(spy).toHaveBeenCalledTimes(1);
+  expect(spy).toHaveBeenLastCalledWith(url, {
     mode: 'cors',
     credentials: 'include',
     headers: expect.any(Headers),
@@ -55,7 +57,8 @@ test('defaults.init', async () => {
   // Should not overwrite defaults.init.headers
   spy.mockClear();
   await get(url, { mode: 'no-cors', credentials: 'omit', headers: { test2: 'true' } }).text();
-  expect(spy).toHaveBeenNthCalledWith(1, url, {
+  expect(spy).toHaveBeenCalledTimes(1);
+  expect(spy).toHaveBeenLastCalledWith(url, {
     mode: 'no-cors',
     credentials: 'omit',
     headers: expect.any(Headers),
