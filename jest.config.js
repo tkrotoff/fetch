@@ -4,7 +4,6 @@
 const { defaults } = require('jest-config');
 
 // [How to set transformIgnorePatterns to fix "Jest encountered an unexpected token"](https://github.com/nrwl/nx/issues/812)
-// https://jestjs.io/docs/en/tutorial-react-native#transformignorepatterns-customization
 const esModules = ['node-fetch', 'fetch-blob'];
 
 /** @type Partial<import('@jest/types').Config.InitialOptions> */

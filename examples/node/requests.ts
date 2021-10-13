@@ -1,4 +1,5 @@
 import { del, get, HttpError, postJSON } from '@tkrotoff/fetch';
+import assert from 'assert';
 // Yes, you can use [Jest expect](https://github.com/facebook/jest/tree/v24.9.0/packages/expect) without Jest, how cool it that!
 import expect from 'expect';
 
@@ -14,7 +15,7 @@ export async function get200OKExample() {
     });
   } catch {
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   }
   console.groupEnd();
 }
@@ -30,7 +31,7 @@ export async function postJSON201CreatedExample() {
     expect(response).toEqual({ id: 101, title: 'foo', body: 'bar', userId: 1 });
   } catch {
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   }
   console.groupEnd();
 }
@@ -42,7 +43,7 @@ export async function del200OKExample() {
     expect(response).toEqual({});
   } catch {
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   }
   console.groupEnd();
 }
@@ -54,8 +55,9 @@ export async function get404NotFoundExample() {
   try {
     await get('https://httpstat.us/404/cors');
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   } catch (e) {
+    assert(e instanceof HttpError);
     expect(e).toBeInstanceOf(HttpError);
     expect(e.name).toEqual('HttpError');
     expect(e.message).toEqual('Not Found');
@@ -70,8 +72,9 @@ export async function get500InternalServerErrorExample() {
   try {
     await get('https://httpstat.us/500/cors');
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   } catch (e) {
+    assert(e instanceof HttpError);
     expect(e).toBeInstanceOf(HttpError);
     expect(e.name).toEqual('HttpError');
     expect(e.message).toEqual('Internal Server Error');
@@ -86,8 +89,9 @@ export async function getCorsBlockedExample() {
   try {
     await get('https://postman-echo.com/get?foo1=bar1&foo2=bar2');
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   } catch (e) {
+    assert(e instanceof TypeError);
     expect(e).toBeInstanceOf(TypeError);
     expect(e.name).toEqual('TypeError');
     expect(e.message).toEqual('Failed to fetch');
@@ -109,11 +113,12 @@ export async function abortRequestExample() {
     // istanbul ignore next
     clearTimeout(timeout);
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   } catch (e) {
     // DOMException does not exist with node-fetch
     //expect(e).toBeInstanceOf(DOMException);
-
+    assert(e instanceof Error);
+    expect(e).toBeInstanceOf(Error);
     expect(e.name).toEqual('AbortError');
     expect(e.message).toEqual('The user aborted a request.');
   }
