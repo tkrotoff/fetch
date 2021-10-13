@@ -1,3 +1,5 @@
+// [Headers.entries()](https://github.com/microsoft/TypeScript/blob/v4.4.4/lib/lib.dom.iterable.d.ts#L120)
+// [FormData.entries()](https://github.com/microsoft/TypeScript/blob/v4.4.4/lib/lib.dom.iterable.d.ts#L84)
 interface ObjectWithEntries {
   entries(): IterableIterator<[string, any]>;
 }
