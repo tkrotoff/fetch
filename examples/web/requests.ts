@@ -9,6 +9,12 @@ if (window.navigator.userAgent.includes('jsdom')) {
   browserEngine = 'jsdom';
 }
 
+// https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/#assertion-functions
+function assert(_condition: boolean, _message?: string): asserts _condition {
+  // eslint-disable-next-line prefer-rest-params
+  console.assert(...arguments);
+}
+
 export async function get200OKExample() {
   console.group(get200OKExample.name);
   try {
@@ -21,7 +27,7 @@ export async function get200OKExample() {
     });
   } catch {
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   }
   console.groupEnd();
 }
@@ -37,7 +43,7 @@ export async function postJSON201CreatedExample() {
     expect(response).toEqual({ id: 101, title: 'foo', body: 'bar', userId: 1 });
   } catch {
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   }
   console.groupEnd();
 }
@@ -49,7 +55,7 @@ export async function del200OKExample() {
     expect(response).toEqual({});
   } catch {
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   }
   console.groupEnd();
 }
@@ -61,8 +67,9 @@ export async function get404NotFoundExample() {
   try {
     await get('https://httpstat.us/404/cors');
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   } catch (e) {
+    assert(e instanceof HttpError);
     expect(e).toBeInstanceOf(HttpError);
     expect(e.name).toEqual('HttpError');
 
@@ -79,7 +86,7 @@ export async function get404NotFoundExample() {
         expect(e.message).toEqual('Not Found');
         break;
       default:
-        console.assert(false, `Unknown browser engine: '${browserEngine}'`);
+        assert(false, `Unknown browser engine: '${browserEngine}'`);
     }
 
     expect(e.response.status).toEqual(404);
@@ -93,8 +100,9 @@ export async function get500InternalServerErrorExample() {
   try {
     await get('https://httpstat.us/500/cors');
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   } catch (e) {
+    assert(e instanceof HttpError);
     expect(e).toBeInstanceOf(HttpError);
     expect(e.name).toEqual('HttpError');
 
@@ -111,7 +119,7 @@ export async function get500InternalServerErrorExample() {
         expect(e.message).toEqual('Internal Server Error');
         break;
       default:
-        console.assert(false, `Unknown browser engine: '${browserEngine}'`);
+        assert(false, `Unknown browser engine: '${browserEngine}'`);
     }
 
     expect(e.response.status).toEqual(500);
@@ -160,7 +168,7 @@ function checkTypeError(e: TypeError) {
       });
       break;
     default:
-      console.assert(false, `Unknown browser engine: '${browserEngine}'`);
+      assert(false, `Unknown browser engine: '${browserEngine}'`);
   }
 }
 
@@ -169,8 +177,9 @@ export async function getCorsBlockedExample() {
   try {
     await get('https://postman-echo.com/get?foo1=bar1&foo2=bar2');
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   } catch (e) {
+    assert(e instanceof TypeError);
     checkTypeError(e);
   }
   console.groupEnd();
@@ -189,7 +198,7 @@ export async function uploadFilesExample(files: FileList) {
     expect(response).toHaveProperty('files');
   } catch {
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   }
 
   console.groupEnd();
@@ -215,7 +224,7 @@ function checkAbortError(e: DOMException) {
       expect(e.message).toEqual('');
       break;
     default:
-      console.assert(false, `Unknown browser engine: '${browserEngine}'`);
+      assert(false, `Unknown browser engine: '${browserEngine}'`);
   }
 }
 
@@ -233,8 +242,9 @@ export async function abortRequestExample() {
     // istanbul ignore next
     clearTimeout(timeout);
     // istanbul ignore next
-    console.assert(false, 'Code should not be reached');
+    assert(false, 'Code should not be reached');
   } catch (e) {
+    assert(e instanceof DOMException);
     checkAbortError(e);
   }
 
