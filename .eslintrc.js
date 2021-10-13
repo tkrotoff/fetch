@@ -87,7 +87,7 @@ const config = {
     // FIXME Activate when ES modules are well supported
     'unicorn/prefer-node-protocol': 'off',
 
-    'jest/no-expect-resolves': 'error'
+    'jest/no-restricted-matchers': 'error'
   },
 
   overrides: [

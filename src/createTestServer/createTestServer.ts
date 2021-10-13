@@ -89,7 +89,7 @@ export function createTestServer(options?: Options) {
     process.stderr.write(error.stack!);
 
     // ["To access the default handler, you can access instance.errorHandler"](https://www.fastify.io/docs/latest/Routes/#routes-option)
-    // https://www.fastify.io/docs/v3.7.x/Server/#errorhandler
+    // https://www.fastify.io/docs/v3.22.x/Server/#errorhandler
     // FIXME
     // @ts-ignore
     if (fastify.errorHandler) fastify.errorHandler(error, request, reply);
@@ -99,8 +99,10 @@ export function createTestServer(options?: Options) {
   // You cannot later re-enable errors, you need to restart Fastify:
   // Should be done before calling listen(): "Cannot call "setErrorHandler" when fastify instance is already started!"
   server.silenceErrors = () => {
-    // https://github.com/fastify/fastify/blob/v3.8.0/fastify.js#L62
-    server.setErrorHandler((error, _request, reply) => reply.send(error));
+    // https://github.com/fastify/fastify/blob/v3.22.0/fastify.js#L74
+    server.setErrorHandler((error, _request, reply) => {
+      reply.send(error);
+    });
   };
 
   // Cannot be done here: "Cannot add route when fastify instance is already started!"

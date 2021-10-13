@@ -35,7 +35,7 @@ test('respond to HTTPS requests', async () => {
   await server.close();
 });
 
-// eslint-disable-next-line jest/no-disabled-tests
+// eslint-disable-next-line jest/no-disabled-tests, jest/expect-expect
 test.skip('respond to HTTP/2 requests', () => {
   // Unfortunately HTTP/2 does not work with whatwg-fetch/jsdom and node-fetch so we cannot test using HTTP/2
 });

@@ -1,3 +1,5 @@
+import assert from 'assert';
+
 import { createTestServer, randomPort, TestServer } from './createTestServer/createTestServer';
 import { entriesToObject } from './utils/entriesToObject';
 import { isWhatwgFetch } from './utils/isWhatwgFetch';
@@ -456,10 +458,11 @@ test('cannot connect', async () => {
   try {
     await get(url).text();
   } catch (e) {
-    /* eslint-disable jest/no-try-expect, jest/no-conditional-expect */
+    assert(e instanceof Error);
+    /* eslint-disable jest/no-conditional-expect */
     expect(e.name).toEqual(isWhatwgFetch ? 'TypeError' : 'FetchError');
     expect(e.message).toEqual(requestFailedError);
-    /* eslint-enable jest/no-try-expect, jest/no-conditional-expect */
+    /* eslint-enable jest/no-conditional-expect */
   }
 
   expect(consoleSpy).toHaveBeenCalledTimes(isWhatwgFetch ? 1 : 0);

@@ -4,7 +4,7 @@ import { createTestServer, randomPort, TestServer } from './createTestServer/cre
 import { get } from './Http';
 import { HttpError } from './HttpError';
 
-/* eslint-disable jest/no-try-expect, jest/no-conditional-expect */
+/* eslint-disable jest/no-conditional-expect */
 
 const path = '/';
 
@@ -30,7 +30,7 @@ test('HttpError with statusText (HTTP/1.1)', async () => {
 
   try {
     await get(url).text();
-  } catch (e: unknown) {
+  } catch (e) {
     assert(e instanceof HttpError);
     const { name, message, response } = e;
     expect(name).toEqual('HttpError');
