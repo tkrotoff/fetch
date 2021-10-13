@@ -13,6 +13,7 @@ import {
   postJSON201CreatedExample,
   uploadFilesExample
 } from './requests';
+import './index.html';
 
 document.getElementById(get200OKExample.name)!.onclick = get200OKExample;
 document.getElementById(postJSON201CreatedExample.name)!.onclick = postJSON201CreatedExample;

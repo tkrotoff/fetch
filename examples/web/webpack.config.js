@@ -8,8 +8,11 @@ const config = {
   entry: './index.ts',
 
   output: {
-    path: path.join(__dirname, 'build')
+    path: path.join(__dirname, 'build'),
+    clean: true
   },
+
+  devtool: 'inline-source-map',
 
   resolve: {
     extensions: ['.js', '.ts']
