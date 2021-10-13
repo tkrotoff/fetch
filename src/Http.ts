@@ -2,13 +2,13 @@ import { entriesToObject } from './utils/entriesToObject';
 import { wait } from './utils/wait';
 import { HttpError } from './HttpError';
 
-// https://github.com/microsoft/TypeScript/blob/v4.1.2/lib/lib.dom.d.ts#L2546-L2550
+// https://github.com/microsoft/TypeScript/blob/v4.4.4/lib/lib.dom.d.ts#L2446-L2450
 export interface ResponsePromiseWithBodyMethods extends Promise<Response> {
-  arrayBuffer(): Promise<ArrayBuffer>;
-  blob(): Promise<Blob>;
-  formData(): Promise<FormData>;
-  json(): Promise<unknown>; // FIXME Changed from Promise<any> to Promise<unknown> which is better: forces the user to cast
-  text(): Promise<string>;
+  arrayBuffer: Body['arrayBuffer'];
+  blob: Body['blob'];
+  formData: Body['formData'];
+  json: Body['json'];
+  text: Body['text'];
 }
 
 const ARRAYBUFFER_MIME_TYPE = '*/*';
