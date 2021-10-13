@@ -10,7 +10,7 @@ import {
   postJSON201CreatedExample
 } from './requests.js';
 
-globalThis.fetch = nodeFetch as any;
+globalThis.fetch = nodeFetch.default as any;
 globalThis.Headers = nodeFetch.Headers as any;
 globalThis.Response = nodeFetch.Response as any;
 

@@ -120,7 +120,7 @@ export async function abortRequestExample() {
     assert(e instanceof Error);
     expect(e).toBeInstanceOf(Error);
     expect(e.name).toEqual('AbortError');
-    expect(e.message).toEqual('The user aborted a request.');
+    expect(e.message).toEqual('The operation was aborted.');
   }
 
   console.groupEnd();

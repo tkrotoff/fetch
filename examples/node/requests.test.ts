@@ -102,8 +102,8 @@ test('getCorsBlockedExample()', async () => {
 
 test('abortRequestExample()', async () => {
   // DOMException does not exist with node-fetch
-  //const abortError = new DOMException('The user aborted a request.', 'AbortError')
-  const abortError = new Error('The user aborted a request.');
+  //const abortError = new DOMException('The operation was aborted.', 'AbortError')
+  const abortError = new Error('The operation was aborted.');
   abortError.name = 'AbortError';
 
   const getSpy = jest
