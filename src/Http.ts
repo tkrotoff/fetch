@@ -3,13 +3,8 @@ import { wait } from './utils/wait';
 import { HttpError } from './HttpError';
 
 // https://github.com/microsoft/TypeScript/blob/v4.4.4/lib/lib.dom.d.ts#L2446-L2450
-export interface ResponsePromiseWithBodyMethods extends Promise<Response> {
-  arrayBuffer: Body['arrayBuffer'];
-  blob: Body['blob'];
-  formData: Body['formData'];
-  json: Body['json'];
-  text: Body['text'];
-}
+export type ResponsePromiseWithBodyMethods = Promise<Response> &
+  Pick<Body, 'arrayBuffer' | 'blob' | 'formData' | 'json' | 'text'>;
 
 const ARRAYBUFFER_MIME_TYPE = '*/*';
 const BLOB_MIME_TYPE = '*/*';
