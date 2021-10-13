@@ -33,7 +33,8 @@ test('defaults.init', async () => {
     headers: expect.any(Headers),
     method: 'GET'
   });
-  let headers = entriesToObject(spy.mock.calls[0][1]?.headers as Headers);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  let headers = entriesToObject(spy.mock.calls[0][1]!.headers as Headers);
   expect(headers).toEqual({ accept: 'text/*' });
 
   // What happens when defaults.init is modified?
@@ -53,7 +54,8 @@ test('defaults.init', async () => {
     headers: expect.any(Headers),
     method: 'GET'
   });
-  headers = entriesToObject(spy.mock.calls[0][1]?.headers as Headers);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  headers = entriesToObject(spy.mock.calls[0][1]!.headers as Headers);
   expect(headers).toEqual({ accept: 'text/*', test1: 'true' });
 
   // Should not overwrite defaults.init.headers
@@ -66,7 +68,8 @@ test('defaults.init', async () => {
     headers: expect.any(Headers),
     method: 'GET'
   });
-  headers = entriesToObject(spy.mock.calls[0][1]?.headers as Headers);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  headers = entriesToObject(spy.mock.calls[0][1]!.headers as Headers);
   expect(headers).toEqual({ accept: 'text/*', test1: 'true', test2: 'true' });
 
   defaults.init = originalInit;
