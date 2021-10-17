@@ -4,7 +4,10 @@ import { HttpError } from './HttpError';
 
 // https://github.com/microsoft/TypeScript/blob/v4.4.4/lib/lib.dom.d.ts#L2446-L2450
 export type ResponsePromiseWithBodyMethods = Promise<Response> &
-  Pick<Body, 'arrayBuffer' | 'blob' | 'formData' | 'json' | 'text'>;
+  Pick<Body, 'arrayBuffer' | 'blob' | 'formData' | /*'json' |*/ 'text'> & {
+    // FIXME https://github.com/microsoft/TypeScript/issues/26188
+    json(): Promise<unknown>;
+  };
 
 const ARRAYBUFFER_MIME_TYPE = '*/*';
 const BLOB_MIME_TYPE = '*/*';
