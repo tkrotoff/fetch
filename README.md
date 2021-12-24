@@ -10,7 +10,7 @@
 A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper.
 
 - Simplifies the use of Fetch
-- Tiny
+- Tiny: less than 200 lines of code
 - No dependencies
 - Fully tested
 - Written in TypeScript
@@ -84,6 +84,8 @@ const response = await postJSON(
 ).json();
 console.log(response);
 ```
+
+Or copy-paste [Http.ts](src/Http.ts) into your source code.
 
 ## JavaScript runtimes support
 
