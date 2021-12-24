@@ -24,11 +24,11 @@ function extendResponsePromiseWithBodyMethods(
   responsePromise: ResponsePromiseWithBodyMethods,
   headers: Headers
 ) {
-  /* eslint-disable no-param-reassign */
-
   function setAcceptHeader(mimeType: string) {
     headers.set('accept', headers.get('accept') ?? mimeType);
   }
+
+  /* eslint-disable no-param-reassign */
 
   responsePromise.arrayBuffer = async () => {
     setAcceptHeader(ARRAYBUFFER_MIME_TYPE);
