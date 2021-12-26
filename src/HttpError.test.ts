@@ -1,10 +1,10 @@
-﻿import assert from 'assert';
+﻿/* eslint-disable jest/no-conditional-expect */
+
+import assert from 'assert';
 
 import { createTestServer, randomPort, TestServer } from './createTestServer/createTestServer';
 import { get } from './Http';
 import { HttpError } from './HttpError';
-
-/* eslint-disable jest/no-conditional-expect */
 
 const path = '/';
 

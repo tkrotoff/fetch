@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+
 /// <reference types="jest-playwright-preset" />
 
 import { UAParser } from 'ua-parser-js';
@@ -5,8 +7,6 @@ import { UAParser } from 'ua-parser-js';
 import { createTestServer, randomPort } from './createTestServer/createTestServer';
 import { wait } from './utils/wait';
 import * as Http from '.';
-
-/* eslint-disable @typescript-eslint/no-shadow */
 
 const tkrotoff_fetch = './dist/umd/index.js';
 

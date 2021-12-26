@@ -1,8 +1,8 @@
+/* eslint-disable unicorn/no-null */
+
 import { entriesToObject } from './utils/entriesToObject';
 import { isWhatwgFetch } from './utils/isWhatwgFetch';
 import { createHttpError, createJSONHttpError } from './createHttpError';
-
-/* eslint-disable unicorn/no-null */
 
 const redirected = isWhatwgFetch ? undefined : false;
 
