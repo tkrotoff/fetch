@@ -1,5 +1,6 @@
 import { entriesToObject } from './utils/entriesToObject';
 import { isWhatwgFetch } from './utils/isWhatwgFetch';
+import { wait } from './utils/wait';
 import { createJSONResponsePromise, createResponsePromise } from './createResponsePromise';
 import * as Http from './Http';
 import { HttpStatus } from './HttpStatus';
@@ -316,9 +317,7 @@ describe('post()', () => {
   });
 });
 
-function flushPromises() {
-  return new Promise<void>(resolve => setTimeout(resolve));
-}
+const flushPromises = () => wait(0);
 
 describe('flushPromises()', () => {
   // Throws "HttpError: Service Unavailable", this cannot be catched so we have to skip the test :-/
