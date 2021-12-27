@@ -1,5 +1,7 @@
 /* eslint-disable unicorn/no-null */
 
+import { Readable } from 'stream';
+
 import { entriesToObject } from './utils/entriesToObject';
 import { isWhatwgFetch } from './utils/isWhatwgFetch';
 import { createHttpError, createJSONHttpError } from './createHttpError';
@@ -72,7 +74,7 @@ test('new Response()', async () => {
 test("new Response('body')", async () => {
   const response = new Response('body');
   // https://github.com/github/fetch/issues/746
-  expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
+  expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Readable));
   expect(response.bodyUsed).toEqual(false);
   expect(entriesToObject(response.headers)).toEqual({
     'content-type': 'text/plain;charset=UTF-8'
@@ -111,7 +113,7 @@ test('200 OK', async () => {
     const { name, message, response } = createHttpError('body', 200, 'OK');
     expect(name).toEqual('HttpError');
     expect(message).toEqual('OK');
-    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
+    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Readable));
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
       'content-type': 'text/plain;charset=UTF-8'
@@ -131,7 +133,7 @@ test('200 OK', async () => {
     const { name, message, response } = createJSONHttpError({ body: true }, 200, 'OK');
     expect(name).toEqual('HttpError');
     expect(message).toEqual('OK');
-    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
+    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Readable));
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
       'content-type': 'application/json'
@@ -171,7 +173,7 @@ test('204 No Content', async () => {
     const { name, message, response } = createJSONHttpError({}, 204, 'No Content');
     expect(name).toEqual('HttpError');
     expect(message).toEqual('No Content');
-    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
+    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Readable));
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
       'content-type': 'application/json'
@@ -193,7 +195,7 @@ test('404 Not Found', async () => {
     const { name, message, response } = createHttpError('error', 404, 'Not Found');
     expect(name).toEqual('HttpError');
     expect(message).toEqual('Not Found');
-    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
+    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Readable));
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
       'content-type': 'text/plain;charset=UTF-8'
@@ -213,7 +215,7 @@ test('404 Not Found', async () => {
     const { name, message, response } = createJSONHttpError({ error: 404 }, 404, 'Not Found');
     expect(name).toEqual('HttpError');
     expect(message).toEqual('Not Found');
-    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
+    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Readable));
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
       'content-type': 'application/json'
@@ -235,7 +237,7 @@ test('no statusText', async () => {
     const { name, message, response } = createHttpError('body', 200);
     expect(name).toEqual('HttpError');
     expect(message).toEqual('200');
-    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
+    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Readable));
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
       'content-type': 'text/plain;charset=UTF-8'
@@ -255,7 +257,7 @@ test('no statusText', async () => {
     const { name, message, response } = createJSONHttpError({ body: true }, 200);
     expect(name).toEqual('HttpError');
     expect(message).toEqual('200');
-    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
+    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Readable));
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
       'content-type': 'application/json'
@@ -277,7 +279,7 @@ test('no status', async () => {
     const { name, message, response } = createHttpError('body');
     expect(name).toEqual('HttpError');
     expect(message).toEqual('0');
-    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
+    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Readable));
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
       'content-type': 'text/plain;charset=UTF-8'
@@ -297,7 +299,7 @@ test('no status', async () => {
     const { name, message, response } = createJSONHttpError({ body: true });
     expect(name).toEqual('HttpError');
     expect(message).toEqual('0');
-    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Buffer));
+    expect(response.body).toEqual(isWhatwgFetch ? undefined : expect.any(Readable));
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
       'content-type': 'application/json'
