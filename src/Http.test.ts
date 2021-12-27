@@ -442,6 +442,7 @@ describe('body methods', () => {
 
     const response = get(url);
     expect(await response.json()).toEqual({ accept: 'application/json' });
+    // eslint-disable-next-line unicorn/no-await-expression-member
     await expect((await response).text()).rejects.toThrow(bodyAlreadyUsedError(url));
   });
 });

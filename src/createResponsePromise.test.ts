@@ -95,6 +95,7 @@ describe('body methods', () => {
   test('multiple body calls using helper + regular response', async () => {
     const response = createJSONResponsePromise({ test: 'true' });
     expect(await response.json()).toEqual({ test: 'true' });
+    // eslint-disable-next-line unicorn/no-await-expression-member
     await expect((await response).text()).rejects.toThrow(bodyAlreadyUsedError);
   });
 });
