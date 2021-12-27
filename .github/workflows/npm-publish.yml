@@ -1,4 +1,4 @@
-# https://github.com/actions/starter-workflows/blob/aa9d3bc6cc46ac11a53ca196e504d4f901a8de8d/ci/npm-publish.yml
+# https://github.com/actions/starter-workflows/blob/5104ac42744c84c675b2f9e1168e89f1dd60c059/ci/npm-publish.yml
 
 name: Node.js Package
 
@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: 16
       - run: npm ci
       - run: npm run lint
       - run: npm run build
@@ -28,9 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm publish

@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable @typescript-eslint/no-shadow, jest/no-done-callback */
 
-/// <reference types="jest-playwright-preset" />
-
+import { expect, test } from '@playwright/test';
 import { UAParser } from 'ua-parser-js';
 
 import { createTestServer, randomPort } from './createTestServer/createTestServer';
@@ -18,7 +17,7 @@ declare global {
 
 const path = '/';
 
-test('get()', async () => {
+test('get()', async ({ page }) => {
   const server = createTestServer();
 
   server.get(path, (request, reply) => {
@@ -36,7 +35,7 @@ test('get()', async () => {
   await server.close();
 });
 
-test('postJSON()', async () => {
+test('postJSON()', async ({ page }) => {
   const body = { test: true };
 
   const server = createTestServer();
@@ -59,7 +58,7 @@ test('postJSON()', async () => {
   await server.close();
 });
 
-test('404 Not Found', async () => {
+test('404 Not Found', async ({ page }) => {
   const server = createTestServer();
 
   server.get(path, (_request, reply) => {
@@ -92,7 +91,7 @@ function getCorsErrorMessage(browserEngine: string | undefined) {
   return message;
 }
 
-test('CORS fail', async () => {
+test('CORS fail', async ({ page }) => {
   const server = createTestServer({ corsOrigin: false });
 
   server.get(path, async (request, reply) => {
@@ -133,7 +132,7 @@ function getAbortedErrorMessage(browserEngine: string | undefined) {
   return message;
 }
 
-test('abort request', async () => {
+test('abort request', async ({ page }) => {
   const server = createTestServer();
 
   server.get(path, async (request, reply) => {
@@ -159,7 +158,7 @@ test('abort request', async () => {
   await server.close();
 });
 
-test('HTTPS + HTTP/2', async () => {
+test('HTTPS + HTTP/2', async ({ page }) => {
   const userAgent = await page.evaluate(() => window.navigator.userAgent);
   const browserEngine = new UAParser(userAgent).getEngine().name;
   // FIXME Does not work with WebKit and Playwright 1.13.1
