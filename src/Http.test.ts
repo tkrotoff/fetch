@@ -1,4 +1,4 @@
-import assert from 'assert';
+import assert from 'node:assert';
 
 import { createTestServer, randomPort, TestServer } from './createTestServer/createTestServer';
 import { entriesToObject } from './utils/entriesToObject';

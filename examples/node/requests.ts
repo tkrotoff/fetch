@@ -1,7 +1,7 @@
 import { del, get, HttpError, postJSON } from '@tkrotoff/fetch';
-import assert from 'assert';
 // Yes, you can use [Jest expect](https://github.com/facebook/jest/tree/v24.9.0/packages/expect) without Jest, how cool it that!
 import expect from 'expect';
+import assert from 'node:assert';
 
 export async function get200OKExample() {
   console.group(get200OKExample.name);

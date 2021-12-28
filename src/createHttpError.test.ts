@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/no-null */
 
-import { Readable } from 'stream';
+import { Readable } from 'node:stream';
 
 import { entriesToObject } from './utils/entriesToObject';
 import { isWhatwgFetch } from './utils/isWhatwgFetch';

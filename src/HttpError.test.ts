@@ -1,6 +1,6 @@
 ﻿/* eslint-disable jest/no-conditional-expect */
 
-import assert from 'assert';
+import assert from 'node:assert';
 
 import { createTestServer, randomPort, TestServer } from './createTestServer/createTestServer';
 import { get } from './Http';

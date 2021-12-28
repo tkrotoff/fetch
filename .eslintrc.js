@@ -84,8 +84,6 @@ const config = {
     'unicorn/prefer-query-selector': 'off',
     // FIXME Activate when ES modules are well supported
     'unicorn/prefer-module': 'off',
-    // FIXME Activate when ES modules are well supported
-    'unicorn/prefer-node-protocol': 'off',
 
     'jest/no-restricted-matchers': 'error'
   },

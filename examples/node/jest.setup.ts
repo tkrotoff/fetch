@@ -1,5 +1,5 @@
 import { AbortController, AbortSignal } from 'abort-controller';
-import assert from 'assert';
+import assert from 'node:assert';
 import * as nodeFetch from 'node-fetch';
 
 // [console.assert not throwing with v22.4.0](https://github.com/facebook/jest/issues/5634)

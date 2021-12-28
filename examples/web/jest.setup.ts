@@ -1,7 +1,7 @@
 import 'regenerator-runtime';
 import 'whatwg-fetch';
 
-import assert from 'assert';
+import assert from 'node:assert';
 
 // [console.assert not throwing with v22.4.0](https://github.com/facebook/jest/issues/5634)
 // eslint-disable-next-line no-console
