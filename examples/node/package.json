@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "description": "@tkrotoff/fetch Node.js example",
+  "type": "module",
   "scripts": {
     "clean": "rm -rf build coverage",
     "clean:all": "npm run clean && rm -rf node_modules package-lock.json",
-    "start": "ts-node index.ts",
+    "start": "node --loader ts-node/esm index.ts",
     "test": "jest --verbose",
     "test:coverage": "jest --coverage",
     "tsc": "tsc",

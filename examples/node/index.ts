@@ -8,7 +8,7 @@ import {
   get404NotFoundExample,
   get500InternalServerErrorExample,
   postJSON201CreatedExample
-} from './requests';
+} from './requests.js';
 
 globalThis.fetch = nodeFetch as any;
 globalThis.Headers = nodeFetch.Headers as any;
