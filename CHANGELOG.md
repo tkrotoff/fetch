@@ -1,3 +1,9 @@
+## 0.12.3 (2021/12/30)
+
+- Update to node-fetch 3
+- Update other npm packages
+- Switch to @playwright/test
+
 ## 0.12.2 (2021/10/18)
 
 ### Features
