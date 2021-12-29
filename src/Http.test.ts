@@ -331,18 +331,17 @@ describe('body methods', () => {
     }
   });
 
-  // FIXME https://github.com/node-fetch/node-fetch/issues/199
-  if (isWhatwgFetch) {
-    test('.formData()', async () => {
-      server.get(path, (request, reply) => {
-        reply.send(request.headers.accept);
-      });
-      const url = await server.listen(randomPort);
-
-      const response = await get(url).formData();
-      expect(entriesToObject(response)).toEqual({ 'multipart/form-data': '' });
+  test('.formData()', async () => {
+    server.get(path, (request, reply) => {
+      reply
+        .header('Content-Type', 'application/x-www-form-urlencoded')
+        .send(request.headers.accept);
     });
-  }
+    const url = await server.listen(randomPort);
+
+    const response = await get(url).formData();
+    expect(entriesToObject(response)).toEqual({ 'multipart/form-data': '' });
+  });
 
   test('.json() with JSON reply', async () => {
     server.get(path, (request, reply) => {
