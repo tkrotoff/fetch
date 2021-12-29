@@ -8,9 +8,9 @@ import {
   get404NotFoundExample,
   get500InternalServerErrorExample,
   postJSON201CreatedExample
-} from './requests';
+} from './requests.js';
 
-globalThis.fetch = nodeFetch as any;
+globalThis.fetch = nodeFetch.default as any;
 globalThis.Headers = nodeFetch.Headers as any;
 globalThis.Response = nodeFetch.Response as any;
 
@@ -18,13 +18,9 @@ globalThis.Response = nodeFetch.Response as any;
 globalThis.AbortController = AbortController;
 globalThis.AbortSignal = AbortSignal;
 
-// FIXME Remove when support for Node.js < 14.8.0 is dropped, https://nodejs.org/en/blog/release/v14.8.0/
-// eslint-disable-next-line func-names
-(async function () {
-  await get200OKExample();
-  await postJSON201CreatedExample();
-  await del200OKExample();
-  await get404NotFoundExample();
-  await get500InternalServerErrorExample();
-  await abortRequestExample();
-})();
+await get200OKExample();
+await postJSON201CreatedExample();
+await del200OKExample();
+await get404NotFoundExample();
+await get500InternalServerErrorExample();
+await abortRequestExample();

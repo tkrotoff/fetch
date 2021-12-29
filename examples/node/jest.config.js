@@ -1,5 +1,8 @@
 // @ts-check
 
+// [How to set transformIgnorePatterns to fix "Jest encountered an unexpected token"](https://github.com/nrwl/nx/issues/812)
+const esModules = ['node-fetch', 'data-uri-to-buffer', 'fetch-blob', 'formdata-polyfill'];
+
 /** @type Partial<import('@jest/types').Config.InitialOptions> */
 const config = {
   testEnvironment: 'node',
@@ -11,6 +14,8 @@ const config = {
   // Let's be strict and use *.test.js only
   testRegex: '\\.test\\.ts$',
 
+  transformIgnorePatterns: [`/node_modules/(?!${esModules.join('|')})`],
+
   coverageThreshold: {
     global: {
       statements: 100,
@@ -21,4 +26,4 @@ const config = {
   }
 };
 
-module.exports = config;
+export default config;

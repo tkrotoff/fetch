@@ -1,3 +1,5 @@
+/* eslint-disable default-param-last */
+
 import { JSON_MIME_TYPE } from './Http';
 import { HttpError } from './HttpError';
 

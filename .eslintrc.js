@@ -6,7 +6,7 @@ const config = {
   parserOptions: {},
   extends: [
     // /!\ Order matters: the next one overrides rules from the previous one
-    'plugin:jest-playwright/recommended',
+    'plugin:playwright/playwright-test',
     'plugin:jest/recommended',
     'plugin:unicorn/recommended',
     'airbnb-base',
@@ -84,8 +84,6 @@ const config = {
     'unicorn/prefer-query-selector': 'off',
     // FIXME Activate when ES modules are well supported
     'unicorn/prefer-module': 'off',
-    // FIXME Activate when ES modules are well supported
-    'unicorn/prefer-node-protocol': 'off',
 
     'jest/no-restricted-matchers': 'error'
   },

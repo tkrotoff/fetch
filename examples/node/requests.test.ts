@@ -102,8 +102,8 @@ test('getCorsBlockedExample()', async () => {
 
 test('abortRequestExample()', async () => {
   // DOMException does not exist with node-fetch
-  //const abortError = new DOMException('The user aborted a request.', 'AbortError')
-  const abortError = new Error('The user aborted a request.');
+  //const abortError = new DOMException('The operation was aborted.', 'AbortError')
+  const abortError = new Error('The operation was aborted.');
   abortError.name = 'AbortError';
 
   const getSpy = jest
@@ -111,14 +111,14 @@ test('abortRequestExample()', async () => {
     .mockImplementation((_input: RequestInfo, init: Http.Init) => {
       // Mock aborted request
       // https://github.com/github/fetch/blob/v3.4.1/fetch.js#L497
-      const response = new Promise((resolve, reject) =>
+      const response = new Promise((resolve, reject) => {
         setTimeout(() => {
           if (init.signal && init.signal.aborted) {
             reject(abortError);
           }
           resolve('**********');
-        }, 600)
-      );
+        }, 600);
+      });
 
       return response as Http.ResponsePromiseWithBodyMethods;
     });

@@ -1,9 +1,9 @@
-# https://github.com/actions/starter-workflows/blob/aa9d3bc6cc46ac11a53ca196e504d4f901a8de8d/ci/node.js.yml
+# https://github.com/actions/starter-workflows/blob/5104ac42744c84c675b2f9e1168e89f1dd60c059/ci/node.js.yml
 
 name: Node.js CI
 
 # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#on
-on: [push, pull_request]
+on: push
 
 jobs:
   build:
@@ -11,16 +11,17 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [14.x, 16.x]
 
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{matrix.node-version}}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{matrix.node-version}}
-      - uses: microsoft/playwright-github-action@v1
+          cache: 'npm'
       - run: npm ci
+      - run: npx playwright install --with-deps
       - run: npm run lint
       - run: npm run build
       - run: npm run npm:install:examples

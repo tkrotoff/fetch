@@ -127,14 +127,14 @@ test('abortRequestExample()', async () => {
     .mockImplementation((_input: RequestInfo, init: Http.Init) => {
       // Mock aborted request
       // https://github.com/github/fetch/blob/v3.4.1/fetch.js#L497
-      const response = new Promise((resolve, reject) =>
+      const response = new Promise((resolve, reject) => {
         setTimeout(() => {
           if (init.signal && init.signal.aborted) {
             reject(abortError);
           }
           resolve('**********');
-        }, 600)
-      );
+        }, 600);
+      });
 
       return response as Http.ResponsePromiseWithBodyMethods;
     });

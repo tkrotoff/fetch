@@ -36,14 +36,11 @@ describe('body methods', () => {
     }
   });
 
-  // FIXME https://github.com/node-fetch/node-fetch/issues/199
-  if (isWhatwgFetch) {
-    test('.formData()', async () => {
-      const responsePromise = createResponsePromise('test');
-      const formData = await responsePromise.formData();
-      expect(entriesToObject(formData)).toEqual({ test: '' });
-    });
-  }
+  test('.formData()', async () => {
+    const responsePromise = createResponsePromise(new URLSearchParams('test'));
+    const formData = await responsePromise.formData();
+    expect(entriesToObject(formData)).toEqual({ test: '' });
+  });
 
   test('.json() with JSON response', async () => {
     const responsePromise = createJSONResponsePromise({ test: 'true' });
@@ -95,6 +92,7 @@ describe('body methods', () => {
   test('multiple body calls using helper + regular response', async () => {
     const response = createJSONResponsePromise({ test: 'true' });
     expect(await response.json()).toEqual({ test: 'true' });
+    // eslint-disable-next-line unicorn/no-await-expression-member
     await expect((await response).text()).rejects.toThrow(bodyAlreadyUsedError);
   });
 });

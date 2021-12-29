@@ -1,4 +1,4 @@
-import assert from 'assert';
+import assert from 'node:assert';
 
 import { createTestServer, randomPort, TestServer } from './createTestServer/createTestServer';
 import { entriesToObject } from './utils/entriesToObject';
@@ -331,18 +331,17 @@ describe('body methods', () => {
     }
   });
 
-  // FIXME https://github.com/node-fetch/node-fetch/issues/199
-  if (isWhatwgFetch) {
-    test('.formData()', async () => {
-      server.get(path, (request, reply) => {
-        reply.send(request.headers.accept);
-      });
-      const url = await server.listen(randomPort);
-
-      const response = await get(url).formData();
-      expect(entriesToObject(response)).toEqual({ 'multipart/form-data': '' });
+  test('.formData()', async () => {
+    server.get(path, (request, reply) => {
+      reply
+        .header('Content-Type', 'application/x-www-form-urlencoded')
+        .send(request.headers.accept);
     });
-  }
+    const url = await server.listen(randomPort);
+
+    const response = await get(url).formData();
+    expect(entriesToObject(response)).toEqual({ 'multipart/form-data': '' });
+  });
 
   test('.json() with JSON reply', async () => {
     server.get(path, (request, reply) => {
@@ -442,6 +441,7 @@ describe('body methods', () => {
 
     const response = get(url);
     expect(await response.json()).toEqual({ accept: 'application/json' });
+    // eslint-disable-next-line unicorn/no-await-expression-member
     await expect((await response).text()).rejects.toThrow(bodyAlreadyUsedError(url));
   });
 });
