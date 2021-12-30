@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/%40tkrotoff%2Ffetch.svg)](https://www.npmjs.com/package/@tkrotoff/fetch)
 [![Node.js CI](https://github.com/tkrotoff/fetch/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/tkrotoff/fetch/actions)
-[![Codecov](https://codecov.io/gh/tkrotoff/fetch/branch/master/graph/badge.svg)](https://codecov.io/gh/tkrotoff/fetch)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/67aaf07dd7577e2ef340/test_coverage)](https://codeclimate.com/github/tkrotoff/fetch/test_coverage)
 [![Bundle size](https://badgen.net/bundlephobia/minzip/@tkrotoff/fetch)](https://bundlephobia.com/result?p=@tkrotoff/fetch)
 [![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![Airbnb Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
