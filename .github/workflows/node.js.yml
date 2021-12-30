@@ -31,3 +31,15 @@ jobs:
       - run: npm run test:e2e
       - run: npm run test:coverage:whatwg-fetch
       - run: npm run test:coverage:examples
+
+      - name: Upload coverage to Code Climate
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter format-coverage --input-type clover --output coverage.fetch.json coverage/clover.xml
+          ./cc-test-reporter format-coverage --input-type clover --output coverage.node-example.json examples/node/coverage/clover.xml
+          ./cc-test-reporter format-coverage --input-type clover --output coverage.web-example.json examples/web/coverage/clover.xml
+          ./cc-test-reporter sum-coverage --output coverage.total.json --parts 3 coverage.*.json
+          ./cc-test-reporter upload-coverage --input coverage.total.json
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
