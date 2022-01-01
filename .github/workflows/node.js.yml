@@ -31,3 +31,24 @@ jobs:
       - run: npm run test:e2e
       - run: npm run test:coverage:whatwg-fetch
       - run: npm run test:coverage:examples
+
+      - name: Upload coverage to Code Climate
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter format-coverage --input-type clover --output coverage.fetch.json coverage/clover.xml
+          ./cc-test-reporter format-coverage --input-type clover --output coverage.node-example.json examples/node/coverage/clover.xml
+          ./cc-test-reporter format-coverage --input-type clover --output coverage.web-example.json examples/web/coverage/clover.xml
+          ./cc-test-reporter sum-coverage --output coverage.total.json --parts 3 coverage.*.json
+          ./cc-test-reporter upload-coverage --input coverage.total.json
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          # FIXME https://github.com/codecov/codecov-action/issues/600#issuecomment-1003567615
+          #files: coverage/clover.xml,examples/node/coverage/clover.xml,examples/web/coverage/clover.xml
+          directory: coverage/
+          fail_ci_if_error: true
+          verbose: true
