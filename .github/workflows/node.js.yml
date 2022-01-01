@@ -43,3 +43,12 @@ jobs:
           ./cc-test-reporter upload-coverage --input coverage.total.json
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          # FIXME https://github.com/codecov/codecov-action/issues/600#issuecomment-1003567615
+          #files: coverage/clover.xml,examples/node/coverage/clover.xml,examples/web/coverage/clover.xml
+          directory: coverage/
+          fail_ci_if_error: true
+          verbose: true
