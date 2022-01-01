@@ -44,11 +44,9 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
 
+      # FIXME https://github.com/codecov/codecov-action/issues/600#issuecomment-1003567615
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          # FIXME https://github.com/codecov/codecov-action/issues/600#issuecomment-1003567615
-          #files: coverage/clover.xml,examples/node/coverage/clover.xml,examples/web/coverage/clover.xml
-          directory: coverage/
-          fail_ci_if_error: true
-          verbose: true
+        run: |
+          curl --remote-name https://uploader.codecov.io/v0.1.14/linux/codecov
+          chmod +x codecov
+          ./codecov --file coverage/clover.xml --file examples/node/coverage/clover.xml --file examples/web/coverage/clover.xml
