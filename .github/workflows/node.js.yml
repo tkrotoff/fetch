@@ -49,4 +49,4 @@ jobs:
         run: |
           curl --remote-name https://uploader.codecov.io/v0.1.14/linux/codecov
           chmod +x codecov
-          ./codecov --file coverage/clover.xml --file examples/node/coverage/clover.xml --file examples/web/coverage/clover.xml
+          ./codecov --file coverage/coverage-final.json --file examples/node/coverage/coverage-final.json --file examples/web/coverage/coverage-final.json
