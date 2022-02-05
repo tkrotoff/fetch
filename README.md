@@ -12,9 +12,9 @@ A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper.
 - Simplifies the use of Fetch
 - Tiny: less than 200 lines of code
 - No dependencies
+- Comes with test utilities
 - Fully tested
 - Written in TypeScript
-- Comes with test utilities
 
 ## Why?
 
@@ -76,12 +76,9 @@ defaults.init = { /* ... */ };
 
 const response = await postJSON(
   'https://jsonplaceholder.typicode.com/posts',
-  {
-    title: 'foo',
-    body: 'bar',
-    userId: 1
-  }
+  { title: 'foo', body: 'bar', userId: 1 }
 ).json();
+
 console.log(response);
 ```
 
@@ -182,10 +179,10 @@ test('OK', async () => {
 
 test('fail', async () => {
   const getSpy = jest.spyOn(Http, 'get').mockImplementation(() =>
-    Http.createResponsePromise('<!DOCTYPE html><title>404</title>', {
-      status: 404,
-      statusText: 'Not Found'
-    })
+    Http.createResponsePromise(
+      '<!DOCTYPE html><title>404</title>',
+      { status: 404, statusText: 'Not Found' }
+    )
   );
 
   await expect(Http.get(url).text()).rejects.toThrow('Not Found');
