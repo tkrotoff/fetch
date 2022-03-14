@@ -10,9 +10,8 @@ if (window.navigator.userAgent.includes('jsdom')) {
 }
 
 // https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/#assertion-functions
-function assert(_condition: boolean, _message?: string): asserts _condition {
-  // eslint-disable-next-line prefer-rest-params
-  console.assert(...arguments);
+function assert(condition: boolean, message?: string): asserts condition {
+  console.assert(condition, message);
 }
 
 export async function get200OKExample() {
@@ -72,23 +71,7 @@ export async function get404NotFoundExample() {
     assert(e instanceof HttpError);
     expect(e).toBeInstanceOf(HttpError);
     expect(e.name).toEqual('HttpError');
-
-    // istanbul ignore next
-    switch (browserEngine) {
-      case 'EdgeHTML':
-      case 'Trident':
-      case 'WebKit':
-      case 'Blink':
-        expect(e.message).toEqual('404');
-        break;
-      case 'jsdom':
-      case 'Gecko':
-        expect(e.message).toEqual('Not Found');
-        break;
-      default:
-        assert(false, `Unknown browser engine: '${browserEngine}'`);
-    }
-
+    expect(e.message).toEqual('Not Found');
     expect(e.response.status).toEqual(404);
     expect(await e.response.text()).toEqual('404 Not Found');
   }
@@ -105,23 +88,7 @@ export async function get500InternalServerErrorExample() {
     assert(e instanceof HttpError);
     expect(e).toBeInstanceOf(HttpError);
     expect(e.name).toEqual('HttpError');
-
-    // istanbul ignore next
-    switch (browserEngine) {
-      case 'EdgeHTML':
-      case 'Trident':
-      case 'WebKit':
-      case 'Blink':
-        expect(e.message).toEqual('500');
-        break;
-      case 'jsdom':
-      case 'Gecko':
-        expect(e.message).toEqual('Internal Server Error');
-        break;
-      default:
-        assert(false, `Unknown browser engine: '${browserEngine}'`);
-    }
-
+    expect(e.message).toEqual('Internal Server Error');
     expect(e.response.status).toEqual(500);
     expect(await e.response.text()).toEqual('500 Internal Server Error');
   }
@@ -135,37 +102,22 @@ function checkTypeError(e: TypeError) {
   // istanbul ignore next
   switch (browserEngine) {
     case 'jsdom':
-      expect(e.message).toEqual('Failed to fetch');
-      break;
     case 'Blink':
+    case 'EdgeHTML':
       expect(e.message).toEqual('Failed to fetch');
-      expect(e.stack).toEqual('TypeError: Failed to fetch');
+      expect(e.stack).toContain('TypeError: Failed to fetch');
       break;
     case 'Gecko':
       expect(e.message).toEqual('NetworkError when attempting to fetch resource.');
       expect(e.stack).toEqual('');
       break;
     case 'WebKit':
-      expect(e.message).toEqual({
-        asymmetricMatch: (actual: string) =>
-          /^Origin .* is not allowed by Access-Control-Allow-Origin\.$/.test(actual) ||
-          actual === 'Preflight response is not successful'
-      });
+      expect(e.message).toEqual('Load failed');
       expect(e.stack).toBe(undefined);
       break;
     case 'Trident':
       expect(e.message).toEqual('Network request failed');
-      expect(e.stack).toEqual({
-        asymmetricMatch: (actual: string) =>
-          /^TypeError: Network request failed.*$/m.test(actual) || actual === undefined
-      });
-      break;
-    case 'EdgeHTML':
-      expect(e.message).toEqual('Failed to fetch');
-      expect(e.stack).toEqual({
-        asymmetricMatch: (actual: string) =>
-          /^TypeError: Failed to fetch.*$/m.test(actual) || actual === undefined
-      });
+      expect(e.stack).toContain('TypeError: Network request failed');
       break;
     default:
       assert(false, `Unknown browser engine: '${browserEngine}'`);
@@ -229,6 +181,12 @@ function checkAbortError(e: DOMException) {
 }
 
 export async function abortRequestExample() {
+  // istanbul ignore next
+  if (browserEngine === 'Trident') {
+    console.error('Not supported with Internet Explorer');
+    return;
+  }
+
   console.group(abortRequestExample.name);
 
   const controller = new AbortController();
@@ -258,6 +216,11 @@ export async function abortRequestExample() {
 // https://stackoverflow.com/a/64635519
 // istanbul ignore next
 export async function downloadProgressExample() {
+  if (browserEngine === 'Trident') {
+    console.error('Not supported with Internet Explorer');
+    return;
+  }
+
   console.group(downloadProgressExample.name);
 
   const progressIndicator = document.getElementById(
