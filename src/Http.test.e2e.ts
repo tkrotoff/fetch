@@ -17,6 +17,8 @@ declare global {
 
 const path = '/';
 
+test.describe.configure({ mode: 'parallel' });
+
 test('get()', async ({ page }) => {
   const server = createTestServer();
 
