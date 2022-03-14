@@ -1,3 +1,11 @@
+## 0.12.4 (2022/03/15)
+
+- Fix web example
+- Update npm packages
+- Improve documentation
+- Upload coverage to Code Climate & Codecov
+- Remove Travis CI support
+
 ## 0.12.3 (2021/12/30)
 
 - Update to node-fetch 3
