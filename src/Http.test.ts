@@ -473,7 +473,7 @@ test('cannot connect', async () => {
   consoleSpy.mockRestore();
 });
 
-// FIXME Remove when support for [EdgeHTML](https://en.wikipedia.org/wiki/EdgeHTML) will be dropped
+// FIXME Remove when support for [EdgeHTML](https://en.wikipedia.org/wiki/EdgeHTML) is dropped
 test('should not throw under EdgeHTML', async () => {
   const OriginalHeaders = Headers;
 

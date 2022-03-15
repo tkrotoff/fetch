@@ -86,7 +86,7 @@ function getCorsErrorMessage(browserEngine: string | undefined) {
       message = 'NetworkError when attempting to fetch resource.';
       break;
     case 'WebKit':
-      message = 'Origin null is not allowed by Access-Control-Allow-Origin.';
+      message = 'Load failed';
       break;
     default:
   }
@@ -106,13 +106,9 @@ test('CORS fail', async ({ page }) => {
   const userAgent = await page.evaluate(() => window.navigator.userAgent);
   const browserEngine = new UAParser(userAgent).getEngine().name;
 
-  // FIXME Does not work with WebKit and Playwright 1.13.1
-  if (browserEngine !== 'WebKit') {
-    // eslint-disable-next-line jest/no-conditional-expect
-    await expect(page.evaluate(url => window.Http.get(url).text(), url)).rejects.toThrow(
-      getCorsErrorMessage(browserEngine)
-    );
-  }
+  await expect(page.evaluate(url => window.Http.get(url).text(), url)).rejects.toThrow(
+    getCorsErrorMessage(browserEngine)
+  );
 
   await server.close();
 });
@@ -163,7 +159,7 @@ test('abort request', async ({ page }) => {
 test('HTTPS + HTTP/2', async ({ page }) => {
   const userAgent = await page.evaluate(() => window.navigator.userAgent);
   const browserEngine = new UAParser(userAgent).getEngine().name;
-  // FIXME Does not work with WebKit and Playwright 1.13.1
+  // FIXME Does not work with WebKit and GitHub Actions
   if (browserEngine === 'WebKit') return;
 
   const server = createTestServer({ https: true, http2: true });
