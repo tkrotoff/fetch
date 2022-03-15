@@ -26,6 +26,7 @@ jobs:
       - run: npm run build
       - run: npm run npm:install:examples
       - run: npm run build:examples
+      - run: npm run tsc:examples
       - run: npm run start:examples
       - run: npm run test:node-fetch
       - run: npm run test:e2e

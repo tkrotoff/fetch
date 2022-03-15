@@ -6,6 +6,10 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
 
+    // @jest/types v25.5.0 is incompatible with @types/node v16
+    // https://github.com/facebook/jest/issues/11640
+    "skipLibCheck": true,
+
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
