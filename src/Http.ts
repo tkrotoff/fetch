@@ -140,7 +140,7 @@ export function get(input: RequestInfo, init?: Init) {
   return request(input, getHeaders(init), init, 'GET');
 }
 
-export function post<T extends BodyInit>(input: RequestInfo, body: T, init?: Init) {
+export function post<T extends BodyInit>(input: RequestInfo, body?: T, init?: Init) {
   return request(input, getHeaders(init), init, 'POST', body);
 }
 // Should be named postJson or postJSON?
@@ -156,7 +156,7 @@ export function postJSON<T extends object>(input: RequestInfo, body: T, init?: I
 // No need to have postFormData() and friends: the browser already sets the proper request content type
 // Something like "content-type: multipart/form-data; boundary=----WebKitFormBoundaryl8VQ0sfwUpJEWna3"
 
-export function put<T extends BodyInit>(input: RequestInfo, body: T, init?: Init) {
+export function put<T extends BodyInit>(input: RequestInfo, body?: T, init?: Init) {
   return request(input, getHeaders(init), init, 'PUT', body);
 }
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -164,7 +164,7 @@ export function putJSON<T extends object>(input: RequestInfo, body: T, init?: In
   return request(input, getJSONHeaders(init), init, 'PUT', JSON.stringify(body));
 }
 
-export function patch<T extends BodyInit>(input: RequestInfo, body: T, init?: Init) {
+export function patch<T extends BodyInit>(input: RequestInfo, body?: T, init?: Init) {
   return request(input, getHeaders(init), init, 'PATCH', body);
 }
 // eslint-disable-next-line @typescript-eslint/ban-types
