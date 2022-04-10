@@ -1,3 +1,10 @@
+## 0.12.4 (2022/04/10)
+
+- Optional body for post(), put() & patch(), reasons:
+  - https://stackoverflow.com/q/4191593
+  - https://stackoverflow.com/q/1233372
+  - https://stackoverflow.com/q/46956374
+
 ## 0.12.4 (2022/03/15)
 
 - Fix web example

@@ -117,6 +117,7 @@ describe('custom headers', () => {
 test('get()', async () => {
   server.get(path, (request, reply) => {
     expect(request.headers['content-type']).toBeUndefined();
+    expect(request.headers['content-length']).toBeUndefined();
     expect(request.body).toBeNull();
     reply.send(request.method);
   });
@@ -164,12 +165,26 @@ test('post()', async () => {
 
   server.post(path, (request, reply) => {
     expect(request.headers['content-type']).toEqual('text/plain;charset=UTF-8');
+    expect(request.headers['content-length']).toEqual('4');
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
   const url = await server.listen(randomPort);
 
   const response = await post(url, body).text();
+  expect(response).toEqual('POST');
+});
+
+test('post() without body', async () => {
+  server.post(path, (request, reply) => {
+    expect(request.headers['content-type']).toBeUndefined();
+    expect(request.headers['content-length']).toEqual('0');
+    expect(request.body).toBeNull();
+    reply.send(request.method);
+  });
+  const url = await server.listen(randomPort);
+
+  const response = await post(url).text();
   expect(response).toEqual('POST');
 });
 
@@ -213,19 +228,17 @@ test('postJSON() with undefined request body', async () => {
 });
 
 test('postJSON() with null request body', async () => {
-  /* eslint-disable unicorn/no-null */
-
   server.post(path, (request, reply) => {
     expect(request.headers['content-type']).toEqual('application/json');
+    expect(request.headers['content-length']).toEqual('4');
     expect(request.body).toBeNull();
     reply.send(request.method);
   });
   const url = await server.listen(randomPort);
 
+  // eslint-disable-next-line unicorn/no-null
   const response = await postJSON(url, null as any).text();
   expect(response).toEqual('POST');
-
-  /* eslint-enable unicorn/no-null */
 });
 
 test('put()', async () => {
@@ -233,12 +246,26 @@ test('put()', async () => {
 
   server.put(path, (request, reply) => {
     expect(request.headers['content-type']).toEqual('text/plain;charset=UTF-8');
+    expect(request.headers['content-length']).toEqual('4');
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
   const url = await server.listen(randomPort);
 
   const response = await put(url, body).text();
+  expect(response).toEqual('PUT');
+});
+
+test('put() without body', async () => {
+  server.put(path, (request, reply) => {
+    expect(request.headers['content-type']).toBeUndefined();
+    expect(request.headers['content-length']).toEqual('0');
+    expect(request.body).toBeNull();
+    reply.send(request.method);
+  });
+  const url = await server.listen(randomPort);
+
+  const response = await put(url).text();
   expect(response).toEqual('PUT');
 });
 
@@ -261,12 +288,26 @@ test('patch()', async () => {
 
   server.patch(path, (request, reply) => {
     expect(request.headers['content-type']).toEqual('text/plain;charset=UTF-8');
+    expect(request.headers['content-length']).toEqual('4');
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
   const url = await server.listen(randomPort);
 
   const response = await patch(url, body).text();
+  expect(response).toEqual('PATCH');
+});
+
+test('patch() without body', async () => {
+  server.patch(path, (request, reply) => {
+    expect(request.headers['content-type']).toBeUndefined();
+    expect(request.headers['content-length']).toEqual('0');
+    expect(request.body).toBeNull();
+    reply.send(request.method);
+  });
+  const url = await server.listen(randomPort);
+
+  const response = await patch(url).text();
   expect(response).toEqual('PATCH');
 });
 
@@ -287,6 +328,7 @@ test('patchJSON()', async () => {
 test('del()', async () => {
   server.delete(path, (request, reply) => {
     expect(request.headers['content-type']).toBeUndefined();
+    expect(request.headers['content-length']).toBeUndefined();
     reply.send(request.method);
   });
   const url = await server.listen(randomPort);

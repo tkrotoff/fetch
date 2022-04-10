@@ -106,13 +106,13 @@ Check [examples/web](examples/web)
 
 - `get(input:` [`RequestInfo`](https://fetch.spec.whatwg.org/#requestinfo)`, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`): ResponsePromiseWithBodyMethods`
 
-- `post(input: RequestInfo, body:` [`BodyInit`](https://fetch.spec.whatwg.org/#bodyinit)`, init?: RequestInit): ResponsePromiseWithBodyMethods`
+- `post(input: RequestInfo, body?:` [`BodyInit`](https://fetch.spec.whatwg.org/#bodyinit)`, init?: RequestInit): ResponsePromiseWithBodyMethods`
 - `postJSON(input: RequestInfo, body: object, init?: RequestInit): ResponsePromiseWithBodyMethods`
 
-- `put(input: RequestInfo, body: BodyInit, init?: Init): ResponsePromiseWithBodyMethods`
+- `put(input: RequestInfo, body?: BodyInit, init?: RequestInit): ResponsePromiseWithBodyMethods`
 - `putJSON(input: RequestInfo, body: object, init?: RequestInit): ResponsePromiseWithBodyMethods`
 
-- `patch(input: RequestInfo, body: BodyInit, init?: Init): ResponsePromiseWithBodyMethods`
+- `patch(input: RequestInfo, body?: BodyInit, init?: RequestInit): ResponsePromiseWithBodyMethods`
 - `patchJSON(input: RequestInfo, body: object, init?: RequestInit): ResponsePromiseWithBodyMethods`
 
 - `del(input: RequestInfo, init?: RequestInit): ResponsePromiseWithBodyMethods`
