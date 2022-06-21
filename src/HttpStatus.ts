@@ -1,15 +1,18 @@
 /**
- * List of HTTP status codes.
- *
  * [List of HTTP status codes](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
- * [Rails HTTP Status Code to Symbol Mapping](https://web.archive.org/web/20131211220540/http://www.codyfauser.com/2008/7/4/rails-http-status-code-to-symbol-mapping)
  *
- * https://www.rubydoc.info/github/rack/rack/master/Rack/Utils#HTTP_STATUS_CODES-constant
- *
- * curl -s https://www.iana.org/assignments/http-status-codes/http-status-codes-1.csv | \
- * ruby -ne 'm = /^(\d{3}),(?!Unassigned|\(Unused\))([^,]+)/.match($_) and \
- * puts "_#{m[1]}_#{m[2].delete %Q[ ]} = #{m[1]},"'
+ * With TypeScript use `typeof HttpStatus[keyof typeof HttpStatus]` to pull out the values
+ * (https://www.typescriptlang.org/docs/handbook/enums.html#objects-vs-enums)
  */
+// [Rails HTTP Status Code to Symbol Mapping](https://web.archive.org/web/20131211220540/http://www.codyfauser.com/2008/7/4/rails-http-status-code-to-symbol-mapping)
+//
+// https://www.rubydoc.info/gems/rack/Rack/Utils#HTTP_STATUS_CODES-constant
+//
+// ```
+// curl -s https://www.iana.org/assignments/http-status-codes/http-status-codes-1.csv | \
+// ruby -ne 'm = /^(\d{3}),(?!Unassigned|\(Unused\))([^,]+)/.match($_) and \
+// puts "_#{m[1]}_#{m[2].delete %Q[ ]} = #{m[1]},"'
+// ```
 export const HttpStatus = {
   /*
    * 1xx informational response
@@ -102,5 +105,6 @@ export const HttpStatus = {
    */
 
   // A deprecated response used by the Spring Framework when a method has failed
+  // Still in use at PMU as of 2022
   _420_MethodFailure: 420
 } as const;

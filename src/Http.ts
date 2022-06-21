@@ -2,7 +2,10 @@ import { entriesToObject } from './utils/entriesToObject';
 import { wait } from './utils/wait';
 import { HttpError } from './HttpError';
 
-// https://github.com/microsoft/TypeScript/blob/v4.4.4/lib/lib.dom.d.ts#L2446-L2450
+/**
+ * `Promise<`[`Response`](https://fetch.spec.whatwg.org/#response)`>` with added methods from [`Body`](https://fetch.spec.whatwg.org/#body-mixin).
+ */
+// https://github.com/microsoft/TypeScript/blob/v4.7.4/lib/lib.dom.d.ts#L2503-L2507
 export type ResponsePromiseWithBodyMethods = Promise<Response> &
   Pick<Body, 'arrayBuffer' | 'blob' | 'formData' | /*'json' |*/ 'text'> & {
     // FIXME https://github.com/microsoft/TypeScript/issues/26188
