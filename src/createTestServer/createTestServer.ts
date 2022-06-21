@@ -1,5 +1,5 @@
+import fastifyCors, { FastifyCorsOptions } from '@fastify/cors';
 import fastify from 'fastify';
-import fastifyCors, { FastifyCorsOptions } from 'fastify-cors';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
@@ -39,26 +39,24 @@ const privateKey = readFileSync(path.join(__dirname, 'createTestServer.key'));
 const certificate = readFileSync(path.join(__dirname, 'createTestServer.cert'));
 
 interface Options {
-  logger?: boolean;
   https?: boolean;
   http2?: boolean;
   corsOrigin?: FastifyCorsOptions['origin']; // https://stackoverflow.com/a/41075862
 }
 
 const defaults = {
-  logger: false,
   https: true,
   http2: false,
   corsOrigin: true
-};
+} as const;
 
 // Why use Fastify instead of Express?
 // Fastify uses async/await syntax and thus simplifies this implementation a lot
 export function createTestServer(options?: Options) {
-  const { logger, https, http2, corsOrigin } = { ...defaults, ...options };
+  const { https, http2, corsOrigin } = { ...defaults, ...options };
 
   const server = fastify({
-    logger,
+    logger: false,
 
     // @ts-ignore
     // eslint-disable-next-line unicorn/no-null
@@ -70,7 +68,6 @@ export function createTestServer(options?: Options) {
     // And request is deprecated and does not support HTTP/2: https://github.com/request/request/issues/2033
     //
     // node-fetch does not support HTTP/2: https://github.com/node-fetch/node-fetch/issues/342
-    // @ts-ignore
     http2
   }) as unknown as TestServer;
 
@@ -79,8 +76,8 @@ export function createTestServer(options?: Options) {
 
   // With the default error handler from Fastify we don't see
   // Jest errors from expect() inside handlers
-  // https://www.fastify.io/docs/v3.8.x/Errors/#catching-uncaught-errors-in-fastify
-  // https://github.com/fastify/fastify/blob/v3.8.0/fastify.js#L62
+  // https://www.fastify.io/docs/v4.1.x/Reference/Errors/#catching-uncaught-errors-in-fastify
+  // https://github.com/fastify/fastify/blob/v4.1.0/lib/error-handler.js#L68
   // FYI Express needs the same hack: http://expressjs.com/en/guide/error-handling.html#the-default-error-handler
   // FYI http.createServer() doesn't need it
   // istanbul ignore next
@@ -88,8 +85,8 @@ export function createTestServer(options?: Options) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     process.stderr.write(error.stack!);
 
-    // ["To access the default handler, you can access instance.errorHandler"](https://www.fastify.io/docs/latest/Routes/#routes-option)
-    // https://www.fastify.io/docs/v3.22.x/Server/#errorhandler
+    // ["To access the default handler, you can access instance.errorHandler"](https://www.fastify.io/docs/v4.1.x/Reference/Routes/#routes-options)
+    // https://www.fastify.io/docs/v4.1.x/Reference/Server/#errorhandler
     // FIXME
     // @ts-ignore
     if (fastify.errorHandler) fastify.errorHandler(error, request, reply);
@@ -99,18 +96,12 @@ export function createTestServer(options?: Options) {
   // You cannot later re-enable errors, you need to restart Fastify:
   // Should be done before calling listen(): "Cannot call "setErrorHandler" when fastify instance is already started!"
   server.silenceErrors = () => {
-    // https://github.com/fastify/fastify/blob/v3.22.0/fastify.js#L74
+    // https://github.com/fastify/fastify/blob/v4.1.0/lib/error-handler.js#L68
     server.setErrorHandler((error, _request, reply) => {
       reply.send(error);
+      return reply;
     });
   };
 
-  // Cannot be done here: "Cannot add route when fastify instance is already started!"
-  //server.url = await server.listen(port);
-
   return server;
 }
-
-// https://stackoverflow.com/a/1077305
-// https://stackoverflow.com/a/63293781
-export const randomPort = 0;

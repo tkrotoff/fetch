@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 
-import { createTestServer, randomPort, TestServer } from './createTestServer/createTestServer';
+import { createTestServer, TestServer } from './createTestServer/createTestServer';
 import { entriesToObject } from './utils/entriesToObject';
 import { isWhatwgFetch } from './utils/isWhatwgFetch';
 import { defaults, del, get, patch, patchJSON, post, postJSON, put, putJSON } from './Http';
@@ -83,7 +83,7 @@ describe('custom headers', () => {
     server.get(path, (request, reply) => {
       reply.send(request.headers);
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const headers = { test: 'true' };
     const response = await get(url, { headers }).text();
@@ -94,7 +94,7 @@ describe('custom headers', () => {
     server.get(path, (request, reply) => {
       reply.send(request.headers);
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const headers = new Headers({ test: 'true' });
     const response = await get(url, { headers }).text();
@@ -105,7 +105,7 @@ describe('custom headers', () => {
     server.post(path, (request, reply) => {
       reply.send(request.headers);
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const body = { test: true };
     const headers = { test: 'true' };
@@ -118,10 +118,10 @@ test('get()', async () => {
   server.get(path, (request, reply) => {
     expect(request.headers['content-type']).toBeUndefined();
     expect(request.headers['content-length']).toBeUndefined();
-    expect(request.body).toBeNull();
+    expect(request.body).toBeUndefined();
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response = await get(url).text();
   expect(response).toEqual('GET');
@@ -131,7 +131,7 @@ test('multiple fetch()', async () => {
   server.get(path, (request, reply) => {
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response1 = await fetch(url);
   expect(await response1.text()).toEqual('GET');
@@ -147,7 +147,7 @@ test('multiple requests', async () => {
   server.post(path, (request, reply) => {
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response1 = await get(url).text();
   expect(response1).toEqual('GET');
@@ -169,7 +169,7 @@ test('post()', async () => {
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response = await post(url, body).text();
   expect(response).toEqual('POST');
@@ -179,10 +179,10 @@ test('post() without body', async () => {
   server.post(path, (request, reply) => {
     expect(request.headers['content-type']).toBeUndefined();
     expect(request.headers['content-length']).toEqual('0');
-    expect(request.body).toBeNull();
+    expect(request.body).toBeUndefined();
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response = await post(url).text();
   expect(response).toEqual('POST');
@@ -196,7 +196,7 @@ test('postJSON()', async () => {
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response = await postJSON(url, body).text();
   expect(response).toEqual('POST');
@@ -211,7 +211,7 @@ test('postJSON() should override content-type but keep other headers', async () 
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response = await postJSON(url, body, {
     headers: { 'content-type': 'text/plain', test: 'true' }
@@ -222,7 +222,7 @@ test('postJSON() should override content-type but keep other headers', async () 
 test('postJSON() with undefined request body', async () => {
   server.silenceErrors();
 
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   await expect(postJSON(url, undefined as any).text()).rejects.toThrow('Bad Request');
 });
@@ -234,7 +234,7 @@ test('postJSON() with null request body', async () => {
     expect(request.body).toBeNull();
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   // eslint-disable-next-line unicorn/no-null
   const response = await postJSON(url, null as any).text();
@@ -250,7 +250,7 @@ test('put()', async () => {
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response = await put(url, body).text();
   expect(response).toEqual('PUT');
@@ -260,10 +260,10 @@ test('put() without body', async () => {
   server.put(path, (request, reply) => {
     expect(request.headers['content-type']).toBeUndefined();
     expect(request.headers['content-length']).toEqual('0');
-    expect(request.body).toBeNull();
+    expect(request.body).toBeUndefined();
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response = await put(url).text();
   expect(response).toEqual('PUT');
@@ -277,7 +277,7 @@ test('putJSON()', async () => {
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response = await putJSON(url, body).text();
   expect(response).toEqual('PUT');
@@ -292,7 +292,7 @@ test('patch()', async () => {
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response = await patch(url, body).text();
   expect(response).toEqual('PATCH');
@@ -302,10 +302,10 @@ test('patch() without body', async () => {
   server.patch(path, (request, reply) => {
     expect(request.headers['content-type']).toBeUndefined();
     expect(request.headers['content-length']).toEqual('0');
-    expect(request.body).toBeNull();
+    expect(request.body).toBeUndefined();
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response = await patch(url).text();
   expect(response).toEqual('PATCH');
@@ -319,7 +319,7 @@ test('patchJSON()', async () => {
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response = await patchJSON(url, body).text();
   expect(response).toEqual('PATCH');
@@ -331,7 +331,7 @@ test('del()', async () => {
     expect(request.headers['content-length']).toBeUndefined();
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response = await del(url).text();
   expect(response).toEqual('DELETE');
@@ -342,7 +342,7 @@ describe('body methods', () => {
     server.get(path, (request, reply) => {
       reply.send(request.headers.accept);
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const response = await get(url);
     expect(await response.text()).toEqual('*/*');
@@ -352,7 +352,7 @@ describe('body methods', () => {
     server.get(path, (request, reply) => {
       reply.send(request.headers.accept);
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const response = await get(url).arrayBuffer();
     expect(Buffer.from(response)).toEqual(Buffer.from('*/*'));
@@ -362,7 +362,7 @@ describe('body methods', () => {
     server.get(path, (request, reply) => {
       reply.send(request.headers.accept);
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const response = await get(url).blob();
     expect(response.size).toEqual(3);
@@ -379,7 +379,7 @@ describe('body methods', () => {
         .header('Content-Type', 'application/x-www-form-urlencoded')
         .send(request.headers.accept);
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const response = await get(url).formData();
     expect(entriesToObject(response)).toEqual({ 'multipart/form-data': '' });
@@ -389,7 +389,7 @@ describe('body methods', () => {
     server.get(path, (request, reply) => {
       reply.send({ accept: request.headers.accept });
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const response = await get(url).json();
     expect(response).toEqual({ accept: 'application/json' });
@@ -399,7 +399,7 @@ describe('body methods', () => {
     server.get(path, (request, reply) => {
       reply.send(request.headers.accept);
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const response = await get(url).json();
     expect(response).toEqual('application/json');
@@ -410,7 +410,7 @@ describe('body methods', () => {
       expect(request.headers.accept).toEqual('application/json');
       reply.send();
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const response = await get(url).json();
     expect(response).toEqual('');
@@ -420,7 +420,7 @@ describe('body methods', () => {
     server.get(path, (request, reply) => {
       reply.type('').send(request.headers.accept);
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const response = await get(url).json();
     expect(response).toEqual('application/json');
@@ -430,7 +430,7 @@ describe('body methods', () => {
     server.get(path, (request, reply) => {
       reply.send(request.headers.accept);
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const response = await get(url).text();
     expect(response).toEqual('text/*');
@@ -440,7 +440,7 @@ describe('body methods', () => {
     server.get(path, (request, reply) => {
       reply.send(request.headers.accept);
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const response = await get(url, { headers: { accept: 'text/plain' } }).text();
     expect(response).toEqual('text/plain');
@@ -457,7 +457,7 @@ describe('body methods', () => {
     server.get(path, (request, reply) => {
       reply.send({ accept: request.headers.accept });
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const response = get(url);
     expect(await response.json()).toEqual({ accept: 'application/json' });
@@ -468,7 +468,7 @@ describe('body methods', () => {
     server.get(path, (request, reply) => {
       reply.send({ accept: request.headers.accept });
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const response = await get(url);
     expect(await response.json()).toEqual({ accept: '*/*' });
@@ -479,7 +479,7 @@ describe('body methods', () => {
     server.get(path, (request, reply) => {
       reply.send({ accept: request.headers.accept });
     });
-    const url = await server.listen(randomPort);
+    const url = await server.listen();
 
     const response = get(url);
     expect(await response.json()).toEqual({ accept: 'application/json' });
@@ -532,7 +532,7 @@ test('should not throw under EdgeHTML', async () => {
   server.get(path, (_request, reply) => {
     reply.send('should not throw');
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   const response = await get(url).text();
   expect(response).toEqual('should not throw');

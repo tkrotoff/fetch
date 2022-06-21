@@ -72,9 +72,9 @@ export type Config = { init: Init };
 
 export const defaults: Config = {
   init: {
-    // https://github.com/github/fetch/blob/v3.0.0/README.md#sending-cookies
+    // https://github.com/github/fetch/blob/v3.6.2/README.md#sending-cookies
     // TODO Remove when old browsers are not supported anymore
-    credentials: 'same-origin' as RequestCredentials
+    credentials: 'same-origin'
   }
 };
 
@@ -149,7 +149,6 @@ export function post<T extends BodyInit>(input: RequestInfo, body?: T, init?: In
 //
 // Record<string, unknown> is compatible with "type" not with "interface": "Index signature is missing in type 'MyInterface'"
 // Best alternative is object, why? https://stackoverflow.com/a/58143592
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function postJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
   return request(input, getJSONHeaders(init), init, 'POST', JSON.stringify(body));
 }
@@ -159,7 +158,6 @@ export function postJSON<T extends object>(input: RequestInfo, body: T, init?: I
 export function put<T extends BodyInit>(input: RequestInfo, body?: T, init?: Init) {
   return request(input, getHeaders(init), init, 'PUT', body);
 }
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function putJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
   return request(input, getJSONHeaders(init), init, 'PUT', JSON.stringify(body));
 }
@@ -167,7 +165,6 @@ export function putJSON<T extends object>(input: RequestInfo, body: T, init?: In
 export function patch<T extends BodyInit>(input: RequestInfo, body?: T, init?: Init) {
   return request(input, getHeaders(init), init, 'PATCH', body);
 }
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function patchJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
   return request(input, getJSONHeaders(init), init, 'PATCH', JSON.stringify(body));
 }

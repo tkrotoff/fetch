@@ -90,23 +90,21 @@ test("new Response('body')", async () => {
   expect(response.bodyUsed).toEqual(true);
 });
 
-if (isWhatwgFetch) {
-  test('Response.error()', async () => {
-    const response = Response.error();
-    expect(response.body).toEqual(undefined); // Should be null
-    expect(response.bodyUsed).toEqual(false);
-    expect(entriesToObject(response.headers)).toEqual({});
-    expect(response.ok).toEqual(false);
-    expect(response.redirected).toEqual(undefined); // Should be false
-    expect(response.status).toEqual(0);
-    expect(response.statusText).toEqual('');
-    expect(response.type).toEqual('error');
-    expect(response.url).toEqual('');
+test('Response.error()', async () => {
+  const response = Response.error();
+  expect(response.body).toEqual(isWhatwgFetch ? undefined : null); // Should be null
+  expect(response.bodyUsed).toEqual(false);
+  expect(entriesToObject(response.headers)).toEqual({});
+  expect(response.ok).toEqual(false);
+  expect(response.redirected).toEqual(isWhatwgFetch ? undefined : false); // Should be false
+  expect(response.status).toEqual(0);
+  expect(response.statusText).toEqual('');
+  expect(response.type).toEqual('error');
+  expect(response.url).toEqual('');
 
-    expect(await response.text()).toEqual('');
-    expect(response.bodyUsed).toEqual(true);
-  });
-}
+  expect(await response.text()).toEqual('');
+  expect(response.bodyUsed).toEqual(true);
+});
 
 test('200 OK', async () => {
   {

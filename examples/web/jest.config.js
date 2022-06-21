@@ -1,6 +1,6 @@
 // @ts-check
 
-/** @type Partial<import('@jest/types').Config.InitialOptions> */
+/** @type import('@jest/types').Config.InitialOptions */
 const config = {
   testEnvironment: 'jsdom',
 

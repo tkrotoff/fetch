@@ -1,8 +1,6 @@
-﻿/* eslint-disable jest/no-conditional-expect */
+﻿import assert from 'node:assert';
 
-import assert from 'node:assert';
-
-import { createTestServer, randomPort, TestServer } from './createTestServer/createTestServer';
+import { createTestServer, TestServer } from './createTestServer/createTestServer';
 import { get } from './Http';
 import { HttpError } from './HttpError';
 
@@ -26,13 +24,14 @@ test('HttpError with statusText (HTTP/1.1)', async () => {
   server.get(path, (_request, reply) => {
     reply.code(404).send(new Error('Not Found'));
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   try {
     await get(url).text();
   } catch (e) {
     assert(e instanceof HttpError);
     const { name, message, response } = e;
+    /* eslint-disable jest/no-conditional-expect */
     expect(name).toEqual('HttpError');
     expect(message).toEqual('Not Found');
     expect(response.headers.get('content-type')).toEqual('application/json; charset=utf-8');
@@ -41,6 +40,7 @@ test('HttpError with statusText (HTTP/1.1)', async () => {
       message: 'Not Found',
       statusCode: 404
     });
+    /* eslint-enable jest/no-conditional-expect */
   }
 });
 

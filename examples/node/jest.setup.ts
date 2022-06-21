@@ -10,8 +10,8 @@ globalThis.Headers = nodeFetch.Headers as any;
 globalThis.Response = nodeFetch.Response as any;
 
 // FIXME Remove when support for Node.js < 15.0.0 is dropped, https://nodejs.org/en/blog/release/v15.0.0/
-globalThis.AbortController = AbortController;
-globalThis.AbortSignal = AbortSignal;
+globalThis.AbortController = AbortController as any;
+globalThis.AbortSignal = AbortSignal as any;
 
 (globalThis.fetch as any) = () => {
   throw new Error('You should mock fetch()');

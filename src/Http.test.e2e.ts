@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-shadow, jest/no-done-callback */
+/* eslint-disable @typescript-eslint/no-shadow, jest/no-standalone-expect */
 
 import { expect, test } from '@playwright/test';
 import { UAParser } from 'ua-parser-js';
 
-import { createTestServer, randomPort } from './createTestServer/createTestServer';
+import { createTestServer } from './createTestServer/createTestServer';
 import { wait } from './utils/wait';
 import * as Http from '.';
 
@@ -27,7 +27,7 @@ test('get()', async ({ page }) => {
     expect(request.body).toBeNull();
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -47,7 +47,7 @@ test('postJSON()', async ({ page }) => {
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -66,7 +66,7 @@ test('404 Not Found', async ({ page }) => {
   server.get(path, (_request, reply) => {
     reply.code(404).send();
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -99,7 +99,7 @@ test('CORS fail', async ({ page }) => {
   server.get(path, async (request, reply) => {
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -137,7 +137,7 @@ test('abort request', async ({ page }) => {
     await wait(20);
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -162,12 +162,12 @@ test('HTTPS + HTTP/2', async ({ page }) => {
   // FIXME Does not work with WebKit and GitHub Actions
   if (browserEngine === 'WebKit') return;
 
-  const server = createTestServer({ https: true, http2: true });
+  const server = createTestServer({ http2: true });
 
   server.get(path, (request, reply) => {
     reply.send(request.method);
   });
-  const url = await server.listen(randomPort);
+  const url = await server.listen();
   expect(url).toContain('https://127.0.0.1:');
 
   await page.addScriptTag({ path: tkrotoff_fetch });
