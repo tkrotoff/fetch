@@ -1,3 +1,7 @@
+## 0.12.6 (2022/06/21)
+
+- Update npm packages
+
 ## 0.12.5 (2022/04/10)
 
 - Optional body for post(), put() & patch(), reasons:
