@@ -99,7 +99,7 @@ export function createTestServer(options?: Options) {
     // https://github.com/fastify/fastify/blob/v4.1.0/lib/error-handler.js#L68
     server.setErrorHandler((error, _request, reply) => {
       reply.send(error);
-      return reply;
+      //return reply; // For Fastify 4.1.0
     });
   };
 

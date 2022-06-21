@@ -27,7 +27,7 @@ test('get()', async ({ page }) => {
     expect(request.body).toBeNull();
     reply.send(request.method);
   });
-  const url = await server.listen();
+  const url = await server.listen(0);
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -47,7 +47,7 @@ test('postJSON()', async ({ page }) => {
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
-  const url = await server.listen();
+  const url = await server.listen(0);
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -66,7 +66,7 @@ test('404 Not Found', async ({ page }) => {
   server.get(path, (_request, reply) => {
     reply.code(404).send();
   });
-  const url = await server.listen();
+  const url = await server.listen(0);
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -99,7 +99,7 @@ test('CORS fail', async ({ page }) => {
   server.get(path, async (request, reply) => {
     reply.send(request.method);
   });
-  const url = await server.listen();
+  const url = await server.listen(0);
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -137,7 +137,7 @@ test('abort request', async ({ page }) => {
     await wait(20);
     reply.send(request.method);
   });
-  const url = await server.listen();
+  const url = await server.listen(0);
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -167,7 +167,7 @@ test('HTTPS + HTTP/2', async ({ page }) => {
   server.get(path, (request, reply) => {
     reply.send(request.method);
   });
-  const url = await server.listen();
+  const url = await server.listen(0);
   expect(url).toContain('https://127.0.0.1:');
 
   await page.addScriptTag({ path: tkrotoff_fetch });

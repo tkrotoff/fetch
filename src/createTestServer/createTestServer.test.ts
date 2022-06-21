@@ -9,7 +9,7 @@ test('respond to HTTP requests', async () => {
   server.get(path, (_request, reply) => {
     reply.send('test');
   });
-  const url = await server.listen();
+  const url = await server.listen(0);
   expect(url).toContain('http://127.0.0.1:');
 
   const response = await fetch(url);
@@ -25,7 +25,7 @@ test('respond to HTTPS requests', async () => {
   server.get(path, (_request, reply) => {
     reply.send('test');
   });
-  const url = await server.listen();
+  const url = await server.listen(0);
   expect(url).toContain('https://127.0.0.1:');
 
   const response = await fetch(url);
@@ -50,7 +50,7 @@ if (isWhatwgFetch) {
     server.get(path, async (_request, reply) => {
       reply.send('test');
     });
-    const url = await server.listen();
+    const url = await server.listen(0);
 
     await expect(fetch(url)).rejects.toThrow('Network request failed');
 
@@ -69,7 +69,7 @@ test.skip('should show Jest errors from expect() inside handlers', async () => {
   server.get(path, (_request, _reply) => {
     expect('test').toEqual('fail');
   });
-  const url = await server.listen();
+  const url = await server.listen(0);
 
   await fetch(url);
 
@@ -84,7 +84,7 @@ test('silence Fastify errors', async () => {
   server.get(path, (_request, _reply) => {
     throw new Error('error');
   });
-  const url = await server.listen();
+  const url = await server.listen(0);
 
   const response = await fetch(url);
   const json = await response.json();

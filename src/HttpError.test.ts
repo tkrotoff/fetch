@@ -24,7 +24,7 @@ test('HttpError with statusText (HTTP/1.1)', async () => {
   server.get(path, (_request, reply) => {
     reply.code(404).send(new Error('Not Found'));
   });
-  const url = await server.listen();
+  const url = await server.listen(0);
 
   try {
     await get(url).text();
