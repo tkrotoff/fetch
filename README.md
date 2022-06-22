@@ -64,8 +64,8 @@ You don't have to worry about:
 
 Examples:
 
-- https://codesandbox.io/s/github/tkrotoff/fetch/tree/codesandbox.io/examples/web
-- https://codesandbox.io/s/github/tkrotoff/fetch/tree/codesandbox.io/examples/node
+- https://stackblitz.com/github/tkrotoff/fetch/tree/codesandbox.io/examples/web
+- https://stackblitz.com/github/tkrotoff/fetch/tree/codesandbox.io/examples/node
 
 `npm install @tkrotoff/fetch`
 
