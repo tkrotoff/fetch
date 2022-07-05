@@ -1,9 +1,9 @@
 import fastifyCors, { FastifyCorsOptions } from '@fastify/cors';
-import fastify from 'fastify';
+import Fastify from 'fastify';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
-export interface TestServer extends ReturnType<typeof fastify> {
+export interface TestServer extends ReturnType<typeof Fastify> {
   silenceErrors: () => void;
 }
 
@@ -55,7 +55,7 @@ const defaults = {
 export function createTestServer(options?: Options) {
   const { https, http2, corsOrigin } = { ...defaults, ...options };
 
-  const server = fastify({
+  const server = Fastify({
     logger: false,
 
     // @ts-ignore
