@@ -99,33 +99,33 @@ describe('body methods', () => {
 
 describe('get()', () => {
   test('OK .text()', async () => {
-    const getSpy = jest.spyOn(Http, 'get').mockImplementation(() => createResponsePromise('test'));
+    const mock = jest.spyOn(Http, 'get').mockImplementation(() => createResponsePromise('test'));
 
     const response = await Http.get('url');
     expect(await response.text()).toEqual('test');
 
-    expect(getSpy).toHaveBeenCalledTimes(1);
-    expect(getSpy).toHaveBeenCalledWith('url');
+    expect(mock).toHaveBeenCalledTimes(1);
+    expect(mock).toHaveBeenCalledWith('url');
 
-    getSpy.mockRestore();
+    mock.mockRestore();
   });
 
   test('OK .json()', async () => {
-    const getSpy = jest
+    const mock = jest
       .spyOn(Http, 'get')
       .mockImplementation(() => createJSONResponsePromise({ test: true }));
 
     const response = await Http.get('url');
     expect(await response.json()).toEqual({ test: true });
 
-    expect(getSpy).toHaveBeenCalledTimes(1);
-    expect(getSpy).toHaveBeenCalledWith('url');
+    expect(mock).toHaveBeenCalledTimes(1);
+    expect(mock).toHaveBeenCalledWith('url');
 
-    getSpy.mockRestore();
+    mock.mockRestore();
   });
 
   test('fail', async () => {
-    const getSpy = jest.spyOn(Http, 'get').mockImplementation(() =>
+    const mock = jest.spyOn(Http, 'get').mockImplementation(() =>
       createResponsePromise('<!DOCTYPE html><title>404</title>', {
         status: HttpStatus._404_NotFound,
         statusText: 'Not Found'
@@ -134,29 +134,27 @@ describe('get()', () => {
 
     await expect(Http.get('url')).rejects.toThrow('Not Found');
 
-    expect(getSpy).toHaveBeenCalledTimes(1);
-    expect(getSpy).toHaveBeenCalledWith('url');
+    expect(mock).toHaveBeenCalledTimes(1);
+    expect(mock).toHaveBeenCalledWith('url');
 
-    getSpy.mockRestore();
+    mock.mockRestore();
   });
 
   describe('get().text()', () => {
     test('OK', async () => {
-      const getSpy = jest
-        .spyOn(Http, 'get')
-        .mockImplementation(() => createResponsePromise('test'));
+      const mock = jest.spyOn(Http, 'get').mockImplementation(() => createResponsePromise('test'));
 
       const response = await Http.get('url').text();
       expect(response).toEqual('test');
 
-      expect(getSpy).toHaveBeenCalledTimes(1);
-      expect(getSpy).toHaveBeenCalledWith('url');
+      expect(mock).toHaveBeenCalledTimes(1);
+      expect(mock).toHaveBeenCalledWith('url');
 
-      getSpy.mockRestore();
+      mock.mockRestore();
     });
 
     test('fail', async () => {
-      const getSpy = jest.spyOn(Http, 'get').mockImplementation(() =>
+      const mock = jest.spyOn(Http, 'get').mockImplementation(() =>
         createResponsePromise('<!DOCTYPE html><title>404</title>', {
           status: HttpStatus._404_NotFound,
           statusText: 'Not Found'
@@ -165,30 +163,30 @@ describe('get()', () => {
 
       await expect(Http.get('url').text()).rejects.toThrow('Not Found');
 
-      expect(getSpy).toHaveBeenCalledTimes(1);
-      expect(getSpy).toHaveBeenCalledWith('url');
+      expect(mock).toHaveBeenCalledTimes(1);
+      expect(mock).toHaveBeenCalledWith('url');
 
-      getSpy.mockRestore();
+      mock.mockRestore();
     });
   });
 
   describe('get().json()', () => {
     test('OK', async () => {
-      const getSpy = jest
+      const mock = jest
         .spyOn(Http, 'get')
         .mockImplementation(() => createJSONResponsePromise({ test: true }));
 
       const response = await Http.get('url').json();
       expect(response).toEqual({ test: true });
 
-      expect(getSpy).toHaveBeenCalledTimes(1);
-      expect(getSpy).toHaveBeenCalledWith('url');
+      expect(mock).toHaveBeenCalledTimes(1);
+      expect(mock).toHaveBeenCalledWith('url');
 
-      getSpy.mockRestore();
+      mock.mockRestore();
     });
 
     test('fail', async () => {
-      const getSpy = jest.spyOn(Http, 'get').mockImplementation(() =>
+      const mock = jest.spyOn(Http, 'get').mockImplementation(() =>
         createResponsePromise('<!DOCTYPE html><title>404</title>', {
           status: HttpStatus._404_NotFound,
           statusText: 'Not Found'
@@ -197,45 +195,43 @@ describe('get()', () => {
 
       await expect(Http.get('url').json()).rejects.toThrow('Not Found');
 
-      expect(getSpy).toHaveBeenCalledTimes(1);
-      expect(getSpy).toHaveBeenCalledWith('url');
+      expect(mock).toHaveBeenCalledTimes(1);
+      expect(mock).toHaveBeenCalledWith('url');
 
-      getSpy.mockRestore();
+      mock.mockRestore();
     });
   });
 });
 
 describe('post()', () => {
   test('OK .text()', async () => {
-    const postSpy = jest
-      .spyOn(Http, 'post')
-      .mockImplementation(() => createResponsePromise('test'));
+    const mock = jest.spyOn(Http, 'post').mockImplementation(() => createResponsePromise('test'));
 
     const response = await Http.post('url', 'body');
     expect(await response.text()).toEqual('test');
 
-    expect(postSpy).toHaveBeenCalledTimes(1);
-    expect(postSpy).toHaveBeenCalledWith('url', 'body');
+    expect(mock).toHaveBeenCalledTimes(1);
+    expect(mock).toHaveBeenCalledWith('url', 'body');
 
-    postSpy.mockRestore();
+    mock.mockRestore();
   });
 
   test('OK .json()', async () => {
-    const postSpy = jest
+    const mock = jest
       .spyOn(Http, 'post')
       .mockImplementation(() => createJSONResponsePromise({ test: true }));
 
     const response = await Http.post('url', 'body');
     expect(await response.json()).toEqual({ test: true });
 
-    expect(postSpy).toHaveBeenCalledTimes(1);
-    expect(postSpy).toHaveBeenCalledWith('url', 'body');
+    expect(mock).toHaveBeenCalledTimes(1);
+    expect(mock).toHaveBeenCalledWith('url', 'body');
 
-    postSpy.mockRestore();
+    mock.mockRestore();
   });
 
   test('fail', async () => {
-    const postSpy = jest.spyOn(Http, 'post').mockImplementation(() =>
+    const mock = jest.spyOn(Http, 'post').mockImplementation(() =>
       createResponsePromise('<!DOCTYPE html><title>404</title>', {
         status: HttpStatus._404_NotFound,
         statusText: 'Not Found'
@@ -244,29 +240,27 @@ describe('post()', () => {
 
     await expect(Http.post('url', 'body')).rejects.toThrow('Not Found');
 
-    expect(postSpy).toHaveBeenCalledTimes(1);
-    expect(postSpy).toHaveBeenCalledWith('url', 'body');
+    expect(mock).toHaveBeenCalledTimes(1);
+    expect(mock).toHaveBeenCalledWith('url', 'body');
 
-    postSpy.mockRestore();
+    mock.mockRestore();
   });
 
   describe('post().text()', () => {
     test('OK', async () => {
-      const postSpy = jest
-        .spyOn(Http, 'post')
-        .mockImplementation(() => createResponsePromise('test'));
+      const mock = jest.spyOn(Http, 'post').mockImplementation(() => createResponsePromise('test'));
 
       const response = await Http.post('url', 'body').text();
       expect(response).toEqual('test');
 
-      expect(postSpy).toHaveBeenCalledTimes(1);
-      expect(postSpy).toHaveBeenCalledWith('url', 'body');
+      expect(mock).toHaveBeenCalledTimes(1);
+      expect(mock).toHaveBeenCalledWith('url', 'body');
 
-      postSpy.mockRestore();
+      mock.mockRestore();
     });
 
     test('fail', async () => {
-      const postSpy = jest.spyOn(Http, 'post').mockImplementation(() =>
+      const mock = jest.spyOn(Http, 'post').mockImplementation(() =>
         createResponsePromise('<!DOCTYPE html><title>500</title>', {
           status: HttpStatus._500_InternalServerError,
           statusText: 'Internal Server Error'
@@ -275,30 +269,30 @@ describe('post()', () => {
 
       await expect(Http.post('url', 'body').text()).rejects.toThrow('Internal Server Error');
 
-      expect(postSpy).toHaveBeenCalledTimes(1);
-      expect(postSpy).toHaveBeenCalledWith('url', 'body');
+      expect(mock).toHaveBeenCalledTimes(1);
+      expect(mock).toHaveBeenCalledWith('url', 'body');
 
-      postSpy.mockRestore();
+      mock.mockRestore();
     });
   });
 
   describe('post().json()', () => {
     test('OK', async () => {
-      const postSpy = jest
+      const mock = jest
         .spyOn(Http, 'post')
         .mockImplementation(() => createJSONResponsePromise({ test: true }));
 
       const response = await Http.post('url', 'body').json();
       expect(response).toEqual({ test: true });
 
-      expect(postSpy).toHaveBeenCalledTimes(1);
-      expect(postSpy).toHaveBeenCalledWith('url', 'body');
+      expect(mock).toHaveBeenCalledTimes(1);
+      expect(mock).toHaveBeenCalledWith('url', 'body');
 
-      postSpy.mockRestore();
+      mock.mockRestore();
     });
 
     test('fail', async () => {
-      const postSpy = jest.spyOn(Http, 'post').mockImplementation(() =>
+      const mock = jest.spyOn(Http, 'post').mockImplementation(() =>
         createResponsePromise('<!DOCTYPE html><title>500</title>', {
           status: HttpStatus._500_InternalServerError,
           statusText: 'Internal Server Error'
@@ -307,10 +301,10 @@ describe('post()', () => {
 
       await expect(Http.post('url', 'body').json()).rejects.toThrow('Internal Server Error');
 
-      expect(postSpy).toHaveBeenCalledTimes(1);
-      expect(postSpy).toHaveBeenCalledWith('url', 'body');
+      expect(mock).toHaveBeenCalledTimes(1);
+      expect(mock).toHaveBeenCalledWith('url', 'body');
 
-      postSpy.mockRestore();
+      mock.mockRestore();
     });
   });
 });
@@ -329,7 +323,7 @@ describe('flushPromises()', () => {
   });
 
   test('createResponsePromise() wrapped inside a function should not fail with flushPromises()', async () => {
-    const getSpy = jest.spyOn(Http, 'get').mockImplementation(() =>
+    const mock = jest.spyOn(Http, 'get').mockImplementation(() =>
       createResponsePromise('<!DOCTYPE html><title>503</title>', {
         status: HttpStatus._503_ServiceUnavailable,
         statusText: 'Service Unavailable'
@@ -340,9 +334,9 @@ describe('flushPromises()', () => {
 
     await expect(Http.get('url').text()).rejects.toThrow('Service Unavailable');
 
-    expect(getSpy).toHaveBeenCalledTimes(1);
-    expect(getSpy).toHaveBeenCalledWith('url');
+    expect(mock).toHaveBeenCalledTimes(1);
+    expect(mock).toHaveBeenCalledWith('url');
 
-    getSpy.mockRestore();
+    mock.mockRestore();
   });
 });

@@ -167,21 +167,21 @@ When testing your code, use `createResponsePromise()` and `createJSONResponsePro
 import * as Http from '@tkrotoff/fetch';
 
 test('OK', async () => {
-  const getSpy = jest.spyOn(Http, 'get').mockImplementation(() =>
+  const mock = jest.spyOn(Http, 'get').mockImplementation(() =>
     Http.createResponsePromise('test')
   );
 
   const response = await Http.get(url).text();
   expect(response).toEqual('test');
 
-  expect(getSpy).toHaveBeenCalledTimes(1);
-  expect(getSpy).toHaveBeenCalledWith(url);
+  expect(mock).toHaveBeenCalledTimes(1);
+  expect(mock).toHaveBeenCalledWith(url);
 
-  getSpy.mockRestore();
+  mock.mockRestore();
 });
 
 test('fail', async () => {
-  const getSpy = jest.spyOn(Http, 'get').mockImplementation(() =>
+  const mock = jest.spyOn(Http, 'get').mockImplementation(() =>
     Http.createResponsePromise(
       '<!DOCTYPE html><title>404</title>',
       { status: 404, statusText: 'Not Found' }
@@ -190,10 +190,10 @@ test('fail', async () => {
 
   await expect(Http.get(url).text()).rejects.toThrow('Not Found');
 
-  expect(getSpy).toHaveBeenCalledTimes(1);
-  expect(getSpy).toHaveBeenCalledWith(url);
+  expect(mock).toHaveBeenCalledTimes(1);
+  expect(mock).toHaveBeenCalledWith(url);
 
-  getSpy.mockRestore();
+  mock.mockRestore();
 });
 ```
 

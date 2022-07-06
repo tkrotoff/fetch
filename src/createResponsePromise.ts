@@ -24,21 +24,31 @@ function extendResponsePromiseWithBodyMethods(
   });
 }
 
-// await get(...).text();
-// ...
-// const getSpy = jest.spyOn(Http, 'get').mockImplementation(() => createResponsePromise(...));
-//
-// await get(...);
-// ...
-// const getSpy = jest.spyOn(Http, 'get').mockImplementation(() => createResponsePromise(...));
-//
-// How to generate a HTTP error:
-// const getSpy = jest.spyOn(Http, 'get').mockImplementation(() =>
-//   createResponsePromise('<!DOCTYPE html><title>404</title>', {
-//     status: 404,
-//     statusText: 'Not Found'
-//   })
-// );
+/**
+ * Creates a HTTP promise response ({@link ResponsePromiseWithBodyMethods}), helpful for mocking.
+ *
+ * Example:
+ * ```JS
+ * await get(...).text();
+ *
+ * import * as Http from '@tkrotoff/fetch';
+ *
+ * jest.spyOn(Http, 'get').mockImplementation(() => createResponsePromise(...));
+ * ```
+ *
+ * How to generate a HTTP error:
+ * ```JS
+ * jest.spyOn(Http, 'get').mockImplementation(() =>
+ *   createResponsePromise('<!DOCTYPE html><title>404</title>', {
+ *     status: 404,
+ *     statusText: 'Not Found'
+ *   })
+ * );
+ * ```
+ *
+ * @see {@link createJSONResponsePromise()}
+ * @see {@link ResponsePromiseWithBodyMethods}
+ */
 export function createResponsePromise(body?: BodyInit, init?: ResponseInit) {
   const response = new Response(body, init);
 
@@ -56,6 +66,17 @@ export function createResponsePromise(body?: BodyInit, init?: ResponseInit) {
   return responsePromise;
 }
 
+/**
+ * {@link createResponsePromise()} with a JSON body.
+ *
+ * ```JS
+ * jest.spyOn(Http, 'get').mockImplementation(() =>
+ *    Http.createJSONResponsePromise({
+ *      foo: 'bar
+ *    })
+ * );
+ * ```
+ */
 // Record<string, unknown> is compatible with "type" not with "interface": "Index signature is missing in type 'MyInterface'"
 // Best alternative is object, why? https://stackoverflow.com/a/58143592
 export function createJSONResponsePromise(body: object, init?: ResponseInit) {

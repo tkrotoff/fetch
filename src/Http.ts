@@ -139,13 +139,27 @@ function getJSONHeaders(init?: Init) {
   return headers;
 }
 
+/**
+ * Performs a HTTP `GET` request.
+ */
 export function get(input: RequestInfo, init?: Init) {
   return request(input, getHeaders(init), init, 'GET');
 }
 
+/**
+ * Performs a HTTP `POST` request.
+ *
+ * @see {@link postJSON()}
+ */
 export function post<T extends BodyInit>(input: RequestInfo, body?: T, init?: Init) {
   return request(input, getHeaders(init), init, 'POST', body);
 }
+
+/**
+ * Performs a HTTP `POST` request with a JSON body.
+ *
+ * @see {@link post()}
+ */
 // Should be named postJson or postJSON?
 // - JS uses JSON.parse(), JSON.stringify(), toJSON()
 // - Deno uses [JSON](https://github.com/denoland/deno/blob/v1.5.3/cli/dts/lib.webworker.d.ts#L387) and [Json](https://github.com/denoland/deno/blob/v1.5.3/cli/dts/lib.webworker.d.ts#L260)
@@ -158,20 +172,45 @@ export function postJSON<T extends object>(input: RequestInfo, body: T, init?: I
 // No need to have postFormData() and friends: the browser already sets the proper request content type
 // Something like "content-type: multipart/form-data; boundary=----WebKitFormBoundaryl8VQ0sfwUpJEWna3"
 
+/**
+ * Performs a HTTP `PUT` request.
+ *
+ * @see {@link putJSON()}
+ */
 export function put<T extends BodyInit>(input: RequestInfo, body?: T, init?: Init) {
   return request(input, getHeaders(init), init, 'PUT', body);
 }
+
+/**
+ * Performs a HTTP `PUT` request with a JSON body.
+ *
+ * @see {@link put()}
+ */
 export function putJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
   return request(input, getJSONHeaders(init), init, 'PUT', JSON.stringify(body));
 }
 
+/**
+ * Performs a HTTP `PATCH` request.
+ *
+ * @see {@link patchJSON()}
+ */
 export function patch<T extends BodyInit>(input: RequestInfo, body?: T, init?: Init) {
   return request(input, getHeaders(init), init, 'PATCH', body);
 }
+
+/**
+ * Performs a HTTP `PATCH` request with a JSON body.
+ *
+ * @see {@link patch()}
+ */
 export function patchJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
   return request(input, getJSONHeaders(init), init, 'PATCH', JSON.stringify(body));
 }
 
+/**
+ * Performs a HTTP `DELETE` request.
+ */
 // Cannot be named delete :-/
 export function del(input: RequestInfo, init?: Init) {
   return request(input, getHeaders(init), init, 'DELETE');

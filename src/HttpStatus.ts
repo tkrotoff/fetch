@@ -1,5 +1,5 @@
 /**
- * [List of HTTP status codes](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
+ * [The list of HTTP status codes](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes) as an enum.
  *
  * With TypeScript use `typeof HttpStatus[keyof typeof HttpStatus]` to pull out the values
  * (https://www.typescriptlang.org/docs/handbook/enums.html#objects-vs-enums)
