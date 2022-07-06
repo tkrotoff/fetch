@@ -7,7 +7,7 @@ import { createTestServer } from './createTestServer/createTestServer';
 import { wait } from './utils/wait';
 import * as Http from '.';
 
-const tkrotoff_fetch = './dist/umd/index.js';
+const tkrotoff_fetch = './dist/index.umd.js';
 
 declare global {
   interface Window {

@@ -10,8 +10,7 @@
     "fetch",
     "fetch-api"
   ],
-  "main": "dist/cjs/index.js",
-  "module": "dist/index.js",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/"
@@ -20,10 +19,10 @@
   "scripts": {
     "clean": "rm -rf dist coverage",
     "clean:all": "npm run clean && rm -rf node_modules package-lock.json",
-    "build": "npm run clean && npm run build:esnext && npm run build:cjs && npm run build:umd",
-    "build:esnext": "tsc --project tsconfig.dist.json --declaration --outDir dist",
-    "build:cjs": "rollup src/index.ts --format cjs --plugin '@rollup/plugin-typescript={tsconfig: `tsconfig.dist.json`}' --file dist/cjs/index.js",
-    "build:umd": "rollup src/index.ts --format umd --plugin '@rollup/plugin-typescript={tsconfig: `tsconfig.dist.json`}' --name Http --file dist/umd/index.js",
+    "build": "npm run clean && npm run build:dts && npm run build:cjs && npm run build:umd",
+    "build:dts": "tsc --project tsconfig.dist.json --declaration --emitDeclarationOnly --outDir dist",
+    "build:cjs": "rollup src/index.ts --format cjs --plugin '@rollup/plugin-typescript={tsconfig: `tsconfig.dist.json`}' --file dist/index.js",
+    "build:umd": "rollup src/index.ts --format umd --plugin '@rollup/plugin-typescript={tsconfig: `tsconfig.dist.json`}' --name Http --file dist/index.umd.js",
     "npm:install:examples": "npm run npm:install:example:web && npm run npm:install:example:node",
     "npm:install:example:web": "cd examples/web && npm install",
     "npm:install:example:node": "cd examples/node && npm install",
