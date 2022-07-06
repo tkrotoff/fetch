@@ -1,3 +1,8 @@
+## 0.13.0 (2022/07/07)
+
+- Just ship CommonJS
+- More JSDoc
+
 ## 0.12.6 (2022/06/21)
 
 - Update npm packages
