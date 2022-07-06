@@ -2,6 +2,7 @@
   "extends": "./tsconfig",
   "compilerOptions": {
     "noEmit": false,
+    "removeComments": true,
 
     // Nullish coalescing operator (??) needs to be transpiled by TypeScript to support Node.js 12
     // https://stackoverflow.com/a/59787575

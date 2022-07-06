@@ -20,7 +20,7 @@
     "clean": "rm -rf dist coverage",
     "clean:all": "npm run clean && rm -rf node_modules package-lock.json",
     "build": "npm run clean && npm run build:dts && npm run build:cjs && npm run build:umd",
-    "build:dts": "tsc --project tsconfig.dist.json --declaration --emitDeclarationOnly --outDir dist",
+    "build:dts": "tsc --project tsconfig.dist.json --declaration --emitDeclarationOnly --removeComments false --outDir dist",
     "build:cjs": "rollup src/index.ts --format cjs --plugin '@rollup/plugin-typescript={tsconfig: `tsconfig.dist.json`}' --file dist/index.js",
     "build:umd": "rollup src/index.ts --format umd --plugin '@rollup/plugin-typescript={tsconfig: `tsconfig.dist.json`}' --name Http --file dist/index.umd.js",
     "npm:install:examples": "npm run npm:install:example:web && npm run npm:install:example:node",
