@@ -10,7 +10,8 @@
     "fetch",
     "fetch-api"
   ],
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/"
@@ -19,9 +20,10 @@
   "scripts": {
     "clean": "rm -rf dist coverage",
     "clean:all": "npm run clean && rm -rf node_modules package-lock.json",
-    "build": "npm run clean && npm run build:dts && npm run build:cjs && npm run build:umd",
+    "build": "npm run clean && npm run build:dts && npm run build:esm && npm run build:cjs && npm run build:umd",
     "build:dts": "tsc --project tsconfig.dist.json --declaration --emitDeclarationOnly --removeComments false --outDir dist",
-    "build:cjs": "rollup src/index.ts --format cjs --plugin '@rollup/plugin-typescript={tsconfig: `tsconfig.dist.json`}' --file dist/index.js",
+    "build:esm": "tsc --project tsconfig.dist.json --outDir dist",
+    "build:cjs": "rollup src/index.ts --format cjs --plugin '@rollup/plugin-typescript={tsconfig: `tsconfig.dist.json`}' --file dist/index.cjs",
     "build:umd": "rollup src/index.ts --format umd --plugin '@rollup/plugin-typescript={tsconfig: `tsconfig.dist.json`}' --name Http --file dist/index.umd.js",
     "npm:install:examples": "npm run npm:install:example:web && npm run npm:install:example:node",
     "npm:install:example:web": "cd examples/web && npm install",
