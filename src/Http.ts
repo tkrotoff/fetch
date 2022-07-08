@@ -90,7 +90,7 @@ type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 //   - Chrome 76: "TypeError: Failed to fetch"
 // - DOMException if request aborted
 function request<T extends BodyInit>(
-  input: RequestInfo,
+  input: RequestInfo | URL,
   headers: Headers,
   init: Omit<Init, 'headers'> | undefined,
   method: Method,
@@ -142,7 +142,7 @@ function getJSONHeaders(init?: Init) {
 /**
  * Performs a HTTP `GET` request.
  */
-export function get(input: RequestInfo, init?: Init) {
+export function get(input: RequestInfo | URL, init?: Init) {
   return request(input, getHeaders(init), init, 'GET');
 }
 
@@ -151,7 +151,7 @@ export function get(input: RequestInfo, init?: Init) {
  *
  * @see {@link postJSON()}
  */
-export function post<T extends BodyInit>(input: RequestInfo, body?: T, init?: Init) {
+export function post<T extends BodyInit>(input: RequestInfo | URL, body?: T, init?: Init) {
   return request(input, getHeaders(init), init, 'POST', body);
 }
 
@@ -166,7 +166,7 @@ export function post<T extends BodyInit>(input: RequestInfo, body?: T, init?: In
 //
 // Record<string, unknown> is compatible with "type" not with "interface": "Index signature is missing in type 'MyInterface'"
 // Best alternative is object, why? https://stackoverflow.com/a/58143592
-export function postJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
+export function postJSON<T extends object>(input: RequestInfo | URL, body: T, init?: Init) {
   return request(input, getJSONHeaders(init), init, 'POST', JSON.stringify(body));
 }
 // No need to have postFormData() and friends: the browser already sets the proper request content type
@@ -177,7 +177,7 @@ export function postJSON<T extends object>(input: RequestInfo, body: T, init?: I
  *
  * @see {@link putJSON()}
  */
-export function put<T extends BodyInit>(input: RequestInfo, body?: T, init?: Init) {
+export function put<T extends BodyInit>(input: RequestInfo | URL, body?: T, init?: Init) {
   return request(input, getHeaders(init), init, 'PUT', body);
 }
 
@@ -186,7 +186,7 @@ export function put<T extends BodyInit>(input: RequestInfo, body?: T, init?: Ini
  *
  * @see {@link put()}
  */
-export function putJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
+export function putJSON<T extends object>(input: RequestInfo | URL, body: T, init?: Init) {
   return request(input, getJSONHeaders(init), init, 'PUT', JSON.stringify(body));
 }
 
@@ -195,7 +195,7 @@ export function putJSON<T extends object>(input: RequestInfo, body: T, init?: In
  *
  * @see {@link patchJSON()}
  */
-export function patch<T extends BodyInit>(input: RequestInfo, body?: T, init?: Init) {
+export function patch<T extends BodyInit>(input: RequestInfo | URL, body?: T, init?: Init) {
   return request(input, getHeaders(init), init, 'PATCH', body);
 }
 
@@ -204,7 +204,7 @@ export function patch<T extends BodyInit>(input: RequestInfo, body?: T, init?: I
  *
  * @see {@link patch()}
  */
-export function patchJSON<T extends object>(input: RequestInfo, body: T, init?: Init) {
+export function patchJSON<T extends object>(input: RequestInfo | URL, body: T, init?: Init) {
   return request(input, getJSONHeaders(init), init, 'PATCH', JSON.stringify(body));
 }
 
@@ -212,6 +212,6 @@ export function patchJSON<T extends object>(input: RequestInfo, body: T, init?: 
  * Performs a HTTP `DELETE` request.
  */
 // Cannot be named delete :-/
-export function del(input: RequestInfo, init?: Init) {
+export function del(input: RequestInfo | URL, init?: Init) {
   return request(input, getHeaders(init), init, 'DELETE');
 }

@@ -1,3 +1,7 @@
+## 0.14.1 (2022/07/08)
+
+- Accept URL as input
+
 ## 0.14.0 (2022/07/08)
 
 - Ship again ESM modules, https://github.com/rollup/rollup/wiki/pkg.module

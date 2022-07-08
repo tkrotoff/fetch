@@ -127,6 +127,19 @@ test('get()', async () => {
   expect(response).toEqual('GET');
 });
 
+test('get() with new URL()', async () => {
+  server.get(path, (request, reply) => {
+    expect(request.headers['content-type']).toBeUndefined();
+    expect(request.headers['content-length']).toBeUndefined();
+    expect(request.body).toBeNull();
+    reply.send(request.method);
+  });
+  const url = await server.listen(0);
+
+  const response = await get(new URL(url)).text();
+  expect(response).toEqual('GET');
+});
+
 test('multiple fetch()', async () => {
   server.get(path, (request, reply) => {
     reply.send(request.method);

@@ -104,18 +104,18 @@ Check [examples/web](examples/web)
 
 ## API
 
-- `get(input:` [`RequestInfo`](https://fetch.spec.whatwg.org/#requestinfo)`, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`): ResponsePromiseWithBodyMethods`
+- `get(input:` [`RequestInfo`](https://fetch.spec.whatwg.org/#requestinfo)` | URL, init?:` [`RequestInit`](https://fetch.spec.whatwg.org/#requestinit)`): ResponsePromiseWithBodyMethods`
 
-- `post(input: RequestInfo, body?:` [`BodyInit`](https://fetch.spec.whatwg.org/#bodyinit)`, init?: RequestInit): ResponsePromiseWithBodyMethods`
-- `postJSON(input: RequestInfo, body: object, init?: RequestInit): ResponsePromiseWithBodyMethods`
+- `post(input: RequestInfo | URL, body?:` [`BodyInit`](https://fetch.spec.whatwg.org/#bodyinit)`, init?: RequestInit): ResponsePromiseWithBodyMethods`
+- `postJSON(input: RequestInfo | URL, body: object, init?: RequestInit): ResponsePromiseWithBodyMethods`
 
-- `put(input: RequestInfo, body?: BodyInit, init?: RequestInit): ResponsePromiseWithBodyMethods`
-- `putJSON(input: RequestInfo, body: object, init?: RequestInit): ResponsePromiseWithBodyMethods`
+- `put(input: RequestInfo | URL, body?: BodyInit, init?: RequestInit): ResponsePromiseWithBodyMethods`
+- `putJSON(input: RequestInfo | URL, body: object, init?: RequestInit): ResponsePromiseWithBodyMethods`
 
-- `patch(input: RequestInfo, body?: BodyInit, init?: RequestInit): ResponsePromiseWithBodyMethods`
-- `patchJSON(input: RequestInfo, body: object, init?: RequestInit): ResponsePromiseWithBodyMethods`
+- `patch(input: RequestInfo | URL, body?: BodyInit, init?: RequestInit): ResponsePromiseWithBodyMethods`
+- `patchJSON(input: RequestInfo | URL, body: object, init?: RequestInit): ResponsePromiseWithBodyMethods`
 
-- `del(input: RequestInfo, init?: RequestInit): ResponsePromiseWithBodyMethods`
+- `del(input: RequestInfo | URL, init?: RequestInit): ResponsePromiseWithBodyMethods`
 
 - `isJSONResponse(response: `[`Response`](https://fetch.spec.whatwg.org/#response)`): boolean`
 
