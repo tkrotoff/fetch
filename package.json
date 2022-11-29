@@ -39,6 +39,7 @@
     "test:whatwg-fetch": "NODE_EXTRA_CA_CERTS=./src/createTestServer/createTestServer.cert FETCH=whatwg-fetch jest --env=jsdom --verbose",
     "test:coverage:whatwg-fetch": "NODE_EXTRA_CA_CERTS=./src/createTestServer/createTestServer.cert FETCH=whatwg-fetch jest --env=jsdom --coverage",
     "test:e2e": "playwright test",
+    "test:e2e:debug": "playwright test --debug",
     "test:coverage:examples": "npm run test:coverage:example:web && npm run test:coverage:example:node",
     "test:coverage:example:web": "cd examples/web && npm run test:coverage",
     "test:coverage:example:node": "cd examples/node && npm run test:coverage",
