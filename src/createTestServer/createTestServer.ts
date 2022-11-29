@@ -10,7 +10,7 @@ import path from 'node:path';
 setDefaultResultOrder('ipv4first');
 
 // ```Shell
-// openssl req -nodes -x509 -days 36500 -newkey rsa:2048 -sha256 -keyout createServer.key -out createServer.cert -subj '/CN=localhost' -addext "subjectAltName=IP:127.0.0.1"
+// openssl req -nodes -x509 -days 36500 -newkey rsa:2048 -sha256 -keyout createServer.key -out createServer.cert -subj '/CN=localhost' -addext "subjectAltName=IP:127.0.0.1,IP:::1"
 // ```
 //
 // Based on:
