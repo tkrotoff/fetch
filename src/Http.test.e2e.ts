@@ -24,10 +24,10 @@ test('get()', async ({ page }) => {
 
   server.get(path, (request, reply) => {
     expect(request.headers['content-type']).toBeUndefined();
-    expect(request.body).toBeNull();
+    expect(request.body).toBeUndefined();
     reply.send(request.method);
   });
-  const url = await server.listen(0);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -47,7 +47,7 @@ test('postJSON()', async ({ page }) => {
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
-  const url = await server.listen(0);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -66,7 +66,7 @@ test('404 Not Found', async ({ page }) => {
   server.get(path, (_request, reply) => {
     reply.code(404).send();
   });
-  const url = await server.listen(0);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -102,7 +102,7 @@ test('CORS fail', async ({ page }) => {
   server.get(path, async (request, reply) => {
     reply.send(request.method);
   });
-  const url = await server.listen(0);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -143,7 +143,7 @@ test('abort request', async ({ page }) => {
     await wait(20);
     reply.send(request.method);
   });
-  const url = await server.listen(0);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -174,12 +174,34 @@ test('HTTPS + HTTP/2', async ({ page }) => {
   server.get(path, (request, reply) => {
     reply.send(request.method);
   });
-  const url = await server.listen(0);
+  const url = await server.listen();
   expect(url).toContain('https://127.0.0.1:');
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
   const response = await page.evaluate(url => window.Http.get(url).text(), url);
+  expect(response).toEqual('GET');
+
+  // FIXME This test is very slow with Fastify 4.10.2
+  test.setTimeout(100_000);
+  await server.close();
+});
+
+// ["you can connect to HTTP2 in plain text, however, this is not supported by browsers"](https://www.fastify.io/docs/v4.10.x/Reference/HTTP2/#plain-or-insecure)
+// Chromium 108 error: net::ERR_INVALID_HTTP_RESPONSE
+// eslint-disable-next-line playwright/no-skipped-test
+test.skip('HTTP + HTTP/2', async ({ page }) => {
+  const server = createTestServer({ http2: true, https: false });
+
+  server.get(path, (request, reply) => {
+    reply.send(request.method);
+  });
+  const url = await server.listen();
+  expect(url).toContain('http://127.0.0.1:');
+
+  await page.addScriptTag({ path: tkrotoff_fetch });
+
+  const response = await page.evaluate(async url => window.Http.get(url).text(), url);
   expect(response).toEqual('GET');
 
   await server.close();

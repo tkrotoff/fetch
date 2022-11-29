@@ -1,30 +1,20 @@
 ﻿import assert from 'node:assert';
 
-import { createTestServer, TestServer } from './createTestServer/createTestServer';
+import { createTestServer } from './createTestServer/createTestServer';
 import { get } from './Http';
 import { HttpError } from './HttpError';
 
 const path = '/';
 
-let server: TestServer;
-
-beforeEach(() => {
-  server = createTestServer();
-});
-
-afterEach(async () => {
-  await server.close();
-});
-
 test('HttpError with statusText (HTTP/1.1)', async () => {
   expect.assertions(4);
 
-  server.silenceErrors();
+  const server = createTestServer({ silenceErrors: true });
 
   server.get(path, (_request, reply) => {
     reply.code(404).send(new Error('Not Found'));
   });
-  const url = await server.listen(0);
+  const url = await server.listen();
 
   try {
     await get(url).text();
@@ -42,6 +32,8 @@ test('HttpError with statusText (HTTP/1.1)', async () => {
     });
     /* eslint-enable jest/no-conditional-expect */
   }
+
+  await server.close();
 });
 
 test('HttpError without statusText because of HTTP/2', async () => {

@@ -1,11 +1,13 @@
 import fastifyCors, { FastifyCorsOptions } from '@fastify/cors';
 import Fastify from 'fastify';
+import { setDefaultResultOrder } from 'node:dns';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
-export interface TestServer extends ReturnType<typeof Fastify> {
-  silenceErrors: () => void;
-}
+// FIXME Switch to IPv6?
+// https://github.com/nodejs/node/issues/40537#issuecomment-1237194449
+// macOS Monterey displays IPv6 IP first instead of IPv4
+setDefaultResultOrder('ipv4first');
 
 // ```Shell
 // openssl req -nodes -x509 -days 36500 -newkey rsa:2048 -sha256 -keyout createServer.key -out createServer.cert -subj '/CN=localhost' -addext "subjectAltName=IP:127.0.0.1"
@@ -42,9 +44,13 @@ interface Options {
   https?: boolean;
   http2?: boolean;
   corsOrigin?: FastifyCorsOptions['origin']; // https://stackoverflow.com/a/41075862
+
+  /** Do not print Fastify errors to the console when throwing inside an handler */
+  silenceErrors?: boolean;
 }
 
 const defaults = {
+  silenceErrors: false,
   https: true,
   http2: false,
   corsOrigin: true
@@ -53,7 +59,7 @@ const defaults = {
 // Why use Fastify instead of Express?
 // Fastify uses async/await syntax and thus simplifies this implementation a lot
 export function createTestServer(options?: Options) {
-  const { https, http2, corsOrigin } = { ...defaults, ...options };
+  const { silenceErrors, https, http2, corsOrigin } = { ...defaults, ...options };
 
   const server = Fastify({
     logger: false,
@@ -62,46 +68,37 @@ export function createTestServer(options?: Options) {
     // eslint-disable-next-line unicorn/no-null
     https: https ? { key: privateKey, cert: certificate } : null,
 
-    // whatwg-fetch uses XHR implementation from jsdom.
-    // And jsdom does not support HTTP/2 because it relies on request:
-    // https://github.com/jsdom/jsdom/blob/16.4.0/lib/jsdom/living/xhr/xhr-utils.js#L3, https://github.com/jsdom/jsdom/issues/2792
-    // And request is deprecated and does not support HTTP/2: https://github.com/request/request/issues/2033
-    //
+    // FIXME
+    // whatwg-fetch/jsdom does not support HTTP/2
     // node-fetch does not support HTTP/2: https://github.com/node-fetch/node-fetch/issues/342
     http2
-  }) as unknown as TestServer;
+  });
 
   // Needed by whatwg-fetch, not by node-fetch
   server.register(fastifyCors, { origin: corsOrigin });
 
-  // With the default error handler from Fastify we don't see
-  // Jest errors from expect() inside handlers
-  // https://www.fastify.io/docs/v4.1.x/Reference/Errors/#catching-uncaught-errors-in-fastify
-  // https://github.com/fastify/fastify/blob/v4.1.0/lib/error-handler.js#L68
-  // FYI Express needs the same hack: http://expressjs.com/en/guide/error-handling.html#the-default-error-handler
-  // FYI http.createServer() doesn't need it
-  // istanbul ignore next
+  // ["To access the default handler, you can access instance.errorHandler"](https://www.fastify.io/docs/v4.10.x/Reference/Routes/#routes-options)
+  // https://www.fastify.io/docs/v4.10.x/Reference/Server/#errorhandler
+  const defaultErrorHander = server.errorHandler;
+
   server.setErrorHandler((error, request, reply) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    process.stderr.write(error.stack!);
-
-    // ["To access the default handler, you can access instance.errorHandler"](https://www.fastify.io/docs/v4.1.x/Reference/Routes/#routes-options)
-    // https://www.fastify.io/docs/v4.1.x/Reference/Server/#errorhandler
-    // FIXME
-    // @ts-ignore
-    if (fastify.errorHandler) fastify.errorHandler(error, request, reply);
-  });
-
-  // Do not print Fastify errors to the console when throwing inside an handler
-  // You cannot later re-enable errors, you need to restart Fastify:
-  // Should be done before calling listen(): "Cannot call "setErrorHandler" when fastify instance is already started!"
-  server.silenceErrors = () => {
-    // https://github.com/fastify/fastify/blob/v4.1.0/lib/error-handler.js#L68
-    server.setErrorHandler((error, _request, reply) => {
+    // istanbul ignore else
+    if (silenceErrors) {
+      // Should be done before calling listen(): "Cannot call "setErrorHandler" when fastify instance is already started!"
+      // https://github.com/fastify/fastify/blob/v4.10.2/lib/error-handler.js#L74
       reply.send(error);
-      //return reply; // For Fastify 4.1.0
-    });
-  };
+    } else {
+      // With the default error handler from Fastify we don't see
+      // Jest errors from expect() inside handlers
+      // https://www.fastify.io/docs/v4.10.x/Reference/Errors/#catching-uncaught-errors-in-fastify
+      // https://github.com/fastify/fastify/blob/v4.10.2/lib/error-handler.js#L74
+      // FYI Express needs the same hack: http://expressjs.com/en/guide/error-handling.html#the-default-error-handler
+      // FYI http.createServer() doesn't need it
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      process.stderr.write(error.stack!);
+      defaultErrorHander(error, request as any, reply as any); // FIXME as any because the types look wrong
+    }
+  });
 
   return server;
 }
