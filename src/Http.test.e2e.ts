@@ -79,15 +79,18 @@ function getCorsErrorMessage(browserEngine: string | undefined) {
   let message = `Unknown browser engine: '${browserEngine}'`;
 
   switch (browserEngine) {
-    case 'Blink':
+    case 'Blink': {
       message = 'Failed to fetch';
       break;
-    case 'Gecko':
+    }
+    case 'Gecko': {
       message = 'NetworkError when attempting to fetch resource.';
       break;
-    case 'WebKit':
+    }
+    case 'WebKit': {
       message = 'Load failed';
       break;
+    }
     default:
   }
   return message;
@@ -116,15 +119,18 @@ test('CORS fail', async ({ page }) => {
 function getAbortedErrorMessage(browserEngine: string | undefined) {
   let message = `Unknown browser engine: '${browserEngine}'`;
   switch (browserEngine) {
-    case 'Blink':
+    case 'Blink': {
       message = 'The user aborted a request.';
       break;
-    case 'Gecko':
+    }
+    case 'Gecko': {
       message = 'The operation was aborted. ';
       break;
-    case 'WebKit':
+    }
+    case 'WebKit': {
       message = 'Fetch is aborted';
       break;
+    }
     default:
   }
   return message;
@@ -160,6 +166,7 @@ test('HTTPS + HTTP/2', async ({ page }) => {
   const userAgent = await page.evaluate(() => window.navigator.userAgent);
   const browserEngine = new UAParser(userAgent).getEngine().name;
   // FIXME Does not work with WebKit and GitHub Actions
+  // eslint-disable-next-line playwright/no-conditional-in-test
   if (browserEngine === 'WebKit') return;
 
   const server = createTestServer({ http2: true });

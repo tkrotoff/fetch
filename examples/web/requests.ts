@@ -103,24 +103,29 @@ function checkTypeError(e: TypeError) {
   switch (browserEngine) {
     case 'jsdom':
     case 'Blink':
-    case 'EdgeHTML':
+    case 'EdgeHTML': {
       expect(e.message).toEqual('Failed to fetch');
       expect(e.stack).toContain('TypeError: Failed to fetch');
       break;
-    case 'Gecko':
+    }
+    case 'Gecko': {
       expect(e.message).toEqual('NetworkError when attempting to fetch resource.');
       expect(e.stack).toEqual('');
       break;
-    case 'WebKit':
+    }
+    case 'WebKit': {
       expect(e.message).toEqual('Load failed');
       expect(e.stack).toBe(undefined);
       break;
-    case 'Trident':
+    }
+    case 'Trident': {
       expect(e.message).toEqual('Network request failed');
       expect(e.stack).toContain('TypeError: Network request failed');
       break;
-    default:
+    }
+    default: {
       assert(false, `Unknown browser engine: '${browserEngine}'`);
+    }
   }
 }
 
@@ -163,20 +168,25 @@ function checkAbortError(e: DOMException) {
   // istanbul ignore next
   switch (browserEngine) {
     case 'jsdom':
-    case 'Blink':
+    case 'Blink': {
       expect(e.message).toEqual('The user aborted a request.');
       break;
-    case 'Gecko':
+    }
+    case 'Gecko': {
       expect(e.message).toEqual('The operation was aborted. ');
       break;
-    case 'WebKit':
+    }
+    case 'WebKit': {
       expect(e.message).toEqual('Fetch is aborted');
       break;
-    case 'EdgeHTML':
+    }
+    case 'EdgeHTML': {
       expect(e.message).toEqual('');
       break;
-    default:
+    }
+    default: {
       assert(false, `Unknown browser engine: '${browserEngine}'`);
+    }
   }
 }
 
