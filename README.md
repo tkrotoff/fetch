@@ -137,7 +137,7 @@ Check [examples/web](examples/web)
 
 Instead of writing HTTP statuses as numbers `201`, `403`, `503`... you can replace them with [`HttpStatus`](src/HttpStatus.ts) and write more explicit code:
 
-```JavaScript
+```TypeScript
 import { HttpStatus } from '@tkrotoff/fetch';
 
 console.log(HttpStatus._201_Created);
@@ -152,7 +152,7 @@ const status: HttpStatusEnum = HttpStatus._200_OK;
 
 @tkrotoff/fetch exposes `defaults.init` that will be applied to every request.
 
-```JavaScript
+```TypeScript
 import { defaults } from '@tkrotoff/fetch';
 
 defaults.init.mode = 'cors';
@@ -163,8 +163,15 @@ defaults.init.credentials = 'include';
 
 When testing your code, use `createResponsePromise()` and `createJSONResponsePromise()`:
 
-```JavaScript
+```TypeScript
 import * as Http from '@tkrotoff/fetch';
+
+// https://github.com/aelbore/esbuild-jest/issues/26#issuecomment-968853688
+// https://github.com/swc-project/swc/issues/5059
+jest.mock('@tkrotoff/fetch', () => ({
+  __esModule: true,
+  ...jest.requireActual('@tkrotoff/fetch')
+}));
 
 test('OK', async () => {
   const mock = jest.spyOn(Http, 'get').mockImplementation(() =>
@@ -194,6 +201,52 @@ test('fail', async () => {
   expect(mock).toHaveBeenCalledWith(url);
 
   mock.mockRestore();
+});
+```
+
+Other possible syntax with `jest.mock` instead of `jest.spyOn`:
+
+```TypeScript
+import { createResponsePromise, get } from '@tkrotoff/fetch';
+
+beforeEach(() => jest.resetAllMocks());
+
+jest.mock('@tkrotoff/fetch', () => ({
+  ...jest.requireActual('@tkrotoff/fetch'),
+  get: jest.fn(),
+  post: jest.fn(),
+  postJSON: jest.fn(),
+  put: jest.fn(),
+  putJSON: jest.fn(),
+  patch: jest.fn(),
+  patchJSON: jest.fn(),
+  del: jest.fn()
+}));
+
+test('OK', async () => {
+  jest.mocked(get).mockImplementation(() =>
+    createResponsePromise('test')
+  );
+
+  const response = await get(url).text();
+  expect(response).toEqual('test');
+
+  expect(get).toHaveBeenCalledTimes(1);
+  expect(get).toHaveBeenCalledWith(url);
+});
+
+test('fail', async () => {
+  jest.mocked(get).mockImplementation(() =>
+    createResponsePromise(
+      '<!DOCTYPE html><title>404</title>',
+      { status: 404, statusText: 'Not Found' }
+    )
+  );
+
+  await expect(get(url).text()).rejects.toThrow('Not Found');
+
+  expect(get).toHaveBeenCalledTimes(1);
+  expect(get).toHaveBeenCalledWith(url);
 });
 ```
 
