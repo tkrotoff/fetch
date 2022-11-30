@@ -5,6 +5,8 @@ import { createJSONResponsePromise, createResponsePromise } from './createRespon
 import * as Http from './Http';
 import { HttpStatus } from './HttpStatus';
 
+beforeEach(jest.restoreAllMocks);
+
 test('default Response object', async () => {
   const responsePromise = createResponsePromise('text');
   const response = await responsePromise;
@@ -106,8 +108,6 @@ describe('get()', () => {
 
     expect(mock).toHaveBeenCalledTimes(1);
     expect(mock).toHaveBeenCalledWith('url');
-
-    mock.mockRestore();
   });
 
   test('OK .json()', async () => {
@@ -120,8 +120,6 @@ describe('get()', () => {
 
     expect(mock).toHaveBeenCalledTimes(1);
     expect(mock).toHaveBeenCalledWith('url');
-
-    mock.mockRestore();
   });
 
   test('fail', async () => {
@@ -136,8 +134,6 @@ describe('get()', () => {
 
     expect(mock).toHaveBeenCalledTimes(1);
     expect(mock).toHaveBeenCalledWith('url');
-
-    mock.mockRestore();
   });
 
   describe('get().text()', () => {
@@ -149,8 +145,6 @@ describe('get()', () => {
 
       expect(mock).toHaveBeenCalledTimes(1);
       expect(mock).toHaveBeenCalledWith('url');
-
-      mock.mockRestore();
     });
 
     test('fail', async () => {
@@ -165,8 +159,6 @@ describe('get()', () => {
 
       expect(mock).toHaveBeenCalledTimes(1);
       expect(mock).toHaveBeenCalledWith('url');
-
-      mock.mockRestore();
     });
   });
 
@@ -181,8 +173,6 @@ describe('get()', () => {
 
       expect(mock).toHaveBeenCalledTimes(1);
       expect(mock).toHaveBeenCalledWith('url');
-
-      mock.mockRestore();
     });
 
     test('fail', async () => {
@@ -197,8 +187,6 @@ describe('get()', () => {
 
       expect(mock).toHaveBeenCalledTimes(1);
       expect(mock).toHaveBeenCalledWith('url');
-
-      mock.mockRestore();
     });
   });
 });
@@ -212,8 +200,6 @@ describe('post()', () => {
 
     expect(mock).toHaveBeenCalledTimes(1);
     expect(mock).toHaveBeenCalledWith('url', 'body');
-
-    mock.mockRestore();
   });
 
   test('OK .json()', async () => {
@@ -226,8 +212,6 @@ describe('post()', () => {
 
     expect(mock).toHaveBeenCalledTimes(1);
     expect(mock).toHaveBeenCalledWith('url', 'body');
-
-    mock.mockRestore();
   });
 
   test('fail', async () => {
@@ -242,8 +226,6 @@ describe('post()', () => {
 
     expect(mock).toHaveBeenCalledTimes(1);
     expect(mock).toHaveBeenCalledWith('url', 'body');
-
-    mock.mockRestore();
   });
 
   describe('post().text()', () => {
@@ -255,8 +237,6 @@ describe('post()', () => {
 
       expect(mock).toHaveBeenCalledTimes(1);
       expect(mock).toHaveBeenCalledWith('url', 'body');
-
-      mock.mockRestore();
     });
 
     test('fail', async () => {
@@ -271,8 +251,6 @@ describe('post()', () => {
 
       expect(mock).toHaveBeenCalledTimes(1);
       expect(mock).toHaveBeenCalledWith('url', 'body');
-
-      mock.mockRestore();
     });
   });
 
@@ -287,8 +265,6 @@ describe('post()', () => {
 
       expect(mock).toHaveBeenCalledTimes(1);
       expect(mock).toHaveBeenCalledWith('url', 'body');
-
-      mock.mockRestore();
     });
 
     test('fail', async () => {
@@ -303,8 +279,6 @@ describe('post()', () => {
 
       expect(mock).toHaveBeenCalledTimes(1);
       expect(mock).toHaveBeenCalledWith('url', 'body');
-
-      mock.mockRestore();
     });
   });
 });
@@ -336,7 +310,5 @@ describe('flushPromises()', () => {
 
     expect(mock).toHaveBeenCalledTimes(1);
     expect(mock).toHaveBeenCalledWith('url');
-
-    mock.mockRestore();
   });
 });
