@@ -34,7 +34,8 @@ test('get()', async ({ page }) => {
   const response = await page.evaluate(url => window.Http.get(url).text(), url);
   expect(response).toEqual('GET');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('postJSON()', async ({ page }) => {
@@ -57,7 +58,8 @@ test('postJSON()', async ({ page }) => {
   });
   expect(response).toEqual('POST');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('404 Not Found', async ({ page }) => {
@@ -72,7 +74,8 @@ test('404 Not Found', async ({ page }) => {
 
   await expect(page.evaluate(url => window.Http.get(url).text(), url)).rejects.toThrow('Not Found');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 function getCorsErrorMessage(browserEngine: string | undefined) {
@@ -113,7 +116,8 @@ test('CORS fail', async ({ page }) => {
     getCorsErrorMessage(browserEngine)
   );
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 function getAbortedErrorMessage(browserEngine: string | undefined) {
@@ -159,7 +163,8 @@ test('abort request', async ({ page }) => {
     }, url)
   ).rejects.toThrow(getAbortedErrorMessage(browserEngine));
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('HTTPS + HTTP/2', async ({ page }) => {
@@ -182,9 +187,8 @@ test('HTTPS + HTTP/2', async ({ page }) => {
   const response = await page.evaluate(url => window.Http.get(url).text(), url);
   expect(response).toEqual('GET');
 
-  // FIXME This test is very slow with Fastify 4.10.2
-  test.setTimeout(100_000);
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 // ["you can connect to HTTP2 in plain text, however, this is not supported by browsers"](https://www.fastify.io/docs/v4.10.x/Reference/HTTP2/#plain-or-insecure)
@@ -204,5 +208,6 @@ test.skip('HTTP + HTTP/2', async ({ page }) => {
   const response = await page.evaluate(async url => window.Http.get(url).text(), url);
   expect(response).toEqual('GET');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });

@@ -81,7 +81,8 @@ describe('custom headers', () => {
     const response = await get(url, { headers }).text();
     expect(JSON.parse(response).test).toEqual('true');
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   test('get() with Headers instance', async () => {
@@ -96,7 +97,8 @@ describe('custom headers', () => {
     const response = await get(url, { headers }).text();
     expect(JSON.parse(response).test).toEqual('true');
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   test('postJSON()', async () => {
@@ -112,7 +114,8 @@ describe('custom headers', () => {
     const response = (await postJSON(url, body, { headers }).json()) as typeof body;
     expect(response.test).toEqual('true');
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 });
 
@@ -130,7 +133,8 @@ test('get()', async () => {
   const response = await get(url).text();
   expect(response).toEqual('GET');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('get() with new URL()', async () => {
@@ -147,7 +151,8 @@ test('get() with new URL()', async () => {
   const response = await get(new URL(url)).text();
   expect(response).toEqual('GET');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('multiple fetch()', async () => {
@@ -164,7 +169,8 @@ test('multiple fetch()', async () => {
   const response2 = await fetch(url);
   expect(await response2.text()).toEqual('GET');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('multiple requests', async () => {
@@ -188,7 +194,8 @@ test('multiple requests', async () => {
   const response3 = postJSON(url, body);
   expect(await response3.text()).toEqual('POST');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('post()', async () => {
@@ -207,7 +214,8 @@ test('post()', async () => {
   const response = await post(url, body).text();
   expect(response).toEqual('POST');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('post() without body', async () => {
@@ -224,7 +232,8 @@ test('post() without body', async () => {
   const response = await post(url).text();
   expect(response).toEqual('POST');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('postJSON()', async () => {
@@ -242,7 +251,8 @@ test('postJSON()', async () => {
   const response = await postJSON(url, body).text();
   expect(response).toEqual('POST');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('postJSON() should override content-type but keep other headers', async () => {
@@ -263,7 +273,8 @@ test('postJSON() should override content-type but keep other headers', async () 
   }).text();
   expect(response).toEqual('POST');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('postJSON() with undefined request body', async () => {
@@ -273,7 +284,8 @@ test('postJSON() with undefined request body', async () => {
 
   await expect(postJSON(url, undefined as any).text()).rejects.toThrow('Bad Request');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('postJSON() with null request body', async () => {
@@ -291,7 +303,8 @@ test('postJSON() with null request body', async () => {
   const response = await postJSON(url, null as any).text();
   expect(response).toEqual('POST');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('put()', async () => {
@@ -310,7 +323,8 @@ test('put()', async () => {
   const response = await put(url, body).text();
   expect(response).toEqual('PUT');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('put() without body', async () => {
@@ -327,7 +341,8 @@ test('put() without body', async () => {
   const response = await put(url).text();
   expect(response).toEqual('PUT');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('putJSON()', async () => {
@@ -345,7 +360,8 @@ test('putJSON()', async () => {
   const response = await putJSON(url, body).text();
   expect(response).toEqual('PUT');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('patch()', async () => {
@@ -364,7 +380,8 @@ test('patch()', async () => {
   const response = await patch(url, body).text();
   expect(response).toEqual('PATCH');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('patch() without body', async () => {
@@ -381,7 +398,8 @@ test('patch() without body', async () => {
   const response = await patch(url).text();
   expect(response).toEqual('PATCH');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('patchJSON()', async () => {
@@ -399,7 +417,8 @@ test('patchJSON()', async () => {
   const response = await patchJSON(url, body).text();
   expect(response).toEqual('PATCH');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('del()', async () => {
@@ -415,7 +434,8 @@ test('del()', async () => {
   const response = await del(url).text();
   expect(response).toEqual('DELETE');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 describe('body methods', () => {
@@ -430,7 +450,8 @@ describe('body methods', () => {
     const response = await get(url);
     expect(await response.text()).toEqual('*/*');
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   test('.arrayBuffer()', async () => {
@@ -444,7 +465,8 @@ describe('body methods', () => {
     const response = await get(url).arrayBuffer();
     expect(Buffer.from(response)).toEqual(Buffer.from('*/*'));
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   test('.blob()', async () => {
@@ -463,7 +485,8 @@ describe('body methods', () => {
       expect(await response.text()).toEqual('*/*');
     }
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   test('.formData()', async () => {
@@ -479,7 +502,8 @@ describe('body methods', () => {
     const response = await get(url).formData();
     expect(entriesToObject(response)).toEqual({ 'multipart/form-data': '' });
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   test('.json() with JSON reply', async () => {
@@ -493,7 +517,8 @@ describe('body methods', () => {
     const response = await get(url).json();
     expect(response).toEqual({ accept: 'application/json' });
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   test('.json() with text reply', async () => {
@@ -507,7 +532,8 @@ describe('body methods', () => {
     const response = await get(url).json();
     expect(response).toEqual('application/json');
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   test('.json() with empty reply', async () => {
@@ -522,7 +548,8 @@ describe('body methods', () => {
     const response = await get(url).json();
     expect(response).toEqual('');
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   test('.json() without content-type reply', async () => {
@@ -536,7 +563,8 @@ describe('body methods', () => {
     const response = await get(url).json();
     expect(response).toEqual('application/json');
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   test('.text()', async () => {
@@ -550,7 +578,8 @@ describe('body methods', () => {
     const response = await get(url).text();
     expect(response).toEqual('text/*');
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   test('should not override existing accept header', async () => {
@@ -564,7 +593,8 @@ describe('body methods', () => {
     const response = await get(url, { headers: { accept: 'text/plain' } }).text();
     expect(response).toEqual('text/plain');
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   // https://github.com/whatwg/fetch/issues/1147
@@ -586,7 +616,8 @@ describe('body methods', () => {
     expect(await response.json()).toEqual({ accept: 'application/json' });
     await expect(response.text()).rejects.toThrow(bodyAlreadyUsedError(url));
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   test('multiple body calls using regular response', async () => {
@@ -601,7 +632,8 @@ describe('body methods', () => {
     expect(await response.json()).toEqual({ accept: '*/*' });
     await expect(response.text()).rejects.toThrow(bodyAlreadyUsedError(url));
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 
   test('multiple body calls using helper + regular response', async () => {
@@ -617,7 +649,8 @@ describe('body methods', () => {
     // eslint-disable-next-line unicorn/no-await-expression-member
     await expect((await response).text()).rejects.toThrow(bodyAlreadyUsedError(url));
 
-    await server.close();
+    // FIXME await close() is too slow with Fastify 4.10.2
+    server.close();
   });
 });
 
@@ -674,5 +707,6 @@ test('should not throw under EdgeHTML', async () => {
 
   globalThis.Headers = OriginalHeaders;
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
