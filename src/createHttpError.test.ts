@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/no-null */
+/* eslint-disable unicorn/no-null, jest/no-conditional-expect */
 
 import { Readable } from 'node:stream';
 

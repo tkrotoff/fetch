@@ -6,7 +6,7 @@ const config: PlaywrightTestConfig = {
   use: {
     headless: true,
 
-    // Because the certificate is self-signed
+    // Because the certificate (src/createTestServer/createTestServer.cert) is self-signed
     ignoreHTTPSErrors: true
   },
 

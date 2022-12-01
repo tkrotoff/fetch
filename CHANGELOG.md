@@ -1,3 +1,8 @@
+## 0.14.2 (2022/12/01)
+
+- Update npm packages
+- Test with Node.js 18 (#29)
+
 ## 0.14.1 (2022/07/08)
 
 - Accept URL as input

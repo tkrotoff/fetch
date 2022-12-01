@@ -31,6 +31,12 @@ const config = {
       lines: 100
     }
   }
+
+  // https://github.com/facebook/jest/issues/9047
+  // https://github.com/facebook/jest/issues/10419#issuecomment-731176514
+  // clearMocks: true,
+  // resetMocks: true,
+  // restoreMocks: true
 };
 
 module.exports = config;

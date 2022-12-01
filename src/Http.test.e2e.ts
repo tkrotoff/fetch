@@ -24,17 +24,18 @@ test('get()', async ({ page }) => {
 
   server.get(path, (request, reply) => {
     expect(request.headers['content-type']).toBeUndefined();
-    expect(request.body).toBeNull();
+    expect(request.body).toBeUndefined();
     reply.send(request.method);
   });
-  const url = await server.listen(0);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
   const response = await page.evaluate(url => window.Http.get(url).text(), url);
   expect(response).toEqual('GET');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('postJSON()', async ({ page }) => {
@@ -47,7 +48,7 @@ test('postJSON()', async ({ page }) => {
     expect(request.body).toEqual(body);
     reply.send(request.method);
   });
-  const url = await server.listen(0);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -57,7 +58,8 @@ test('postJSON()', async ({ page }) => {
   });
   expect(response).toEqual('POST');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('404 Not Found', async ({ page }) => {
@@ -66,28 +68,32 @@ test('404 Not Found', async ({ page }) => {
   server.get(path, (_request, reply) => {
     reply.code(404).send();
   });
-  const url = await server.listen(0);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
   await expect(page.evaluate(url => window.Http.get(url).text(), url)).rejects.toThrow('Not Found');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 function getCorsErrorMessage(browserEngine: string | undefined) {
   let message = `Unknown browser engine: '${browserEngine}'`;
 
   switch (browserEngine) {
-    case 'Blink':
+    case 'Blink': {
       message = 'Failed to fetch';
       break;
-    case 'Gecko':
+    }
+    case 'Gecko': {
       message = 'NetworkError when attempting to fetch resource.';
       break;
-    case 'WebKit':
+    }
+    case 'WebKit': {
       message = 'Load failed';
       break;
+    }
     default:
   }
   return message;
@@ -99,7 +105,7 @@ test('CORS fail', async ({ page }) => {
   server.get(path, async (request, reply) => {
     reply.send(request.method);
   });
-  const url = await server.listen(0);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -110,21 +116,25 @@ test('CORS fail', async ({ page }) => {
     getCorsErrorMessage(browserEngine)
   );
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 function getAbortedErrorMessage(browserEngine: string | undefined) {
   let message = `Unknown browser engine: '${browserEngine}'`;
   switch (browserEngine) {
-    case 'Blink':
+    case 'Blink': {
       message = 'The user aborted a request.';
       break;
-    case 'Gecko':
+    }
+    case 'Gecko': {
       message = 'The operation was aborted. ';
       break;
-    case 'WebKit':
+    }
+    case 'WebKit': {
       message = 'Fetch is aborted';
       break;
+    }
     default:
   }
   return message;
@@ -137,7 +147,7 @@ test('abort request', async ({ page }) => {
     await wait(20);
     reply.send(request.method);
   });
-  const url = await server.listen(0);
+  const url = await server.listen();
 
   await page.addScriptTag({ path: tkrotoff_fetch });
 
@@ -153,13 +163,15 @@ test('abort request', async ({ page }) => {
     }, url)
   ).rejects.toThrow(getAbortedErrorMessage(browserEngine));
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });
 
 test('HTTPS + HTTP/2', async ({ page }) => {
   const userAgent = await page.evaluate(() => window.navigator.userAgent);
   const browserEngine = new UAParser(userAgent).getEngine().name;
   // FIXME Does not work with WebKit and GitHub Actions
+  // eslint-disable-next-line playwright/no-conditional-in-test
   if (browserEngine === 'WebKit') return;
 
   const server = createTestServer({ http2: true });
@@ -167,7 +179,7 @@ test('HTTPS + HTTP/2', async ({ page }) => {
   server.get(path, (request, reply) => {
     reply.send(request.method);
   });
-  const url = await server.listen(0);
+  const url = await server.listen();
   expect(url).toContain('https://127.0.0.1:');
 
   await page.addScriptTag({ path: tkrotoff_fetch });
@@ -175,5 +187,27 @@ test('HTTPS + HTTP/2', async ({ page }) => {
   const response = await page.evaluate(url => window.Http.get(url).text(), url);
   expect(response).toEqual('GET');
 
-  await server.close();
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
+});
+
+// ["you can connect to HTTP2 in plain text, however, this is not supported by browsers"](https://www.fastify.io/docs/v4.10.x/Reference/HTTP2/#plain-or-insecure)
+// Chromium 108 error: net::ERR_INVALID_HTTP_RESPONSE
+// eslint-disable-next-line playwright/no-skipped-test
+test.skip('HTTP + HTTP/2', async ({ page }) => {
+  const server = createTestServer({ http2: true, https: false });
+
+  server.get(path, (request, reply) => {
+    reply.send(request.method);
+  });
+  const url = await server.listen();
+  expect(url).toContain('http://127.0.0.1:');
+
+  await page.addScriptTag({ path: tkrotoff_fetch });
+
+  const response = await page.evaluate(async url => window.Http.get(url).text(), url);
+  expect(response).toEqual('GET');
+
+  // FIXME await close() is too slow with Fastify 4.10.2
+  server.close();
 });

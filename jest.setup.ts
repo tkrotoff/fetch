@@ -21,7 +21,8 @@ switch (fetchPolyfill) {
     globalThis.Headers = nodeFetch.Headers;
     break;
   }
-  default:
+  default: {
     assert(false, `Invalid fetch polyfill: '${fetchPolyfill}'`);
+  }
 }
 /* eslint-enable global-require, @typescript-eslint/no-var-requires */

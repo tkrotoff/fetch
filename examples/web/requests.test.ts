@@ -12,6 +12,15 @@ import {
   uploadFilesExample
 } from './requests';
 
+// https://github.com/aelbore/esbuild-jest/issues/26#issuecomment-968853688
+// https://github.com/swc-project/swc/issues/5059
+jest.mock('@tkrotoff/fetch', () => ({
+  __esModule: true,
+  ...jest.requireActual('@tkrotoff/fetch')
+}));
+
+beforeEach(jest.restoreAllMocks);
+
 test('get200OKExample()', async () => {
   const mock = jest.spyOn(Http, 'get').mockImplementation(() =>
     Http.createJSONResponsePromise({
@@ -25,8 +34,6 @@ test('get200OKExample()', async () => {
   await get200OKExample();
   expect(mock).toHaveBeenCalledTimes(1);
   expect(mock).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/posts/1');
-
-  mock.mockRestore();
 });
 
 test('postJSON201CreatedExample()', async () => {
@@ -46,8 +53,6 @@ test('postJSON201CreatedExample()', async () => {
     title: 'foo',
     userId: 1
   });
-
-  mock.mockRestore();
 });
 
 test('del200OKExample()', async () => {
@@ -56,8 +61,6 @@ test('del200OKExample()', async () => {
   await del200OKExample();
   expect(mock).toHaveBeenCalledTimes(1);
   expect(mock).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/posts/1');
-
-  mock.mockRestore();
 });
 
 test('get404NotFoundExample()', async () => {
@@ -71,8 +74,6 @@ test('get404NotFoundExample()', async () => {
   await get404NotFoundExample();
   expect(mock).toHaveBeenCalledTimes(1);
   expect(mock).toHaveBeenCalledWith('https://httpstat.us/404/cors');
-
-  mock.mockRestore();
 });
 
 test('get500InternalServerErrorExample()', async () => {
@@ -86,8 +87,6 @@ test('get500InternalServerErrorExample()', async () => {
   await get500InternalServerErrorExample();
   expect(mock).toHaveBeenCalledTimes(1);
   expect(mock).toHaveBeenCalledWith('https://httpstat.us/500/cors');
-
-  mock.mockRestore();
 });
 
 test('getCorsBlockedExample()', async () => {
@@ -96,8 +95,6 @@ test('getCorsBlockedExample()', async () => {
   await getCorsBlockedExample();
   expect(mock).toHaveBeenCalledTimes(1);
   expect(mock).toHaveBeenCalledWith('https://postman-echo.com/get?foo1=bar1&foo2=bar2');
-
-  mock.mockRestore();
 });
 
 test('uploadFilesExample()', async () => {
@@ -113,29 +110,25 @@ test('uploadFilesExample()', async () => {
   await uploadFilesExample([file0, file1] as unknown as FileList);
   expect(mock).toHaveBeenCalledTimes(1);
   expect(mock).toHaveBeenCalledWith('https://httpbin.org/anything', expect.any(FormData));
-
-  mock.mockRestore();
 });
 
 test('abortRequestExample()', async () => {
   const abortError = new DOMException('The user aborted a request.', 'AbortError');
 
-  const mock = jest
-    .spyOn(Http, 'get')
-    .mockImplementation((_input: RequestInfo, init: Http.Init) => {
-      // Mock aborted request
-      // https://github.com/github/fetch/blob/v3.4.1/fetch.js#L497
-      const response = new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (init.signal && init.signal.aborted) {
-            reject(abortError);
-          }
-          resolve('**********');
-        }, 600);
-      });
-
-      return response as Http.ResponsePromiseWithBodyMethods;
+  const mock = jest.spyOn(Http, 'get').mockImplementation((_input, init) => {
+    // Mock aborted request
+    // https://github.com/github/fetch/blob/v3.4.1/fetch.js#L497
+    const response = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (init!.signal && init!.signal.aborted) {
+          reject(abortError);
+        }
+        resolve('**********');
+      }, 600);
     });
+
+    return response as Http.ResponsePromiseWithBodyMethods;
+  });
 
   await abortRequestExample();
   expect(mock).toHaveBeenCalledTimes(1);
@@ -145,8 +138,6 @@ test('abortRequestExample()', async () => {
       signal: expect.any(AbortSignal)
     }
   );
-
-  mock.mockRestore();
 });
 
 // FIXME jsdom does not support Blob.stream https://github.com/jsdom/jsdom/issues/2555
@@ -177,6 +168,4 @@ test.skip('downloadProgressExample()', async () => {
   expect(mock).toHaveBeenCalledWith(
     'https://fetch-progress.anthum.com/30kbps/images/sunrise-baseline.jpg'
   );
-
-  mock.mockRestore();
 });

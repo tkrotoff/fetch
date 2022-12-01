@@ -96,6 +96,13 @@ const config = {
         '@typescript-eslint/no-non-null-assertion': 'off',
         'unicorn/prefer-add-event-listener': 'off'
       }
+    },
+    {
+      files: ['**/*.test.ts'],
+      rules: {
+        'playwright/no-skipped-test': 'off',
+        'playwright/no-conditional-in-test': 'off'
+      }
     }
   ]
 };
