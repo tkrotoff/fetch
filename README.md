@@ -90,7 +90,8 @@ Or copy-paste [Http.ts](src/Http.ts) into your source code.
 
 ### With Node.js you need:
 
-- [node-fetch](https://github.com/node-fetch/node-fetch)
+- Nothing if Node.js >= 18
+- [node-fetch](https://github.com/node-fetch/node-fetch) if Node.js < 18
 
 Check [examples/node](examples/node)
 
