@@ -37,6 +37,7 @@
     "test:node-fetch": "NODE_EXTRA_CA_CERTS=./src/createTestServer/createTestServer.cert FETCH=node-fetch jest --verbose",
     "test:coverage:node-fetch": "NODE_EXTRA_CA_CERTS=./src/createTestServer/createTestServer.cert FETCH=node-fetch jest --coverage",
     "test:whatwg-fetch": "NODE_EXTRA_CA_CERTS=./src/createTestServer/createTestServer.cert FETCH=whatwg-fetch jest --env=jsdom --verbose",
+    "test:undici": "NODE_EXTRA_CA_CERTS=./src/createTestServer/createTestServer.cert FETCH=undici jest --verbose",
     "test:coverage:whatwg-fetch": "NODE_EXTRA_CA_CERTS=./src/createTestServer/createTestServer.cert FETCH=whatwg-fetch jest --env=jsdom --coverage",
     "test:e2e": "playwright test",
     "test:e2e:debug": "playwright test --debug",
@@ -89,6 +90,7 @@
     "tslib": "^2.4.1",
     "typescript": "^4.9.3",
     "ua-parser-js": "^1.0.32",
+    "undici": "^5.13.0",
     "whatwg-fetch": "^3.6.2"
   }
 }

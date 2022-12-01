@@ -1,3 +1,8 @@
+## 0.15.0 (2022/12/01)
+
+- Breaking change: createHttpError & createJSONHttpError params are no longer optional
+- Test with Undici fetch
+
 ## 0.14.2 (2022/12/01)
 
 - Update npm packages

@@ -10,15 +10,25 @@ switch (fetchPolyfill) {
   case 'whatwg-fetch': {
     const whatwgFetch = require('whatwg-fetch');
     globalThis.fetch = whatwgFetch.fetch;
-    // Tests are very slow with whatwg-fetch (150s) vs node-fetch (2s)
-    jest.setTimeout(10_000);
+    globalThis.Request = whatwgFetch.Request;
+    globalThis.Response = whatwgFetch.Response;
+    globalThis.Headers = whatwgFetch.Headers;
     break;
   }
   case 'node-fetch': {
     const nodeFetch = require('node-fetch');
     globalThis.fetch = nodeFetch.default;
+    globalThis.Request = nodeFetch.Request;
     globalThis.Response = nodeFetch.Response;
     globalThis.Headers = nodeFetch.Headers;
+    break;
+  }
+  case 'undici': {
+    const undici = require('undici');
+    globalThis.fetch = undici.fetch;
+    globalThis.Request = undici.Request;
+    globalThis.Response = undici.Response;
+    globalThis.Headers = undici.Headers;
     break;
   }
   default: {

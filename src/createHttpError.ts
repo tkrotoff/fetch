@@ -8,7 +8,7 @@ import { HttpError } from './HttpError';
  *
  * @see {@link createJSONHttpError()}
  */
-export function createHttpError(body?: BodyInit, status = 0, statusText?: string) {
+export function createHttpError(body: BodyInit | undefined, status: number, statusText?: string) {
   return new HttpError(
     new Response(body, {
       status,
@@ -24,8 +24,9 @@ export function createHttpError(body?: BodyInit, status = 0, statusText?: string
  */
 // Record<string, unknown> is compatible with "type" not with "interface": "Index signature is missing in type 'MyInterface'"
 // Best alternative is object, why? https://stackoverflow.com/a/58143592
-export function createJSONHttpError(body: object, status = 0, statusText?: string) {
+export function createJSONHttpError(body: object, status: number, statusText?: string) {
   return new HttpError(
+    // FIXME Replace with [new Response.json()](https://twitter.com/lcasdev/status/1564598435772342272)
     new Response(JSON.stringify(body), {
       status,
       statusText,
