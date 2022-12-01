@@ -1,6 +1,6 @@
 {
   "name": "@tkrotoff/fetch",
-  "version": "0.14.1",
+  "version": "0.14.2",
   "description": "Fetch wrapper",
   "repository": "github:tkrotoff/fetch",
   "license": "MIT",
