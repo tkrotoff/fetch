@@ -1,5 +1,6 @@
+import assert from 'node:assert';
+
 import { entriesToObject } from './utils/entriesToObject';
-import { isWhatwgFetch } from './utils/isWhatwgFetch';
 import { wait } from './utils/wait';
 import { createJSONResponsePromise, createResponsePromise } from './createResponsePromise';
 import * as Http from './Http';
@@ -14,7 +15,7 @@ test('default Response object', async () => {
     'content-type': 'text/plain;charset=UTF-8'
   });
   expect(response.ok).toEqual(true);
-  expect(response.redirected).toEqual(isWhatwgFetch ? undefined : false);
+  expect(response.redirected).toEqual(process.env.FETCH === 'whatwg-fetch' ? undefined : false);
   expect(response.status).toEqual(200);
   expect(response.statusText).toEqual('');
   expect(response.url).toEqual('');
@@ -32,7 +33,7 @@ describe('body methods', () => {
     const blob = await responsePromise.blob();
     expect(blob.size).toEqual(4);
     // FIXME https://github.com/jsdom/jsdom/issues/2555
-    if (!isWhatwgFetch) {
+    if (process.env.FETCH !== 'whatwg-fetch') {
       // eslint-disable-next-line jest/no-conditional-expect
       expect(await blob.text()).toEqual('test');
     }
@@ -73,11 +74,24 @@ describe('body methods', () => {
   });
 
   // https://github.com/whatwg/fetch/issues/1147
-  const nodeFetchBodyAlreadyUsedError = 'body used already for: ';
-  const whatwgFetchBodyAlreadyUsedError = 'Already read';
-  const bodyAlreadyUsedError = isWhatwgFetch
-    ? whatwgFetchBodyAlreadyUsedError
-    : nodeFetchBodyAlreadyUsedError;
+  let bodyAlreadyUsedError = '';
+  switch (process.env.FETCH) {
+    case 'node-fetch': {
+      bodyAlreadyUsedError = 'body used already for: ';
+      break;
+    }
+    case 'whatwg-fetch': {
+      bodyAlreadyUsedError = 'Already read';
+      break;
+    }
+    case 'undici': {
+      bodyAlreadyUsedError = 'Body is unusable';
+      break;
+    }
+    default: {
+      assert(false, `Unknown FETCH env '${process.env.FETCH}'`);
+    }
+  }
 
   test('multiple body calls using helpers', async () => {
     const responsePromise = createJSONResponsePromise({ test: 'true' });

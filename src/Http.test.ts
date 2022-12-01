@@ -2,7 +2,6 @@ import assert from 'node:assert';
 
 import { createTestServer } from './createTestServer/createTestServer';
 import { entriesToObject } from './utils/entriesToObject';
-import { isWhatwgFetch } from './utils/isWhatwgFetch';
 import { defaults, del, get, patch, patchJSON, post, postJSON, put, putJSON } from './Http';
 
 const path = '/';
@@ -480,7 +479,7 @@ describe('body methods', () => {
     const response = await get(url).blob();
     expect(response.size).toEqual(3);
     // FIXME https://github.com/jsdom/jsdom/issues/2555
-    if (!isWhatwgFetch) {
+    if (process.env.FETCH !== 'whatwg-fetch') {
       // eslint-disable-next-line jest/no-conditional-expect
       expect(await response.text()).toEqual('*/*');
     }
@@ -598,11 +597,24 @@ describe('body methods', () => {
   });
 
   // https://github.com/whatwg/fetch/issues/1147
-  // eslint-disable-next-line unicorn/consistent-function-scoping
-  const nodeFetchBodyAlreadyUsedError = (url: string) => `body used already for: ${url}`;
-  const whatwgFetchBodyAlreadyUsedError = 'Already read';
-  const bodyAlreadyUsedError = (url: string) =>
-    isWhatwgFetch ? whatwgFetchBodyAlreadyUsedError : nodeFetchBodyAlreadyUsedError(url);
+  let bodyAlreadyUsedError = '';
+  switch (process.env.FETCH) {
+    case 'node-fetch': {
+      bodyAlreadyUsedError = 'body used already for: ';
+      break;
+    }
+    case 'whatwg-fetch': {
+      bodyAlreadyUsedError = 'Already read';
+      break;
+    }
+    case 'undici': {
+      bodyAlreadyUsedError = 'Body is unusable';
+      break;
+    }
+    default: {
+      assert(false, `Unknown FETCH env '${process.env.FETCH}'`);
+    }
+  }
 
   test('multiple body calls using helpers', async () => {
     const server = createTestServer();
@@ -614,7 +626,7 @@ describe('body methods', () => {
 
     const response = get(url);
     expect(await response.json()).toEqual({ accept: 'application/json' });
-    await expect(response.text()).rejects.toThrow(bodyAlreadyUsedError(url));
+    await expect(response.text()).rejects.toThrow(bodyAlreadyUsedError);
 
     // FIXME await close() is too slow with Fastify 4.10.2
     server.close();
@@ -630,7 +642,7 @@ describe('body methods', () => {
 
     const response = await get(url);
     expect(await response.json()).toEqual({ accept: '*/*' });
-    await expect(response.text()).rejects.toThrow(bodyAlreadyUsedError(url));
+    await expect(response.text()).rejects.toThrow(bodyAlreadyUsedError);
 
     // FIXME await close() is too slow with Fastify 4.10.2
     server.close();
@@ -647,7 +659,7 @@ describe('body methods', () => {
     const response = get(url);
     expect(await response.json()).toEqual({ accept: 'application/json' });
     // eslint-disable-next-line unicorn/no-await-expression-member
-    await expect((await response).text()).rejects.toThrow(bodyAlreadyUsedError(url));
+    await expect((await response).text()).rejects.toThrow(bodyAlreadyUsedError);
 
     // FIXME await close() is too slow with Fastify 4.10.2
     server.close();
@@ -657,11 +669,24 @@ describe('body methods', () => {
 test('cannot connect', async () => {
   const url = 'http://localhost/';
 
-  const nodeFetchRequestFailedError = `request to ${url} failed, reason: connect ECONNREFUSED 127.0.0.1:80`;
-  const whatwgFetchRequestFailedError = 'Network request failed';
-  const requestFailedError = isWhatwgFetch
-    ? whatwgFetchRequestFailedError
-    : nodeFetchRequestFailedError;
+  let requestFailedError = '';
+  switch (process.env.FETCH) {
+    case 'node-fetch': {
+      requestFailedError = `request to ${url} failed, reason: connect ECONNREFUSED 127.0.0.1:80`;
+      break;
+    }
+    case 'whatwg-fetch': {
+      requestFailedError = 'Network request failed';
+      break;
+    }
+    case 'undici': {
+      requestFailedError = 'fetch failed';
+      break;
+    }
+    default: {
+      assert(false, `Unknown FETCH env '${process.env.FETCH}'`);
+    }
+  }
 
   // Avoid console to be polluted with whatwg-fetch "Error: connect ECONNREFUSED"
   const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
@@ -671,12 +696,12 @@ test('cannot connect', async () => {
   } catch (e) {
     assert(e instanceof Error);
     /* eslint-disable jest/no-conditional-expect */
-    expect(e.name).toEqual(isWhatwgFetch ? 'TypeError' : 'FetchError');
+    expect(e.name).toEqual(process.env.FETCH === 'node-fetch' ? 'FetchError' : 'TypeError');
     expect(e.message).toEqual(requestFailedError);
     /* eslint-enable jest/no-conditional-expect */
   }
 
-  expect(consoleSpy).toHaveBeenCalledTimes(isWhatwgFetch ? 1 : 0);
+  expect(consoleSpy).toHaveBeenCalledTimes(process.env.FETCH === 'whatwg-fetch' ? 1 : 0);
 
   consoleSpy.mockRestore();
 });

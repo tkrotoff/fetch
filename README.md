@@ -130,8 +130,8 @@ Check [examples/web](examples/web)
 - `createResponsePromise(body?:` [`BodyInit`](https://fetch.spec.whatwg.org/#bodyinit)`, init?:` [`ResponseInit`](https://fetch.spec.whatwg.org/#responseinit)`): ResponsePromiseWithBodyMethods`
 - `createJSONResponsePromise(body: object, init?: ResponseInit): ResponsePromiseWithBodyMethods`
 
-- `createHttpError(body?: BodyInit, status = 0, statusText?: string): HttpError`
-- `createJSONHttpError(body: object, status = 0, statusText?: string): HttpError`
+- `createHttpError(body: BodyInit, status: number, statusText?: string): HttpError`
+- `createJSONHttpError(body: object, status: number, statusText?: string): HttpError`
 
 ### HttpStatus
 

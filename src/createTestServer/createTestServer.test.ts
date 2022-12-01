@@ -1,4 +1,3 @@
-import { isWhatwgFetch } from '../utils/isWhatwgFetch';
 import { createTestServer } from './createTestServer';
 
 const path = '/';
@@ -56,8 +55,8 @@ test.skip('respond to HTTP/2 requests', async () => {
   server.close();
 });
 
-// node-fetch does not care about CORS
-if (isWhatwgFetch) {
+// node-fetch & undici don't care about CORS
+if (process.env.FETCH === 'whatwg-fetch') {
   test('CORS fail', async () => {
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
 
