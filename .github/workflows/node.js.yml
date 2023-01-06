@@ -1,4 +1,4 @@
-# https://github.com/actions/starter-workflows/blob/5104ac42744c84c675b2f9e1168e89f1dd60c059/ci/node.js.yml
+# https://github.com/actions/starter-workflows/blob/9f245d9aba830ad16a097a45c78331a05114d815/ci/node.js.yml
 
 name: Node.js CI
 
@@ -14,11 +14,11 @@ jobs:
         node-version: [14.x, 16.x, 18.x]
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{matrix.node-version}}
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{matrix.node-version}}
+          node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci
       - run: npx playwright install --with-deps
@@ -43,7 +43,7 @@ jobs:
           ./cc-test-reporter sum-coverage --output coverage.total.json --parts 3 coverage.*.json
           ./cc-test-reporter upload-coverage --input coverage.total.json
         env:
-          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
 
       # FIXME https://github.com/codecov/codecov-action/issues/600#issuecomment-1003567615
       - name: Upload coverage to Codecov
