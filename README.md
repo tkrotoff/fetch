@@ -12,8 +12,9 @@ A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper.
 - Simplifies the use of Fetch
 - Tiny: less than 200 lines of code
 - No dependencies
+- Supports Node.js & web browsers
 - Comes with test utilities
-- Fully tested
+- Fully tested (against [node-fetch](https://github.com/node-fetch/node-fetch), [whatwg-fetch](https://github.com/github/fetch) & [undici](https://github.com/nodejs/undici))
 - Written in TypeScript
 
 ## Why?
