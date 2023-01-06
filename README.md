@@ -66,6 +66,7 @@ Examples:
 
 - https://stackblitz.com/github/tkrotoff/fetch/tree/codesandbox.io/examples/web
 - https://stackblitz.com/github/tkrotoff/fetch/tree/codesandbox.io/examples/node
+- https://github.com/tkrotoff/MarvelHeroes
 
 `npm install @tkrotoff/fetch`
 
