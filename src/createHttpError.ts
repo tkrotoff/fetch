@@ -1,6 +1,6 @@
 /* eslint-disable default-param-last */
 
-import { JSON_MIME_TYPE } from './Http';
+import { jsonMimeType } from './Http';
 import { HttpError } from './HttpError';
 
 /**
@@ -30,7 +30,7 @@ export function createJSONHttpError(body: object, status: number, statusText?: s
     new Response(JSON.stringify(body), {
       status,
       statusText,
-      headers: { 'content-type': JSON_MIME_TYPE }
+      headers: { 'content-type': jsonMimeType }
     })
   );
 }

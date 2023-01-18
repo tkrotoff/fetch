@@ -12,15 +12,15 @@ export type ResponsePromiseWithBodyMethods = Promise<Response> &
     json(): Promise<unknown>;
   };
 
-const ARRAYBUFFER_MIME_TYPE = '*/*';
-const BLOB_MIME_TYPE = '*/*';
-const FORMDATA_MIME_TYPE = 'multipart/form-data';
-export const JSON_MIME_TYPE = 'application/json';
-const TEXT_MIME_TYPE = 'text/*';
+const arrayBufferMimeType = '*/*';
+const blobMimeType = '*/*';
+const formDataMimeType = 'multipart/form-data';
+export const jsonMimeType = 'application/json';
+const textMimeType = 'text/*';
 
 export function isJSONResponse(response: Response) {
   const contentType = response.headers.get('content-type') ?? '';
-  return contentType.includes(JSON_MIME_TYPE);
+  return contentType.includes(jsonMimeType);
 }
 
 function extendResponsePromiseWithBodyMethods(
@@ -34,25 +34,25 @@ function extendResponsePromiseWithBodyMethods(
   /* eslint-disable no-param-reassign */
 
   responsePromise.arrayBuffer = async () => {
-    setAcceptHeader(ARRAYBUFFER_MIME_TYPE);
+    setAcceptHeader(arrayBufferMimeType);
     const response = await responsePromise;
     return response.arrayBuffer();
   };
 
   responsePromise.blob = async () => {
-    setAcceptHeader(BLOB_MIME_TYPE);
+    setAcceptHeader(blobMimeType);
     const response = await responsePromise;
     return response.blob();
   };
 
   responsePromise.formData = async () => {
-    setAcceptHeader(FORMDATA_MIME_TYPE);
+    setAcceptHeader(formDataMimeType);
     const response = await responsePromise;
     return response.formData();
   };
 
   responsePromise.json = async () => {
-    setAcceptHeader(JSON_MIME_TYPE);
+    setAcceptHeader(jsonMimeType);
     const response = await responsePromise;
     if (isJSONResponse(response)) {
       return response.json();
@@ -61,7 +61,7 @@ function extendResponsePromiseWithBodyMethods(
   };
 
   responsePromise.text = async () => {
-    setAcceptHeader(TEXT_MIME_TYPE);
+    setAcceptHeader(textMimeType);
     const response = await responsePromise;
     return response.text();
   };
@@ -135,7 +135,7 @@ function getHeaders(init?: Init) {
 
 function getJSONHeaders(init?: Init) {
   const headers = getHeaders(init);
-  headers.set('content-type', JSON_MIME_TYPE);
+  headers.set('content-type', jsonMimeType);
   return headers;
 }
 
