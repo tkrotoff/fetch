@@ -96,10 +96,7 @@ test('getCorsBlockedExample()', async () => {
 });
 
 test('abortRequestExample()', async () => {
-  // DOMException does not exist with node-fetch
-  //const abortError = new DOMException('The operation was aborted.', 'AbortError')
-  const abortError = new Error('The operation was aborted.');
-  abortError.name = 'AbortError';
+  const abortError = new DOMException('This operation was aborted', 'AbortError');
 
   const mock = jest.spyOn(Http, 'get').mockImplementation((_input, init) => {
     // Mock aborted request

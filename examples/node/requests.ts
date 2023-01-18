@@ -115,12 +115,9 @@ export async function abortRequestExample() {
     // istanbul ignore next
     assert(false, 'Code should not be reached');
   } catch (e) {
-    // DOMException does not exist with node-fetch
-    //expect(e).toBeInstanceOf(DOMException);
-    assert(e instanceof Error);
-    expect(e).toBeInstanceOf(Error);
+    assert(e instanceof DOMException);
     expect(e.name).toEqual('AbortError');
-    expect(e.message).toEqual('The operation was aborted.');
+    expect(e.message).toEqual('This operation was aborted');
   }
 
   console.groupEnd();

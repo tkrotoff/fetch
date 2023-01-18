@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
     "noEmit": true,
-    // Nullish coalescing operator (??) needs to be transpiled by TypeScript to support Node.js 12
-    // https://stackoverflow.com/a/59787575
-    "target": "es2019",
+    "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
     "esModuleInterop": true,
