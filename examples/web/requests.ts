@@ -6,6 +6,7 @@ import { UAParser } from 'ua-parser-js';
 let browserEngine = new UAParser().getEngine().name;
 // istanbul ignore next
 if (window.navigator.userAgent.includes('jsdom')) {
+  // FIXME https://github.com/faisalman/ua-parser-js/issues/627
   browserEngine = 'jsdom';
 }
 
