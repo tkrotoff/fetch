@@ -74,11 +74,7 @@ export type Init = Omit<RequestInit, 'method' | 'body'>;
 export type Config = { init: Init };
 
 export const defaults: Config = {
-  init: {
-    // https://github.com/github/fetch/blob/v3.6.2/README.md#sending-cookies
-    // TODO Remove when old browsers are not supported anymore
-    credentials: 'same-origin'
-  }
+  init: {}
 };
 
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -119,18 +115,12 @@ function request<T extends BodyInit>(
   return responsePromise;
 }
 
-// FIXME Remove when support for [EdgeHTML](https://en.wikipedia.org/wiki/EdgeHTML) will be dropped
-function newHeaders(init?: HeadersInit) {
-  // Why "?? {}"? Microsoft Edge <= 18 (EdgeHTML) throws "Invalid argument" with "new Headers(undefined)" and "new Headers(null)"
-  return new Headers(init ?? {});
-}
-
 function getHeaders(init?: Init) {
   // We don't know if defaults.init.headers and init.headers are JSON or Headers instances
   // thus we have to make the conversion
-  const defaultInitHeaders = entriesToObject(newHeaders(defaults.init.headers));
-  const initHeaders = entriesToObject(newHeaders(init?.headers));
-  return newHeaders({ ...defaultInitHeaders, ...initHeaders });
+  const defaultInitHeaders = entriesToObject(new Headers(defaults.init.headers));
+  const initHeaders = entriesToObject(new Headers(init?.headers));
+  return new Headers({ ...defaultInitHeaders, ...initHeaders });
 }
 
 function getJSONHeaders(init?: Init) {

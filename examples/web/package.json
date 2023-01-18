@@ -17,8 +17,7 @@
     "@tkrotoff/fetch": "file:../..",
     "core-js": "^3.26.1",
     "expect": "^25.5.0",
-    "ua-parser-js": "^1.0.32",
-    "whatwg-fetch": "^3.6.2"
+    "ua-parser-js": "^1.0.32"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
@@ -31,6 +30,7 @@
     "typescript": "^4.9.3",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.0",
-    "webpack-dev-server": "^4.11.1"
+    "webpack-dev-server": "^4.11.1",
+    "whatwg-fetch": "^3.6.2"
   }
 }

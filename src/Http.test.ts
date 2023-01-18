@@ -18,7 +18,6 @@ test('defaults.init', async () => {
   await get(url).text();
   expect(spy).toHaveBeenCalledTimes(1);
   expect(spy).toHaveBeenLastCalledWith(url, {
-    credentials: 'same-origin',
     headers: expect.any(Headers),
     method: 'GET'
   });
@@ -62,7 +61,7 @@ test('defaults.init', async () => {
   expect(headers).toEqual({ accept: 'text/*', test1: 'true', test2: 'true' });
 
   defaults.init = originalInit;
-  expect(defaults.init).toEqual({ credentials: 'same-origin' });
+  expect(defaults.init).toEqual({});
 
   spy.mockRestore();
 });
@@ -704,34 +703,4 @@ test('cannot connect', async () => {
   expect(consoleSpy).toHaveBeenCalledTimes(process.env.FETCH === 'whatwg-fetch' ? 1 : 0);
 
   consoleSpy.mockRestore();
-});
-
-// FIXME Remove when support for [EdgeHTML](https://en.wikipedia.org/wiki/EdgeHTML) is dropped
-test('should not throw under EdgeHTML', async () => {
-  const OriginalHeaders = Headers;
-
-  // Simulate Microsoft Edge <= 18 (EdgeHTML) throwing "Invalid argument" with "new Headers(undefined)" and "new Headers(null)"
-  globalThis.Headers = class extends OriginalHeaders {
-    constructor(init?: HeadersInit) {
-      if (init === undefined || init === null) {
-        throw new TypeError('Invalid argument');
-      }
-      super(init);
-    }
-  };
-
-  const server = createTestServer();
-
-  server.get(path, (_request, reply) => {
-    reply.send('should not throw');
-  });
-  const url = await server.listen();
-
-  const response = await get(url).text();
-  expect(response).toEqual('should not throw');
-
-  globalThis.Headers = OriginalHeaders;
-
-  // FIXME await close() is too slow with Fastify 4.10.2
-  server.close();
 });

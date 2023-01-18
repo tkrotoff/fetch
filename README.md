@@ -88,20 +88,17 @@ Or copy-paste [Http.ts](src/Http.ts) into your source code.
 
 ## JavaScript runtimes support
 
-@tkrotoff/fetch supports Node.js, all modern browsers + IE 11
+@tkrotoff/fetch supports Node.js and modern browsers
 
-### With Node.js you need:
+### Node.js
 
-- Nothing if Node.js >= 18
-- [node-fetch](https://github.com/node-fetch/node-fetch) if Node.js < 18
+- Nothing is needed if Node.js >= 18.0
+- Use [`--experimental-fetch`](https://nodejs.org/docs/latest-v16.x/api/cli.html#--experimental-fetch) if Node.js >= 16.15 < 18.0
+- [node-fetch](https://github.com/node-fetch/node-fetch) if Node.js < 16.15
 
 Check [examples/node](examples/node)
 
-### With IE 11 you need:
-
-- [whatwg-fetch](https://github.com/github/fetch) polyfill
-- [core-js](https://github.com/zloirock/core-js) for other modern JS features like async/await
-- to transpile @tkrotoff/fetch code to ES5
+### Browsers
 
 Check [examples/web](examples/web)
 

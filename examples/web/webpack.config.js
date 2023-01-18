@@ -23,9 +23,8 @@ const config = {
       {
         test: /\.(js|ts)$/,
 
-        // https://github.com/webpack/webpack/issues/2031#issuecomment-219040479
         // [Babel should not transpile core-js](https://github.com/zloirock/core-js/issues/514#issuecomment-476533317)
-        exclude: /node_modules\/(?!@tkrotoff\/fetch\/).*/,
+        exclude: /node_modules\/core-js/,
 
         loader: 'babel-loader'
       },
