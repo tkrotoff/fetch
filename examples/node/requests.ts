@@ -3,6 +3,8 @@ import { del, get, HttpError, postJSON } from '@tkrotoff/fetch';
 import { expect } from 'expect';
 import assert from 'node:assert';
 
+import { getErrorMessage } from './getErrorMessage';
+
 export async function get200OKExample() {
   console.group(get200OKExample.name);
   try {
@@ -13,9 +15,9 @@ export async function get200OKExample() {
       body: expect.any(String),
       userId: 1
     });
-  } catch {
+  } catch (e) {
     // istanbul ignore next
-    assert(false, 'Code should not be reached');
+    assert(false, getErrorMessage(e));
   }
   console.groupEnd();
 }
@@ -29,9 +31,9 @@ export async function postJSON201CreatedExample() {
       userId: 1
     }).json();
     expect(response).toEqual({ id: 101, title: 'foo', body: 'bar', userId: 1 });
-  } catch {
+  } catch (e) {
     // istanbul ignore next
-    assert(false, 'Code should not be reached');
+    assert(false, getErrorMessage(e));
   }
   console.groupEnd();
 }
@@ -41,9 +43,9 @@ export async function del200OKExample() {
   try {
     const response = await del('https://jsonplaceholder.typicode.com/posts/1').json();
     expect(response).toEqual({});
-  } catch {
+  } catch (e) {
     // istanbul ignore next
-    assert(false, 'Code should not be reached');
+    assert(false, getErrorMessage(e));
   }
   console.groupEnd();
 }
