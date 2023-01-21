@@ -35,8 +35,7 @@ test('HttpError with statusText (HTTP/1.1)', async () => {
     /* eslint-enable jest/no-conditional-expect */
   }
 
-  // FIXME await close() is too slow with Fastify 4.10.2
-  server.close();
+  await server.close();
 });
 
 test('HttpError without statusText because of HTTP/2', async () => {
