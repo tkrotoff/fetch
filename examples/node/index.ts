@@ -5,11 +5,15 @@ import {
   get404NotFoundExample,
   get500InternalServerErrorExample,
   postJSON201CreatedExample
-} from './requests.js';
+} from './requests';
 
-await get200OKExample();
-await postJSON201CreatedExample();
-await del200OKExample();
-await get404NotFoundExample();
-await get500InternalServerErrorExample();
-await abortRequestExample();
+// FIXME Remove when ESM is enabled
+// eslint-disable-next-line func-names, unicorn/prefer-top-level-await
+(async function () {
+  await get200OKExample();
+  await postJSON201CreatedExample();
+  await del200OKExample();
+  await get404NotFoundExample();
+  await get500InternalServerErrorExample();
+  await abortRequestExample();
+})();
