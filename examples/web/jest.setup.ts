@@ -1,4 +1,3 @@
-import 'regenerator-runtime';
 import 'whatwg-fetch';
 
 import assert from 'node:assert';

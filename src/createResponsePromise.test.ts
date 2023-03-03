@@ -52,9 +52,7 @@ describe('body methods', () => {
 
   test('.json() with text response', async () => {
     const responsePromise = createResponsePromise('test');
-    await expect(responsePromise.json()).rejects.toThrow(
-      'Unexpected token e in JSON at position 1'
-    );
+    await expect(responsePromise.json()).rejects.toThrow(/Unexpected token/);
   });
 
   test('.json() with empty response', async () => {

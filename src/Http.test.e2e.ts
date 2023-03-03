@@ -34,8 +34,7 @@ test('get()', async ({ page }) => {
   const response = await page.evaluate(url => window.Http.get(url).text(), url);
   expect(response).toEqual('GET');
 
-  // FIXME await close() is too slow with Fastify 4.10.2
-  server.close();
+  await server.close();
 });
 
 test('postJSON()', async ({ page }) => {
@@ -58,8 +57,7 @@ test('postJSON()', async ({ page }) => {
   });
   expect(response).toEqual('POST');
 
-  // FIXME await close() is too slow with Fastify 4.10.2
-  server.close();
+  await server.close();
 });
 
 test('404 Not Found', async ({ page }) => {
@@ -74,8 +72,7 @@ test('404 Not Found', async ({ page }) => {
 
   await expect(page.evaluate(url => window.Http.get(url).text(), url)).rejects.toThrow('Not Found');
 
-  // FIXME await close() is too slow with Fastify 4.10.2
-  server.close();
+  await server.close();
 });
 
 function getCorsErrorMessage(browserEngine: string | undefined) {
@@ -116,8 +113,7 @@ test('CORS fail', async ({ page }) => {
     getCorsErrorMessage(browserEngine)
   );
 
-  // FIXME await close() is too slow with Fastify 4.10.2
-  server.close();
+  await server.close();
 });
 
 function getAbortedErrorMessage(browserEngine: string | undefined) {
@@ -163,7 +159,7 @@ test('abort request', async ({ page }) => {
     }, url)
   ).rejects.toThrow(getAbortedErrorMessage(browserEngine));
 
-  // FIXME await close() is too slow with Fastify 4.10.2
+  // FIXME await close() is too slow with Fastify 4.13.0 on GitHub Actions
   server.close();
 });
 
@@ -187,7 +183,7 @@ test('HTTPS + HTTP/2', async ({ page }) => {
   const response = await page.evaluate(url => window.Http.get(url).text(), url);
   expect(response).toEqual('GET');
 
-  // FIXME await close() is too slow with Fastify 4.10.2
+  // FIXME await close() is too slow with Fastify 4.13.0
   server.close();
 });
 
@@ -208,6 +204,5 @@ test.skip('HTTP + HTTP/2', async ({ page }) => {
   const response = await page.evaluate(async url => window.Http.get(url).text(), url);
   expect(response).toEqual('GET');
 
-  // FIXME await close() is too slow with Fastify 4.10.2
-  server.close();
+  await server.close();
 });

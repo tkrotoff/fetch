@@ -3,9 +3,12 @@ import { del, get, HttpError, post, postJSON } from '@tkrotoff/fetch';
 import expect from 'expect';
 import { UAParser } from 'ua-parser-js';
 
+import { getErrorMessage } from './getErrorMessage';
+
 let browserEngine = new UAParser().getEngine().name;
 // istanbul ignore next
 if (window.navigator.userAgent.includes('jsdom')) {
+  // FIXME https://github.com/faisalman/ua-parser-js/issues/627
   browserEngine = 'jsdom';
 }
 
@@ -24,9 +27,9 @@ export async function get200OKExample() {
       body: expect.any(String),
       userId: 1
     });
-  } catch {
+  } catch (e) {
     // istanbul ignore next
-    assert(false, 'Code should not be reached');
+    assert(false, getErrorMessage(e));
   }
   console.groupEnd();
 }
@@ -40,9 +43,9 @@ export async function postJSON201CreatedExample() {
       userId: 1
     }).json();
     expect(response).toEqual({ id: 101, title: 'foo', body: 'bar', userId: 1 });
-  } catch {
+  } catch (e) {
     // istanbul ignore next
-    assert(false, 'Code should not be reached');
+    assert(false, getErrorMessage(e));
   }
   console.groupEnd();
 }
@@ -52,9 +55,9 @@ export async function del200OKExample() {
   try {
     const response = await del('https://jsonplaceholder.typicode.com/posts/1').json();
     expect(response).toEqual({});
-  } catch {
+  } catch (e) {
     // istanbul ignore next
-    assert(false, 'Code should not be reached');
+    assert(false, getErrorMessage(e));
   }
   console.groupEnd();
 }
@@ -153,9 +156,9 @@ export async function uploadFilesExample(files: FileList) {
   try {
     const response = await post('https://httpbin.org/anything', formData).json();
     expect(response).toHaveProperty('files');
-  } catch {
+  } catch (e) {
     // istanbul ignore next
-    assert(false, 'Code should not be reached');
+    assert(false, getErrorMessage(e));
   }
 
   console.groupEnd();

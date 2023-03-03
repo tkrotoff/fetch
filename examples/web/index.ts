@@ -1,7 +1,3 @@
-import 'core-js/stable';
-import 'regenerator-runtime';
-import 'whatwg-fetch';
-
 import {
   abortRequestExample,
   del200OKExample,

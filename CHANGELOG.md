@@ -1,3 +1,10 @@
+## 0.16.0 (2023/03/03)
+
+- Breaking change: drop old browsers support (#28)
+- Remove node-fetch from Node.js example (#36)
+- Update npm packages
+- Remove Node.js 14 & 16 from CI
+
 ## 0.15.0 (2022/12/01)
 
 - Breaking change: createHttpError & createJSONHttpError params are no longer optional

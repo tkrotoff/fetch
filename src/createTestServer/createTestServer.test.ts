@@ -15,8 +15,7 @@ test('respond to HTTP requests', async () => {
   const text = await response.text();
   expect(text).toEqual('test');
 
-  // FIXME await close() is too slow with Fastify 4.10.2
-  server.close();
+  await server.close();
 });
 
 test('respond to HTTPS requests', async () => {
@@ -32,8 +31,7 @@ test('respond to HTTPS requests', async () => {
   const text = await response.text();
   expect(text).toEqual('test');
 
-  // FIXME await close() is too slow with Fastify 4.10.2
-  server.close();
+  await server.close();
 });
 
 // FIXME whatwg-fetch/jsdom and node-fetch don't support HTTP/2
@@ -51,8 +49,7 @@ test.skip('respond to HTTP/2 requests', async () => {
   const text = await response.text();
   expect(text).toEqual('test');
 
-  // FIXME await close() is too slow with Fastify 4.10.2
-  server.close();
+  await server.close();
 });
 
 // node-fetch & undici don't care about CORS
@@ -69,8 +66,7 @@ if (process.env.FETCH === 'whatwg-fetch') {
 
     await expect(fetch(url)).rejects.toThrow('Network request failed');
 
-    // FIXME await close() is too slow with Fastify 4.10.2
-    server.close();
+    await server.close();
 
     expect(consoleSpy).toHaveBeenCalledTimes(1);
 
@@ -89,8 +85,7 @@ test.skip('should show Jest errors from expect() inside handlers', async () => {
 
   await fetch(url);
 
-  // FIXME await close() is too slow with Fastify 4.10.2
-  server.close();
+  await server.close();
 });
 
 test('silence Fastify errors', async () => {
@@ -105,6 +100,5 @@ test('silence Fastify errors', async () => {
   const json = await response.json();
   expect(json).toEqual({ error: 'Internal Server Error', message: 'error', statusCode: 500 });
 
-  // FIXME await close() is too slow with Fastify 4.10.2
-  server.close();
+  await server.close();
 });
