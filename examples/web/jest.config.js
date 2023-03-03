@@ -2,7 +2,10 @@
 
 /** @type import('@jest/types').Config.InitialOptions */
 const config = {
-  testEnvironment: 'jsdom',
+  // FIXME https://github.com/jsdom/jsdom/issues/3363
+  // FIXME https://github.com/jsdom/jsdom/issues/1724
+  // https://github.com/facebook/jest/blob/v29.4.3/website/versioned_docs/version-29.4/Configuration.md#testenvironment-string
+  testEnvironment: './FixJSDOMEnvironment.ts',
 
   setupFilesAfterEnv: ['./jest.setup.ts'],
 
