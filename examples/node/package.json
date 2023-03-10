@@ -7,8 +7,8 @@
     "clean": "rm -rf build coverage",
     "clean:all": "npm run clean && rm -rf node_modules package-lock.json",
     "start": "ts-node index.ts",
-    "test": "jest --verbose",
-    "test:coverage": "jest --coverage",
+    "test": "jest --randomize --verbose",
+    "test:coverage": "jest --randomize --coverage",
     "tsc": "tsc",
     "npm:update": "npm run clean:all && npx npm-check-updates --upgrade && npm install"
   },
