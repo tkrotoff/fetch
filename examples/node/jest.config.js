@@ -1,6 +1,6 @@
 // @ts-check
 
-/** @type import('jest').Config */
+/** @type {import('jest').Config} */
 const config = {
   testEnvironment: 'node',
 
