@@ -6,7 +6,7 @@ const { defaults } = require('jest-config');
 // [How to set transformIgnorePatterns to fix "Jest encountered an unexpected token"](https://github.com/nrwl/nx/issues/812)
 const esModules = ['node-fetch', 'data-uri-to-buffer', 'fetch-blob', 'formdata-polyfill'];
 
-/** @type import('@jest/types').Config.InitialOptions */
+/** @type import('jest').Config */
 const config = {
   setupFilesAfterEnv: ['./jest.setup.ts'],
 

@@ -1,6 +1,6 @@
 // @ts-check
 
-/** @type import('@jest/types').Config.InitialOptions */
+/** @type import('jest').Config */
 const config = {
   // FIXME https://github.com/jsdom/jsdom/issues/3363
   // FIXME https://github.com/jsdom/jsdom/issues/1724
