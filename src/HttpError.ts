@@ -1,7 +1,7 @@
 ﻿/**
  * An {@link Error} that wraps a {@link Response}.
  *
- * Thrown when the HTTP response is not OK: HTTP status in the range 200-299.
+ * Thrown when the HTTP response is not OK (HTTP code status outside range 200 – 299).
  */
 // Should be named HTTPError or HttpError?
 // - [XML*Http*Request](https://developer.mozilla.org/en-US/docs/Web/API)
