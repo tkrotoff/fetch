@@ -19,8 +19,7 @@ const config = {
 
   testPathIgnorePatterns: [...defaults.testPathIgnorePatterns, '/examples/'],
 
-  // This randomizes test files
-  // FIXME It does not solve the real issue: [Ability to run tests within a file in a random order](https://github.com/facebook/jest/issues/4386)
+  // This randomizes test files, not be confused with [Ability to run tests within a file in a random order](https://github.com/facebook/jest/issues/4386)
   testSequencer: './JestRandomSequencer.js',
 
   coverageThreshold: {

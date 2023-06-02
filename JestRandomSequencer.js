@@ -11,8 +11,7 @@ function shuffleArray(array) {
   }
 }
 
-// This randomizes test files
-// FIXME It does not solve the real issue: [Ability to run tests within a file in a random order](https://github.com/facebook/jest/issues/4386)
+// This randomizes test files, not be confused with [Ability to run tests within a file in a random order](https://github.com/facebook/jest/issues/4386)
 // https://github.com/facebook/jest/issues/6194#issuecomment-582428526
 class JestRandomSequencer extends Sequencer {
   // eslint-disable-next-line class-methods-use-this
