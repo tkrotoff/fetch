@@ -26,7 +26,7 @@ export function createHttpError(body: BodyInit | undefined, status: number, stat
 // Best alternative is object, why? https://stackoverflow.com/a/58143592
 export function createJSONHttpError(body: object, status: number, statusText?: string) {
   return new HttpError(
-    // FIXME Replace with [new Response.json()](https://twitter.com/lcasdev/status/1564598435772342272)
+    // FIXME Replace with [Response.json()](https://twitter.com/lcasdev/status/1564598435772342272)
     new Response(JSON.stringify(body), {
       status,
       statusText,
