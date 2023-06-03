@@ -79,7 +79,7 @@ export function createTestServer(options?: Options) {
 
   // ["To access the default handler, you can access instance.errorHandler"](https://www.fastify.io/docs/v4.10.x/Reference/Routes/#routes-options)
   // https://www.fastify.io/docs/v4.10.x/Reference/Server/#errorhandler
-  const defaultErrorHander = server.errorHandler;
+  const defaultErrorHandler = server.errorHandler;
 
   server.setErrorHandler((error, request, reply) => {
     // istanbul ignore else
@@ -96,7 +96,7 @@ export function createTestServer(options?: Options) {
       // FYI http.createServer() doesn't need it
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       process.stderr.write(error.stack!);
-      defaultErrorHander(error, request as any, reply as any); // FIXME as any because the types look wrong
+      defaultErrorHandler(error, request as any, reply as any); // FIXME as any because the types look wrong
     }
   });
 
