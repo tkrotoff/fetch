@@ -159,8 +159,7 @@ test('abort request', async ({ page }) => {
     }, url)
   ).rejects.toThrow(getAbortedErrorMessage(browserEngine));
 
-  // FIXME await close() is too slow with Fastify 4.13.0 on GitHub Actions
-  server.close();
+  await server.close();
 });
 
 test('HTTPS + HTTP/2', async ({ page }) => {
@@ -183,7 +182,7 @@ test('HTTPS + HTTP/2', async ({ page }) => {
   const response = await page.evaluate(url => window.Http.get(url).text(), url);
   expect(response).toEqual('GET');
 
-  // FIXME await close() is too slow with Fastify 4.13.0
+  // FIXME await close() is too slow with Fastify 4.17.0
   server.close();
 });
 
