@@ -50,7 +50,7 @@
     "tsc:example:web": "cd examples/web && npm run tsc",
     "tsc:example:node": "cd examples/node && npm run tsc",
     "format": "prettier --write .",
-    "lint": "npm run tsc && eslint .",
+    "lint": "npm run tsc && DEBUG=eslint:cli-engine eslint .",
     "prepare": "husky install",
     "precommit": "npm run lint && npm run tsc:examples",
     "prepush": "npm run test",
