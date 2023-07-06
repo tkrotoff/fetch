@@ -10,7 +10,7 @@ module.exports = {
       {
         useBuiltIns: 'usage',
 
-        corejs: '3.29',
+        corejs: '3.31',
 
         debug: false
       }
