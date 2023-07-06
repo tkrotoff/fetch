@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-shadow, jest/no-standalone-expect */
+/* eslint-disable @typescript-eslint/no-shadow */
 
 import { expect, test } from '@playwright/test';
 import { UAParser } from 'ua-parser-js';
