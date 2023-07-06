@@ -1,3 +1,8 @@
+## 0.16.1 (2023/07/06)
+
+- Replace `wait(0)` with `Promise.resolve()`: should reduce the bundle size
+- Improve documentation
+
 ## 0.16.0 (2023/03/03)
 
 - Breaking change: drop old browsers support (#28)
