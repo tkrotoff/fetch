@@ -14,7 +14,7 @@
     "npm:update": "npm run clean:all && npx npm-check-updates --upgrade && npm install"
   },
   "dependencies": {
-    "@tkrotoff/fetch": "file:../..",
+    "@tkrotoff/fetch": "^0.15.0",
     "abort-controller": "^3.0.0",
     "node-fetch": "^3.3.0",
     "ts-node": "^10.9.1",
