@@ -21,7 +21,7 @@ jobs:
       - run: npm run build:examples
       - run: npm run tsc:examples
       - run: npm run start:examples
-      - run: npm run test:node-fetch
+      - run: npm run test
       - run: npm run test:coverage:examples
 
   publish-npm:
