@@ -4,6 +4,8 @@
 const config = {
   parser: '@typescript-eslint/parser',
   parserOptions: {},
+  // https://twitter.com/TkDodo/status/1667541777585258496
+  reportUnusedDisableDirectives: true,
   extends: [
     // /!\ Order matters: the next one overrides rules from the previous one
     'plugin:playwright/playwright-test',
