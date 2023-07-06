@@ -70,11 +70,10 @@ export function createTestServer(options?: Options) {
 
     // FIXME
     // whatwg-fetch/jsdom does not support HTTP/2
-    // node-fetch does not support HTTP/2: https://github.com/node-fetch/node-fetch/issues/342
     http2
   });
 
-  // Needed by whatwg-fetch, not by node-fetch
+  // Needed by whatwg-fetch, not by Undici
   server.register(fastifyCors, { origin: corsOrigin });
 
   // ["To access the default handler, you can access instance.errorHandler"](https://www.fastify.io/docs/v4.10.x/Reference/Routes/#routes-options)

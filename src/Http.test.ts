@@ -565,16 +565,12 @@ describe('body methods', () => {
   // https://github.com/whatwg/fetch/issues/1147
   let bodyAlreadyUsedError = '';
   switch (process.env.FETCH) {
-    case 'node-fetch': {
-      bodyAlreadyUsedError = 'body used already for: ';
+    case 'undici': {
+      bodyAlreadyUsedError = 'Body is unusable';
       break;
     }
     case 'whatwg-fetch': {
       bodyAlreadyUsedError = 'Already read';
-      break;
-    }
-    case 'undici': {
-      bodyAlreadyUsedError = 'Body is unusable';
       break;
     }
     default: {
@@ -634,16 +630,12 @@ test('cannot connect', async () => {
 
   let requestFailedError = '';
   switch (process.env.FETCH) {
-    case 'node-fetch': {
-      requestFailedError = `request to ${url} failed, reason: connect ECONNREFUSED 127.0.0.1:80`;
+    case 'undici': {
+      requestFailedError = 'fetch failed';
       break;
     }
     case 'whatwg-fetch': {
       requestFailedError = 'Network request failed';
-      break;
-    }
-    case 'undici': {
-      requestFailedError = 'fetch failed';
       break;
     }
     default: {
@@ -659,7 +651,7 @@ test('cannot connect', async () => {
   } catch (e) {
     assert(e instanceof Error);
     /* eslint-disable jest/no-conditional-expect */
-    expect(e.name).toEqual(process.env.FETCH === 'node-fetch' ? 'FetchError' : 'TypeError');
+    expect(e.name).toEqual('TypeError');
     expect(e.message).toEqual(requestFailedError);
     /* eslint-enable jest/no-conditional-expect */
   }

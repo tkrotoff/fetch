@@ -1,7 +1,6 @@
 /* eslint-disable unicorn/no-null, jest/no-conditional-expect */
 
 import assert from 'node:assert';
-import { Readable } from 'node:stream';
 
 import { entriesToObject } from './utils/entriesToObject';
 import { createHttpError, createJSONHttpError } from './createHttpError';
@@ -56,16 +55,12 @@ const redirected = process.env.FETCH === 'whatwg-fetch' ? undefined : false;
 
 function checkBody(body: Body['body']) {
   switch (process.env.FETCH) {
-    case 'node-fetch': {
-      expect(body).toEqual(expect.any(Readable));
+    case 'undici': {
+      expect(body).toEqual(expect.any(ReadableStream));
       break;
     }
     case 'whatwg-fetch': {
       expect(body).toEqual(undefined);
-      break;
-    }
-    case 'undici': {
-      expect(body).toEqual(expect.any(ReadableStream));
       break;
     }
     default: {
@@ -76,17 +71,12 @@ function checkBody(body: Body['body']) {
 
 function checkBodyUsedWithNoBody(bodyUsed: Body['bodyUsed']) {
   switch (process.env.FETCH) {
-    case 'node-fetch': {
-      // FIXME https://github.com/node-fetch/node-fetch/issues/1684
-      expect(bodyUsed).toEqual(true);
+    case 'undici': {
+      expect(bodyUsed).toEqual(false);
       break;
     }
     case 'whatwg-fetch': {
       expect(bodyUsed).toEqual(true);
-      break;
-    }
-    case 'undici': {
-      expect(bodyUsed).toEqual(false);
       break;
     }
     default: {
@@ -208,21 +198,16 @@ test('204 No Content', async () => {
   }
 
   switch (process.env.FETCH) {
-    case 'node-fetch': {
-      // FIXME https://github.com/node-fetch/node-fetch/issues/1685
-      expect(() => createJSONHttpError({}, 204, 'No Content')).not.toThrow();
-      break;
-    }
-    case 'whatwg-fetch': {
-      // FIXME https://github.com/github/fetch/issues/1213
-      expect(() => createJSONHttpError({}, 204, 'No Content')).not.toThrow();
-      break;
-    }
     case 'undici': {
       // FIXME Chrome 107: "TypeError: Failed to construct 'Response': Response with null body status cannot have body"
       expect(() => createJSONHttpError({}, 204, 'No Content')).toThrow(
         'Response constructor: Invalid response status code 204'
       );
+      break;
+    }
+    case 'whatwg-fetch': {
+      // FIXME https://github.com/github/fetch/issues/1213
+      expect(() => createJSONHttpError({}, 204, 'No Content')).not.toThrow();
       break;
     }
     default: {
@@ -317,20 +302,15 @@ test('no statusText', async () => {
 
 test('status 0', async () => {
   switch (process.env.FETCH) {
-    case 'node-fetch': {
-      // FIXME https://github.com/node-fetch/node-fetch/issues/1685
-      expect(() => createHttpError('body', 0)).not.toThrow();
+    case 'undici': {
+      expect(() => createHttpError('body', 0)).toThrow(
+        'init["status"] must be in the range of 200 to 599, inclusive.'
+      );
       break;
     }
     case 'whatwg-fetch': {
       // FIXME https://github.com/github/fetch/issues/1213
       expect(() => createHttpError('body', 0)).not.toThrow();
-      break;
-    }
-    case 'undici': {
-      expect(() => createHttpError('body', 0)).toThrow(
-        'init["status"] must be in the range of 200 to 599, inclusive.'
-      );
       break;
     }
     default: {
@@ -339,20 +319,15 @@ test('status 0', async () => {
   }
 
   switch (process.env.FETCH) {
-    case 'node-fetch': {
-      // FIXME https://github.com/node-fetch/node-fetch/issues/1685
-      expect(() => createJSONHttpError({ body: true }, 0)).not.toThrow();
+    case 'undici': {
+      expect(() => createJSONHttpError({ body: true }, 0)).toThrow(
+        'init["status"] must be in the range of 200 to 599, inclusive.'
+      );
       break;
     }
     case 'whatwg-fetch': {
       // FIXME https://github.com/github/fetch/issues/1213
       expect(() => createJSONHttpError({ body: true }, 0)).not.toThrow();
-      break;
-    }
-    case 'undici': {
-      expect(() => createJSONHttpError({ body: true }, 0)).toThrow(
-        'init["status"] must be in the range of 200 to 599, inclusive.'
-      );
       break;
     }
     default: {

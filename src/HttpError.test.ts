@@ -40,7 +40,7 @@ test('HttpError with statusText (HTTP/1.1)', async () => {
 
 test('HttpError without statusText because of HTTP/2', async () => {
   // ["HTTP/2 doesn't have reason phrases anymore"](https://stackoverflow.com/q/41632077)
-  // Unfortunately HTTP/2 does not work with whatwg-fetch/jsdom and node-fetch so we cannot test using HTTP/2
+  // Unfortunately HTTP/2 does not work with whatwg-fetch/jsdom so we cannot test using HTTP/2
   // Let's emulate an empty statusText instead
 
   const body = {

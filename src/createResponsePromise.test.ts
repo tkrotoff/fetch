@@ -73,16 +73,12 @@ describe('body methods', () => {
   // https://github.com/whatwg/fetch/issues/1147
   let bodyAlreadyUsedError = '';
   switch (process.env.FETCH) {
-    case 'node-fetch': {
-      bodyAlreadyUsedError = 'body used already for: ';
+    case 'undici': {
+      bodyAlreadyUsedError = 'Body is unusable';
       break;
     }
     case 'whatwg-fetch': {
       bodyAlreadyUsedError = 'Already read';
-      break;
-    }
-    case 'undici': {
-      bodyAlreadyUsedError = 'Body is unusable';
       break;
     }
     default: {

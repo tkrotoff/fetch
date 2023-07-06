@@ -14,7 +14,7 @@ A [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper.
 - No dependencies
 - Supports Node.js & web browsers
 - Comes with test utilities
-- Fully tested (against [node-fetch](https://github.com/node-fetch/node-fetch), [whatwg-fetch](https://github.com/github/fetch) & [undici](https://github.com/nodejs/undici))
+- Fully tested (against [Undici](https://github.com/nodejs/undici) & [whatwg-fetch](https://github.com/github/fetch))
 - Written in TypeScript
 
 ## Why?
@@ -94,7 +94,7 @@ Or copy-paste [Http.ts](src/Http.ts) into your source code.
 
 - Nothing is needed if Node.js >= 18.0
 - Use [`--experimental-fetch`](https://nodejs.org/docs/latest-v16.x/api/cli.html#--experimental-fetch) if Node.js >= 16.15 < 18.0
-- [node-fetch](https://github.com/node-fetch/node-fetch) if Node.js < 16.15
+- ⚠️ [node-fetch](https://github.com/node-fetch/node-fetch) is not supported with @tkrotoff/fetch >= 0.17 due to [`Request` class limitations](https://github.com/node-fetch/node-fetch/blob/v3.3.1/README.md#class-request)
 
 Check [examples/node](examples/node)
 

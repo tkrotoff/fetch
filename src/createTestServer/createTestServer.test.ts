@@ -34,7 +34,8 @@ test('respond to HTTPS requests', async () => {
   await server.close();
 });
 
-// FIXME whatwg-fetch/jsdom and node-fetch don't support HTTP/2
+// FIXME Undici and whatwg-fetch/jsdom don't support HTTP/2
+// https://github.com/nodejs/undici/issues/399
 // eslint-disable-next-line jest/no-disabled-tests
 test.skip('respond to HTTP/2 requests', async () => {
   const server = createTestServer({ http2: true });
@@ -52,7 +53,7 @@ test.skip('respond to HTTP/2 requests', async () => {
   await server.close();
 });
 
-// node-fetch & undici don't care about CORS
+// Undici doesn't care about CORS
 if (process.env.FETCH === 'whatwg-fetch') {
   test('CORS fail', async () => {
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
