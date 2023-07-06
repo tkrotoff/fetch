@@ -1,3 +1,8 @@
+## 0.17.0 (2023/07/06)
+
+- Add request property to HttpError
+- Drop node-fetch due to [`Request` class limitations](https://github.com/node-fetch/node-fetch/blob/v3.3.1/README.md#class-request)
+
 ## 0.16.1 (2023/07/06)
 
 - Replace `wait(0)` with `Promise.resolve()`: should reduce the bundle size
