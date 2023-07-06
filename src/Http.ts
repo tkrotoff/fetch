@@ -1,5 +1,4 @@
 import { entriesToObject } from './utils/entriesToObject';
-import { wait } from './utils/wait';
 import { HttpError } from './HttpError';
 
 /**
@@ -94,7 +93,7 @@ function request<T extends BodyInit>(
 ) {
   async function _fetch() {
     // Have to wait for headers to be modified inside extendResponsePromiseWithBodyMethods
-    await wait(1);
+    await Promise.resolve();
 
     const response = await fetch(input, {
       ...defaults.init,

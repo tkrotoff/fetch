@@ -1,7 +1,6 @@
 import assert from 'node:assert';
 
 import { entriesToObject } from './utils/entriesToObject';
-import { wait } from './utils/wait';
 import { createJSONResponsePromise, createResponsePromise } from './createResponsePromise';
 import * as Http from './Http';
 import { HttpStatus } from './HttpStatus';
@@ -295,7 +294,7 @@ describe('post()', () => {
   });
 });
 
-const flushPromises = () => wait(0);
+const flushPromises = () => Promise.resolve();
 
 describe('flushPromises()', () => {
   // Throws "HttpError: Service Unavailable", this cannot be catched so we have to skip the test :-/
