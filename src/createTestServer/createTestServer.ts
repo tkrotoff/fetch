@@ -68,8 +68,7 @@ export function createTestServer(options?: Options) {
     // eslint-disable-next-line unicorn/no-null
     https: https ? { key: privateKey, cert: certificate } : null,
 
-    // FIXME
-    // whatwg-fetch/jsdom does not support HTTP/2
+    // FIXME whatwg-fetch/jsdom does not support HTTP/2
     http2
   });
 
