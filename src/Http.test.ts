@@ -21,7 +21,6 @@ test('defaults.init', async () => {
     headers: expect.any(Headers),
     method: 'GET'
   });
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   let headers = entriesToObject(spy.mock.calls[0][1]!.headers as Headers);
   expect(headers).toEqual({ accept: 'text/*' });
 
@@ -42,7 +41,6 @@ test('defaults.init', async () => {
     headers: expect.any(Headers),
     method: 'GET'
   });
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   headers = entriesToObject(spy.mock.calls[0][1]!.headers as Headers);
   expect(headers).toEqual({ accept: 'text/*', test1: 'true' });
 
@@ -56,7 +54,6 @@ test('defaults.init', async () => {
     headers: expect.any(Headers),
     method: 'GET'
   });
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   headers = entriesToObject(spy.mock.calls[0][1]!.headers as Headers);
   expect(headers).toEqual({ accept: 'text/*', test1: 'true', test2: 'true' });
 

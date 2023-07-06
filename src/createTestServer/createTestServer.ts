@@ -94,7 +94,6 @@ export function createTestServer(options?: Options) {
       // https://github.com/fastify/fastify/blob/v4.10.2/lib/error-handler.js#L74
       // FYI Express needs the same hack: http://expressjs.com/en/guide/error-handling.html#the-default-error-handler
       // FYI http.createServer() doesn't need it
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       process.stderr.write(error.stack!);
       defaultErrorHandler(error, request as any, reply as any); // FIXME as any because the types look wrong
     }

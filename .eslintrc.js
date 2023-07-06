@@ -73,6 +73,7 @@ const config = {
     '@typescript-eslint/no-shadow': 'error',
 
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/class-name-casing': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
