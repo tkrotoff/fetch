@@ -2,14 +2,17 @@
 
 /** @type {import('jest').Config} */
 const config = {
-  testEnvironment: 'node',
-
-  setupFilesAfterEnv: ['./jest.setup.ts'],
-
   // By default Jest allows for __tests__/*.js, *.spec.js and *.test.js
   // https://jestjs.io/docs/en/26.5/configuration#testregex-string--arraystring
   // Let's be strict and use *.test.js only
   testRegex: '\\.test\\.ts$',
+
+  // https://github.com/jestjs/jest/issues/4386#issuecomment-586028628
+  randomize: true,
+
+  testEnvironment: 'node',
+
+  setupFilesAfterEnv: ['./jest.setup.ts'],
 
   coverageThreshold: {
     global: {

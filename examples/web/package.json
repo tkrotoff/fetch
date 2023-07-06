@@ -8,8 +8,8 @@
     "clean:all": "npm run clean && rm -rf node_modules package-lock.json",
     "start": "webpack serve --mode=development --host 0.0.0.0",
     "build": "webpack --mode=development",
-    "test": "jest --randomize --verbose",
-    "test:coverage": "jest --randomize --coverage",
+    "test": "jest --verbose",
+    "test:coverage": "jest --coverage",
     "tsc": "tsc",
     "npm:update": "npm run clean:all && npx npm-check-updates --upgrade && npm install"
   },
