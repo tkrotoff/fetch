@@ -294,7 +294,7 @@ const flushPromises = () => Promise.resolve();
 
 describe('flushPromises()', () => {
   // Throws "HttpError: Service Unavailable", this cannot be catched so we have to skip the test :-/
-  // eslint-disable-next-line jest/no-disabled-tests, jest/expect-expect
+  // eslint-disable-next-line jest/no-disabled-tests, jest/expect-expect, playwright/expect-expect
   test.skip('createResponsePromise() not wrapped inside a function should fail with flushPromises()', async () => {
     createResponsePromise('<!DOCTYPE html><title>503</title>', {
       status: HttpStatus._503_ServiceUnavailable,
