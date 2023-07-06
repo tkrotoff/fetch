@@ -8,9 +8,13 @@
 // - Node.js uses [http](https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/)
 // - Deno uses [Http](https://github.com/denoland/deno/blob/v1.5.3/cli/rt/01_errors.js#L116)
 export class HttpError extends Error {
+  /**
+   * Undefined when using {@link createHttpError()} or {@link createResponsePromise()}.
+   */
+  request: Request;
   response: Response;
 
-  constructor(response: Response) {
+  constructor(request: Request, response: Response) {
     const { status, statusText } = response;
 
     super(
@@ -19,6 +23,7 @@ export class HttpError extends Error {
     );
 
     this.name = 'HttpError';
+    this.request = request;
     this.response = response;
   }
 }

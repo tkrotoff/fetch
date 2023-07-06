@@ -138,9 +138,10 @@ test('Response.error()', async () => {
 
 test('200 OK', async () => {
   {
-    const { name, message, response } = createHttpError('body', 200, 'OK');
+    const { name, message, request, response } = createHttpError('body', 200, 'OK');
     expect(name).toEqual('HttpError');
     expect(message).toEqual('OK');
+    expect(request).toEqual(undefined);
     checkBody(response.body);
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
@@ -158,9 +159,10 @@ test('200 OK', async () => {
   }
 
   {
-    const { name, message, response } = createJSONHttpError({ body: true }, 200, 'OK');
+    const { name, message, request, response } = createJSONHttpError({ body: true }, 200, 'OK');
     expect(name).toEqual('HttpError');
     expect(message).toEqual('OK');
+    expect(request).toEqual(undefined);
     checkBody(response.body);
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
@@ -180,9 +182,10 @@ test('200 OK', async () => {
 
 test('204 No Content', async () => {
   {
-    const { name, message, response } = createHttpError(undefined, 204, 'No Content');
+    const { name, message, request, response } = createHttpError(undefined, 204, 'No Content');
     expect(name).toEqual('HttpError');
     expect(message).toEqual('No Content');
+    expect(request).toEqual(undefined);
     expect(response.body).toEqual(process.env.FETCH === 'whatwg-fetch' ? undefined : null);
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({});
@@ -218,9 +221,10 @@ test('204 No Content', async () => {
 
 test('404 Not Found', async () => {
   {
-    const { name, message, response } = createHttpError('error', 404, 'Not Found');
+    const { name, message, request, response } = createHttpError('error', 404, 'Not Found');
     expect(name).toEqual('HttpError');
     expect(message).toEqual('Not Found');
+    expect(request).toEqual(undefined);
     checkBody(response.body);
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
@@ -238,9 +242,14 @@ test('404 Not Found', async () => {
   }
 
   {
-    const { name, message, response } = createJSONHttpError({ error: 404 }, 404, 'Not Found');
+    const { name, message, request, response } = createJSONHttpError(
+      { error: 404 },
+      404,
+      'Not Found'
+    );
     expect(name).toEqual('HttpError');
     expect(message).toEqual('Not Found');
+    expect(request).toEqual(undefined);
     checkBody(response.body);
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
@@ -260,9 +269,10 @@ test('404 Not Found', async () => {
 
 test('no statusText', async () => {
   {
-    const { name, message, response } = createHttpError('body', 200);
+    const { name, message, request, response } = createHttpError('body', 200);
     expect(name).toEqual('HttpError');
     expect(message).toEqual('200');
+    expect(request).toEqual(undefined);
     checkBody(response.body);
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
@@ -280,9 +290,10 @@ test('no statusText', async () => {
   }
 
   {
-    const { name, message, response } = createJSONHttpError({ body: true }, 200);
+    const { name, message, request, response } = createJSONHttpError({ body: true }, 200);
     expect(name).toEqual('HttpError');
     expect(message).toEqual('200');
+    expect(request).toEqual(undefined);
     checkBody(response.body);
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
@@ -339,9 +350,10 @@ test('status 0', async () => {
 test('no status', async () => {
   {
     // @ts-ignore
-    const { name, message, response } = createHttpError('body');
+    const { name, message, request, response } = createHttpError('body');
     expect(name).toEqual('HttpError');
     expect(message).toEqual('200');
+    expect(request).toEqual(undefined);
     checkBody(response.body);
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
@@ -360,9 +372,10 @@ test('no status', async () => {
 
   {
     // @ts-ignore
-    const { name, message, response } = createJSONHttpError({ body: true });
+    const { name, message, request, response } = createJSONHttpError({ body: true });
     expect(name).toEqual('HttpError');
     expect(message).toEqual('200');
+    expect(request).toEqual(undefined);
     checkBody(response.body);
     expect(response.bodyUsed).toEqual(false);
     expect(entriesToObject(response.headers)).toEqual({
@@ -382,9 +395,10 @@ test('no status', async () => {
 
 test('no params', async () => {
   // @ts-ignore
-  const { name, message, response } = createHttpError();
+  const { name, message, request, response } = createHttpError();
   expect(name).toEqual('HttpError');
   expect(message).toEqual('200');
+  expect(request).toEqual(undefined);
   expect(response.body).toEqual(process.env.FETCH === 'whatwg-fetch' ? undefined : null);
   expect(response.bodyUsed).toEqual(false);
   expect(entriesToObject(response.headers)).toEqual({});

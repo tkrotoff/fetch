@@ -95,7 +95,7 @@ function request<T extends BodyInit>(
     // Have to wait for headers to be modified inside extendResponsePromiseWithBodyMethods
     await Promise.resolve();
 
-    const response = await fetch(input, {
+    const req = new Request(input, {
       ...defaults.init,
       ...init,
       headers,
@@ -103,9 +103,11 @@ function request<T extends BodyInit>(
       body
     });
 
-    if (!response.ok) throw new HttpError(response);
+    const res = await fetch(req);
 
-    return response;
+    if (!res.ok) throw new HttpError(req, res);
+
+    return res;
   }
 
   const responsePromise = _fetch() as ResponsePromiseWithBodyMethods;

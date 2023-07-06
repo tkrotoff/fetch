@@ -7,7 +7,7 @@ import { defaults, del, get, patch, patchJSON, post, postJSON, put, putJSON } fr
 const path = '/';
 
 test('defaults.init', async () => {
-  const url = 'http://localhost';
+  const url = 'http://localhost/';
 
   const spy = jest
     .spyOn(globalThis, 'fetch')
@@ -17,12 +17,11 @@ test('defaults.init', async () => {
   // Should use defaults.init
   await get(url).text();
   expect(spy).toHaveBeenCalledTimes(1);
-  expect(spy).toHaveBeenLastCalledWith(url, {
-    headers: expect.any(Headers),
-    method: 'GET'
-  });
-  let headers = entriesToObject(spy.mock.calls[0][1]!.headers as Headers);
-  expect(headers).toEqual({ accept: 'text/*' });
+  expect(spy).toHaveBeenLastCalledWith(expect.any(Request));
+  let req = spy.mock.calls[0][0] as Request;
+  expect(req.method).toEqual('GET');
+  expect(req.url).toEqual(url);
+  expect(entriesToObject(req.headers)).toEqual({ accept: 'text/*' });
 
   // What happens when defaults.init is modified?
   const originalInit = { ...defaults.init };
@@ -35,27 +34,25 @@ test('defaults.init', async () => {
   spy.mockClear();
   await get(url).text();
   expect(spy).toHaveBeenCalledTimes(1);
-  expect(spy).toHaveBeenLastCalledWith(url, {
-    mode: 'cors',
-    credentials: 'include',
-    headers: expect.any(Headers),
-    method: 'GET'
-  });
-  headers = entriesToObject(spy.mock.calls[0][1]!.headers as Headers);
-  expect(headers).toEqual({ accept: 'text/*', test1: 'true' });
+  expect(spy).toHaveBeenLastCalledWith(expect.any(Request));
+  req = spy.mock.calls[0][0] as Request;
+  expect(req.method).toEqual('GET');
+  expect(req.url).toEqual(url);
+  expect(req.mode).toEqual('cors');
+  expect(req.credentials).toEqual('include');
+  expect(entriesToObject(req.headers)).toEqual({ accept: 'text/*', test1: 'true' });
 
   // Should not overwrite defaults.init.headers
   spy.mockClear();
   await get(url, { mode: 'no-cors', credentials: 'omit', headers: { test2: 'true' } }).text();
   expect(spy).toHaveBeenCalledTimes(1);
-  expect(spy).toHaveBeenLastCalledWith(url, {
-    mode: 'no-cors',
-    credentials: 'omit',
-    headers: expect.any(Headers),
-    method: 'GET'
-  });
-  headers = entriesToObject(spy.mock.calls[0][1]!.headers as Headers);
-  expect(headers).toEqual({ accept: 'text/*', test1: 'true', test2: 'true' });
+  expect(spy).toHaveBeenLastCalledWith(expect.any(Request));
+  req = spy.mock.calls[0][0] as Request;
+  expect(req.method).toEqual('GET');
+  expect(req.url).toEqual(url);
+  expect(req.mode).toEqual('no-cors');
+  expect(req.credentials).toEqual('omit');
+  expect(entriesToObject(req.headers)).toEqual({ accept: 'text/*', test1: 'true', test2: 'true' });
 
   defaults.init = originalInit;
   expect(defaults.init).toEqual({});

@@ -24,6 +24,7 @@ const config = {
     'no-underscore-dangle': 'off',
     'no-plusplus': 'off',
     'spaced-comment': 'off',
+    'lines-between-class-members': 'off',
     camelcase: 'off',
 
     'import/no-extraneous-dependencies': 'off',

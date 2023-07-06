@@ -18,7 +18,7 @@ function extendResponsePromiseWithBodyMethods(
             // We already reject just below (body method) and
             // we don't want the "root" responsePromise rejection to be unhandled
           });
-          reject(new HttpError(response));
+          reject(new HttpError(undefined!, response));
         }
       });
   });
@@ -58,7 +58,7 @@ export function createResponsePromise(body?: BodyInit, init?: ResponseInit) {
     } else {
       // Let's call this the "root" responsePromise rejection
       // Will be silently caught if we throw inside a body method, see extendResponsePromiseWithBodyMethods
-      reject(new HttpError(response));
+      reject(new HttpError(undefined!, response));
     }
   }) as ResponsePromiseWithBodyMethods;
 

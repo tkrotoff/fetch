@@ -123,7 +123,7 @@ Check [examples/web](examples/web)
 
 ### HttpError
 
-@tkrotoff/fetch throws [`HttpError`](src/HttpError.ts) with a [`response`](https://fetch.spec.whatwg.org/#response) property when the HTTP status code is < `200` or >= `300`.
+@tkrotoff/fetch throws [`HttpError`](src/HttpError.ts) with [`response`](https://fetch.spec.whatwg.org/#response) and [`request`](https://fetch.spec.whatwg.org/#request) properties when the HTTP status code is < `200` or >= `300`.
 
 ### Test utilities
 

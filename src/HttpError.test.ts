@@ -7,7 +7,7 @@ import { HttpError } from './HttpError';
 const path = '/';
 
 test('HttpError with statusText (HTTP/1.1)', async () => {
-  expect.assertions(6);
+  expect.assertions(8);
 
   const server = createTestServer({ silenceErrors: true });
 
@@ -20,10 +20,12 @@ test('HttpError with statusText (HTTP/1.1)', async () => {
     await get(url).text();
   } catch (e) {
     assert(e instanceof HttpError);
-    const { name, message, response } = e;
+    const { name, message, request, response } = e;
     /* eslint-disable jest/no-conditional-expect */
     expect(name).toEqual('HttpError');
     expect(message).toEqual('Not Found');
+    expect(request.method).toEqual('GET');
+    expect(request.url).toContain('https://127.0.0.1:');
     expect(response.status).toEqual(404);
     expect(response.statusText).toEqual('Not Found');
     expect(response.headers.get('content-type')).toEqual('application/json; charset=utf-8');
@@ -51,26 +53,33 @@ test('HttpError without statusText because of HTTP/2', async () => {
 
   // With statusText
   let e = new HttpError(
+    undefined!,
     new Response(JSON.stringify(body), { status: 404, statusText: 'Not Found' })
   );
   expect(e.name).toEqual('HttpError');
   expect(e.message).toEqual('Not Found');
+  expect(e.request).toEqual(undefined);
   expect(e.response.status).toEqual(404);
   expect(e.response.statusText).toEqual('Not Found');
   expect(await e.response.json()).toEqual(body);
 
   // Without statusText
-  e = new HttpError(new Response(JSON.stringify(body), { status: 404 }));
+  e = new HttpError(undefined!, new Response(JSON.stringify(body), { status: 404 }));
   expect(e.name).toEqual('HttpError');
   expect(e.message).toEqual('404');
+  expect(e.request).toEqual(undefined);
   expect(e.response.status).toEqual(404);
   expect(e.response.statusText).toEqual('');
   expect(await e.response.json()).toEqual(body);
 
   // With empty statusText
-  e = new HttpError(new Response(JSON.stringify(body), { status: 404, statusText: '' }));
+  e = new HttpError(
+    undefined!,
+    new Response(JSON.stringify(body), { status: 404, statusText: '' })
+  );
   expect(e.name).toEqual('HttpError');
   expect(e.message).toEqual('404');
+  expect(e.request).toEqual(undefined);
   expect(e.response.status).toEqual(404);
   expect(e.response.statusText).toEqual('');
   expect(await e.response.json()).toEqual(body);
